@@ -13,9 +13,11 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
+import { useSession } from "next-auth/react";
 import { DEFAULT_STATE, createStarterUser } from "@/lib/dummy-data";
 import { readStoredState, writeStoredState } from "@/lib/storage";
 import type { AppState, BioLink, LinkKind, ToastMessage, UserProfile } from "@/lib/types";
@@ -66,6 +68,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<AppState>(DEFAULT_STATE);
   const [isReady, setIsReady] = useState(false);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
+  const { data: session } = useSession();
+  const syncedSessionRef = useRef(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -83,6 +87,46 @@ export function AppProvider({ children }: { children: ReactNode }) {
       isMounted = false;
     };
   }, []);
+
+  // Auto-sync NextAuth session → AppProvider localStorage
+  useEffect(() => {
+    if (!isReady || !session?.user?.email) {
+      return;
+    }
+
+    // Already synced this session
+    if (syncedSessionRef.current) {
+      return;
+    }
+
+    // Check if a local user with this email exists
+    const existingUser = state.users.find(
+      (u) => u.email.toLowerCase() === session.user!.email!.toLowerCase(),
+    );
+
+    if (existingUser) {
+      // User exists locally but not logged in → auto-login
+      if (state.currentUserId !== existingUser.id) {
+        setState((current) => ({ ...current, currentUserId: existingUser.id }));
+      }
+      syncedSessionRef.current = true;
+      return;
+    }
+
+    // User doesn't exist locally → create from session
+    const newUser = createStarterUser({
+      name: session.user.name || session.user.email!.split("@")[0],
+      email: session.user.email!,
+      password: "nextauth-managed",
+    });
+
+    setState((current) => ({
+      ...current,
+      users: [...current.users, newUser],
+      currentUserId: newUser.id,
+    }));
+    syncedSessionRef.current = true;
+  }, [isReady, session, state.users, state.currentUserId]);
 
   useEffect(() => {
     if (!isReady) {
