@@ -30,7 +30,12 @@ export default function LoginPage() {
       return;
     }
 
-    router.push("/dashboard");
+    // Fetch session to check isAdmin
+    const res = await fetch("/api/auth/session");
+    const session = await res.json();
+    const isAdmin = (session?.user as { isAdmin?: boolean })?.isAdmin;
+
+    router.push(isAdmin ? "/admin" : "/dashboard");
   };
 
   return (

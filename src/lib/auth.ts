@@ -40,6 +40,7 @@ export const authOptions: AuthOptions = {
           name: user.name,
           image: user.image,
           username: user.username,
+          isAdmin: user.isAdmin,
         };
       },
     }),
@@ -57,6 +58,7 @@ export const authOptions: AuthOptions = {
       if (user) {
         token.id = user.id;
         token.username = (user as { username?: string }).username;
+        token.isAdmin = (user as { isAdmin?: boolean }).isAdmin ?? false;
       }
       return token;
     },
@@ -64,6 +66,7 @@ export const authOptions: AuthOptions = {
       if (session.user) {
         (session.user as { id?: string }).id = token.id as string;
         (session.user as { username?: string }).username = token.username as string;
+        (session.user as { isAdmin?: boolean }).isAdmin = token.isAdmin as boolean;
       }
       return session;
     },
