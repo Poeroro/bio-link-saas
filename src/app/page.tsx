@@ -137,18 +137,29 @@ export default function Home() {
           <span className="text-base font-black tracking-tight">LinkPilot</span>
         </Link>
         <div className="flex items-center gap-4">
-          <Link
-            href="/login"
-            className="hidden text-sm font-semibold text-zinc-400 transition hover:text-white sm:block"
-          >
-            Login
-          </Link>
-          <Link
-            href="/register"
-            className="inline-flex h-9 items-center justify-center rounded-lg bg-white/10 px-4 text-sm font-bold text-white backdrop-blur-sm transition hover:bg-white/15"
-          >
-            Register
-          </Link>
+          {currentUser ? (
+            <Link
+              href="/dashboard"
+              className="inline-flex h-9 items-center justify-center rounded-lg bg-gradient-to-r from-cyan-400 to-emerald-400 px-4 text-sm font-bold text-slate-950 transition hover:opacity-90"
+            >
+              Dashboard
+            </Link>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                className="hidden text-sm font-semibold text-zinc-400 transition hover:text-white sm:block"
+              >
+                Login
+              </Link>
+              <Link
+                href="/register"
+                className="inline-flex h-9 items-center justify-center rounded-lg bg-white/10 px-4 text-sm font-bold text-white backdrop-blur-sm transition hover:bg-white/15"
+              >
+                Register
+              </Link>
+            </>
+          )}
         </div>
       </nav>
 
@@ -183,20 +194,31 @@ export default function Home() {
             className="animate-fade-slide-up mt-7 flex flex-col gap-3 sm:flex-row"
             style={{ "--i": 3, animationDelay: "calc(3 * 0.08s)" } as React.CSSProperties}
           >
-            <Link
-              href="/register"
-              className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-cyan-400 to-emerald-400 px-5 text-sm font-bold text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:-translate-y-0.5 hover:shadow-cyan-500/30"
-            >
-              Register dummy
-              <ArrowRight className="size-4" />
-            </Link>
-            <Link
-              href="/dashboard"
-              className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-white/[0.06] bg-[#0c0c10]/80 px-5 text-sm font-bold text-white backdrop-blur-xl transition hover:-translate-y-0.5 hover:bg-[#141418]/80"
-            >
-              Buka dashboard
-              <LayoutDashboard className="size-4" />
-            </Link>
+            {currentUser ? (
+              <Link
+                href="/dashboard"
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-cyan-400 to-emerald-400 px-5 text-sm font-bold text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:-translate-y-0.5 hover:shadow-cyan-500/30"
+              >
+                Buka Dashboard
+                <ArrowRight className="size-4" />
+              </Link>
+            ) : (
+              <>
+                <Link
+                  href="/register"
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-cyan-400 to-emerald-400 px-5 text-sm font-bold text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:-translate-y-0.5 hover:shadow-cyan-500/30"
+                >
+                  Mulai Gratis
+                  <ArrowRight className="size-4" />
+                </Link>
+                <Link
+                  href="/login"
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-white/[0.06] bg-[#0c0c10]/80 px-5 text-sm font-bold text-white backdrop-blur-xl transition hover:-translate-y-0.5 hover:bg-[#141418]/80"
+                >
+                  Login
+                </Link>
+              </>
+            )}
           </div>
 
           <div
@@ -336,7 +358,7 @@ export default function Home() {
                 ))}
               </ul>
               <Link
-                href="/register"
+                href={currentUser ? "/dashboard" : "/register"}
                 className={`mt-8 inline-flex h-11 w-full items-center justify-center rounded-xl text-sm font-bold transition ${
                   tier.popular
                     ? "bg-gradient-to-r from-cyan-400 to-emerald-400 text-slate-950 hover:shadow-lg hover:shadow-cyan-500/20"
@@ -390,12 +412,20 @@ export default function Home() {
             © 2026 LinkPilot. Bio link SaaS untuk creator Indonesia.
           </p>
           <div className="flex gap-4">
-            <Link href="/login" className="text-xs text-zinc-500 hover:text-white">
-              Login
-            </Link>
-            <Link href="/register" className="text-xs text-zinc-500 hover:text-white">
-              Register
-            </Link>
+            {currentUser ? (
+              <Link href="/dashboard" className="text-xs text-cyan-400 hover:text-white">
+                Dashboard
+              </Link>
+            ) : (
+              <>
+                <Link href="/login" className="text-xs text-zinc-500 hover:text-white">
+                  Login
+                </Link>
+                <Link href="/register" className="text-xs text-zinc-500 hover:text-white">
+                  Register
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </footer>
