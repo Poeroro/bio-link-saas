@@ -3,6 +3,7 @@ import { Fraunces, Manrope } from "next/font/google";
 import { AppProvider } from "@/components/providers/app-provider";
 import { SessionProviderWrapper } from "@/components/providers/session-provider";
 import "./globals.css";
+import "@/styles/tokens.css";
 
 const manrope = Manrope({
   variable: "--font-manrope",
