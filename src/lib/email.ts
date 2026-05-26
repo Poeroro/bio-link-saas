@@ -23,7 +23,7 @@ export async function sendEmail(to: string, subject: string, html: string) {
   }
 
   // Use Brevo REST API (avoids SMTP IP restrictions)
-  if (cfg.host.includes("brevo.com") && cfg.pass.startsWith("xsmtpsib-")) {
+  if (cfg.host.includes("brevo.com") && (cfg.pass.startsWith("xkeysib-") || cfg.pass.startsWith("xsmtpsib-"))) {
     try {
       const res = await fetch("https://api.brevo.com/v3/smtp/email", {
         method: "POST",
