@@ -3,6 +3,7 @@
 import { ArrowRight, Loader2, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { SiteName } from "@/components/site-logo";
 import { FormEvent, useState } from "react";
 import { signIn } from "next-auth/react";
 
@@ -48,6 +49,20 @@ export default function RegisterPage() {
       return;
     }
 
+    // Check if email verification is required
+    try {
+      const settingsRes = await fetch("/api/admin/settings");
+      const settingsData = await settingsRes.json();
+      if (settingsData.requireEmailVerification === "true") {
+        // Send verification
+        await fetch("/api/auth/send-verification", { method: "POST" });
+        router.push(`/verify-email?email=${encodeURIComponent(form.email)}`);
+        return;
+      }
+    } catch {
+      // If settings fetch fails, just continue to dashboard
+    }
+
     router.push("/dashboard");
   };
 
@@ -60,7 +75,7 @@ export default function RegisterPage() {
               <Sparkles className="size-5" />
             </span>
             <span className="text-base font-black tracking-tight text-slate-950 dark:text-white">
-              LinkPilot
+              <SiteName />
             </span>
           </Link>
         </nav>

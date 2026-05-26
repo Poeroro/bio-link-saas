@@ -1,6 +1,9 @@
 import Link from "next/link";
+import { prisma } from "@/lib/prisma";
 
-export default function NotFound() {
+export default async function NotFound() {
+  const siteSetting = await prisma.setting.findUnique({ where: { key: "siteName" } }).catch(() => null);
+  const siteName = siteSetting?.value || "LinkPilot";
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 via-white to-slate-100 px-4 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950">
       <div className="w-full max-w-lg text-center">
@@ -17,7 +20,7 @@ export default function NotFound() {
 
         <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm dark:border-white/10 dark:bg-white/7">
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400 dark:text-zinc-500">
-            LinkPilot
+            {siteName}
           </p>
           <h1 className="mt-2 text-2xl font-semibold text-slate-950 dark:text-white">
             Page not found

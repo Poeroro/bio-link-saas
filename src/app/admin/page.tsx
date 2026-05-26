@@ -408,6 +408,7 @@ function SettingsTab() {
     smtpPass: "",
     analyticsEnabled: true,
     requireEmailVerification: false,
+    verificationMethod: "link",
     rateLimiting: true,
   });
 
@@ -428,6 +429,7 @@ function SettingsTab() {
           smtpPass: data.smtpPass || "",
           analyticsEnabled: data.analyticsEnabled === "true",
           requireEmailVerification: data.requireEmailVerification === "true",
+          verificationMethod: data.verificationMethod || "link",
           rateLimiting: data.rateLimiting === "true",
         });
         setLoading(false);
@@ -528,8 +530,28 @@ function SettingsTab() {
           <h2 className="text-base sm:text-lg font-bold text-white">Security</h2>
         </div>
         <div className="space-y-3">
-          <Toggle label="Require Email Verification" description="Users must verify email before accessing dashboard" checked={false} onChange={() => {}} />
-          <Toggle label="Rate Limiting" description="Limit API requests per IP" checked={true} onChange={() => {}} />
+          <Toggle label="Require Email Verification" description="Users must verify email before accessing dashboard" checked={settings.requireEmailVerification} onChange={(v) => handleChange("requireEmailVerification", v)} />
+          {settings.requireEmailVerification && (
+            <div className="ml-3 pl-3 border-l border-white/[0.06]">
+              <p className="text-xs text-slate-400 mb-2">Verification Method</p>
+              <div className="flex gap-2">
+                {(["link", "otp"] as const).map((m) => (
+                  <button
+                    key={m}
+                    onClick={() => handleChange("verificationMethod", m)}
+                    className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
+                      settings.verificationMethod === m
+                        ? "bg-cyan-400/10 text-cyan-400 border border-cyan-400/15"
+                        : "bg-white/[0.04] text-slate-400 border border-white/[0.06] hover:text-white"
+                    }`}
+                  >
+                    {m === "link" ? "Email Link" : "OTP Code"}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+          <Toggle label="Rate Limiting" description="Limit API requests per IP" checked={settings.rateLimiting} onChange={(v) => handleChange("rateLimiting", v)} />
         </div>
       </GlassCard>
 

@@ -17,8 +17,10 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSession, signOut } from 'next-auth/react';
+import { AlertTriangle, Mail } from 'lucide-react';
+import { SiteName } from '@/components/site-logo';
 import { AnalyticsPanel } from '@/components/dashboard/analytics-panel';
 import { CustomCssPanel } from '@/components/dashboard/custom-css-panel';
 import { ExportPanel } from '@/components/dashboard/export-panel';
@@ -74,6 +76,20 @@ export default function DashboardPage() {
     moveLink,
     setTheme,
   } = useBioApp();
+
+  const [verifyRequired, setVerifyRequired] = useState(false);
+  const [sending, setSending] = useState(false);
+
+  useEffect(() => {
+    fetch('/api/admin/settings')
+      .then(r => r.json())
+      .then(d => {
+        if (d.requireEmailVerification === 'true' && !(session?.user as { emailVerified?: boolean })?.emailVerified) {
+          setVerifyRequired(true);
+        }
+      })
+      .catch(() => {});
+  }, [session]);
 
   if (!isReady) {
     return (
@@ -139,7 +155,7 @@ export default function DashboardPage() {
                 <Sparkles className="size-5" />
               </span>
               <span className="hidden text-base font-black tracking-tight sm:block">
-                LinkPilot
+                <SiteName />
               </span>
             </Link>
 
@@ -184,7 +200,7 @@ export default function DashboardPage() {
                 target="_blank"
                 className="hidden h-10 items-center gap-2 rounded-2xl bg-cyan-400 px-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300 sm:inline-flex"
               >
-                Public
+                View
                 <ArrowUpRight className="size-4" />
               </Link>
               <Button
@@ -230,6 +246,30 @@ export default function DashboardPage() {
               className="rounded-2xl border border-white/[0.06] bg-[#0c0c10]/80 backdrop-blur-xl p-5 sm:p-6"
               style={{ animation: 'fadeSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both' }}
             >
+              {verifyRequired && (
+                <div className="mb-5 flex flex-col sm:flex-row sm:items-center gap-3 rounded-xl border border-amber-400/20 bg-amber-400/5 p-4">
+                  <AlertTriangle className="size-5 shrink-0 text-amber-400" />
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-amber-300">Email belum terverifikasi</p>
+                    <p className="text-xs text-amber-400/70 mt-0.5">Verifikasi email untuk mengakses semua fitur.</p>
+                  </div>
+                  <button
+                    onClick={async () => {
+                      setSending(true);
+                      try {
+                        await fetch('/api/auth/send-verification', { method: 'POST' });
+                        router.push(`/verify-email?email=${encodeURIComponent(session?.user?.email || '')}`);
+                      } catch {}
+                      setSending(false);
+                    }}
+                    disabled={sending}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-amber-400/10 text-amber-300 border border-amber-400/15 hover:bg-amber-400/20 transition disabled:opacity-50"
+                  >
+                    <Mail className="size-3.5" />
+                    {sending ? 'Mengirim...' : 'Verifikasi Sekarang'}
+                  </button>
+                </div>
+              )}
               <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                 <div>
                   <p className="text-sm font-bold uppercase tracking-[0.22em] text-cyan-400">
@@ -323,6 +363,39 @@ export default function DashboardPage() {
                     onMove={moveLink}
                   />
                 </div>
+
+                {/* Preview Bio Page — mobile/tablet: inline, above theme picker */}
+                <div className="xl:hidden">
+                  <div className="rounded-2xl border border-white/[0.06] bg-[#0c0c10]/80 backdrop-blur-xl p-4">
+                    <div className="mb-3 flex items-center justify-between">
+                      <h2 className="text-lg font-semibold text-white">Preview</h2>
+                      <Link
+                        href={`/u/${currentUser.username}`}
+                        target="_blank"
+                        className="inline-flex items-center gap-1.5 rounded-lg bg-white/[0.06] px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-white/[0.10]"
+                      >
+                        View
+                        <ArrowUpRight className="size-3" />
+                      </Link>
+                    </div>
+                    <div className="overflow-y-auto overflow-x-hidden rounded-xl">
+                      <BioPreview
+                        user={currentUser}
+                        framed
+                        compact
+                        disableLinks
+                        onLinkClick={() =>
+                          addToast({
+                            title: 'Preview realtime',
+                            description: 'Buka halaman publik untuk klik link asli.',
+                            tone: 'info',
+                          })
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
+
                 <ThemePicker
                   activeThemeId={currentUser.themeId}
                   onSelect={setTheme}
@@ -385,8 +458,8 @@ export default function DashboardPage() {
 
           </section>
 
-          {/* Sidebar preview */}
-          <aside className="xl:sticky xl:top-24 xl:h-[calc(100vh-7rem)]">
+          {/* Sidebar preview — desktop only */}
+          <aside className="hidden xl:block xl:sticky xl:top-24 xl:h-[calc(100vh-7rem)]">
             <div className="mb-3 flex items-center justify-between">
               <div>
                 <p className="text-xs font-bold uppercase tracking-[0.18em] text-zinc-500">
@@ -399,10 +472,10 @@ export default function DashboardPage() {
               <Link
                 href={`/u/${currentUser.username}`}
                 target="_blank"
-                aria-label="Buka public bio page"
-                className="inline-flex size-10 items-center justify-center rounded-xl border border-white/[0.06] bg-white/[0.04] text-white transition hover:-translate-y-0.5 hover:bg-white/[0.08]"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-white/[0.06] px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-white/[0.10]"
               >
-                <ArrowUpRight className="size-4" />
+                View
+                <ArrowUpRight className="size-3" />
               </Link>
             </div>
             <div className="h-[720px] max-h-[calc(100vh-10rem)] min-h-[620px] overflow-y-auto overflow-x-hidden rounded-2xl">

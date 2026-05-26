@@ -3,6 +3,7 @@
 import { ArrowRight, Loader2, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { SiteName } from "@/components/site-logo";
 import { FormEvent, useState } from "react";
 import { signIn } from "next-auth/react";
 
@@ -47,7 +48,7 @@ export default function LoginPage() {
               <Sparkles className="size-5" />
             </span>
             <span className="text-base font-black tracking-tight text-slate-950 dark:text-white">
-              LinkPilot
+              <SiteName />
             </span>
           </Link>
         </nav>
@@ -117,6 +118,15 @@ export default function LoginPage() {
                   />
                 </div>
               </label>
+
+              <div className="flex justify-end">
+                <Link
+                  href="/forgot-password"
+                  className="text-sm font-medium text-cyan-400 hover:text-cyan-300 transition"
+                >
+                  Lupa password?
+                </Link>
+              </div>
 
               <button
                 type="submit"

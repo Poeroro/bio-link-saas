@@ -41,6 +41,7 @@ export const authOptions: AuthOptions = {
           image: user.image,
           username: user.username,
           isAdmin: user.isAdmin,
+          emailVerified: user.emailVerified ? true : false,
         };
       },
     }),
@@ -59,6 +60,7 @@ export const authOptions: AuthOptions = {
         token.id = user.id;
         token.username = (user as { username?: string }).username;
         token.isAdmin = (user as { isAdmin?: boolean }).isAdmin ?? false;
+        token.emailVerified = (user as { emailVerified?: boolean }).emailVerified ?? false;
       }
       return token;
     },
@@ -67,6 +69,7 @@ export const authOptions: AuthOptions = {
         (session.user as { id?: string }).id = token.id as string;
         (session.user as { username?: string }).username = token.username as string;
         (session.user as { isAdmin?: boolean }).isAdmin = token.isAdmin as boolean;
+        (session.user as { emailVerified?: boolean }).emailVerified = token.emailVerified as boolean;
       }
       return session;
     },

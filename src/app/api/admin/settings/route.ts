@@ -15,6 +15,7 @@ const DEFAULTS: Record<string, string> = {
   smtpPass: "",
   analyticsEnabled: "true",
   requireEmailVerification: "false",
+  verificationMethod: "link",
   rateLimiting: "true",
 };
 

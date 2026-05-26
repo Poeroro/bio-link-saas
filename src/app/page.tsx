@@ -18,6 +18,7 @@ import {
   Zap,
 } from "lucide-react";
 import Link from "next/link";
+import { SiteName } from "@/components/site-logo";
 import { BioPreview } from "@/components/bio/bio-preview";
 import { useBioApp } from "@/components/providers/app-provider";
 import { formatNumber } from "@/lib/utils";
@@ -114,7 +115,7 @@ export default function Home() {
           <span className="grid size-10 place-items-center rounded-2xl bg-white/10 text-cyan-400 backdrop-blur-sm">
             <Sparkles className="size-5" />
           </span>
-          <span className="text-base font-black tracking-tight">LinkPilot</span>
+          <SiteName />
         </Link>
         <div className="flex items-center gap-4">
           {currentUser ? (
@@ -386,10 +387,10 @@ export default function Home() {
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 px-4 sm:flex-row sm:justify-between sm:px-6">
           <div className="flex items-center gap-2">
             <Sparkles className="size-4 text-cyan-400" />
-            <span className="text-sm font-bold text-white">LinkPilot</span>
+            <span className="text-sm font-bold text-white"><SiteName /></span>
           </div>
           <p className="text-xs text-zinc-500">
-            © 2026 LinkPilot. Bio link SaaS untuk creator Indonesia.
+            © 2026 <SiteName />. Bio link SaaS untuk creator Indonesia.
           </p>
           <div className="flex gap-4">
             {currentUser ? (

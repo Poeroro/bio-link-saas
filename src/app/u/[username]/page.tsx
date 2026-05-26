@@ -25,21 +25,23 @@ export async function generateMetadata({
 
   if (!user) return { title: "Bio page tidak ditemukan" };
 
+  const siteSetting = await prisma.setting.findUnique({ where: { key: "siteName" } }).catch(() => null);
+  const siteName = siteSetting?.value || "LinkPilot";
   const name = user.name ?? user.username;
   const headline = user.bio ?? `Bio link ${name}`;
   const avatarUrl = user.image ?? null;
 
   return {
-    title: `${name} | LinkPilot`,
+    title: `${name} | ${siteName}`,
     description: headline,
     openGraph: {
-      title: `${name} - LinkPilot`,
+      title: `${name} - ${siteName}`,
       description: headline,
       ...(avatarUrl ? { images: [{ url: avatarUrl }] } : {}),
     },
     twitter: {
       card: "summary",
-      title: `${name} - LinkPilot`,
+      title: `${name} - ${siteName}`,
       description: headline,
       ...(avatarUrl ? { images: [avatarUrl] } : {}),
     },

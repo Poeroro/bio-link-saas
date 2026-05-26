@@ -7,6 +7,7 @@ import { FormEvent, useState } from "react";
 import { useBioApp } from "@/components/providers/app-provider";
 import { Button } from "@/components/ui/button";
 import { ToggleSwitch } from "@/components/ui/toggle-switch";
+import { SiteName } from "@/components/site-logo";
 
 export function AuthCard({ mode }: { mode: "login" | "register" }) {
   const router = useRouter();
@@ -47,7 +48,7 @@ export function AuthCard({ mode }: { mode: "login" | "register" }) {
               <Sparkles className="size-5" />
             </span>
             <span className="text-base font-black tracking-tight text-slate-950 dark:text-white">
-              LinkPilot
+              <SiteName />
             </span>
           </Link>
           <div className="flex items-center gap-3">

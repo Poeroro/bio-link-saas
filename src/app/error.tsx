@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { SiteName } from "@/components/site-logo";
 import { AlertTriangle, RefreshCw, ChevronDown, ChevronUp, Home } from "lucide-react";
 import Link from "next/link";
 
@@ -26,7 +27,7 @@ export default function Error({
 
         <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm dark:border-white/10 dark:bg-white/7">
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400 dark:text-zinc-500">
-            LinkPilot
+            <SiteName />
           </p>
           <h1 className="mt-2 text-2xl font-semibold text-slate-950 dark:text-white">
             Something went wrong
