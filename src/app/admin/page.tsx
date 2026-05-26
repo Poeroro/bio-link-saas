@@ -21,7 +21,9 @@ import {
   Mail,
   Key,
   Bell,
+  LogOut,
 } from "lucide-react";
+import { signOut } from "next-auth/react";
 import AdminSidebar from "@/components/admin/admin-sidebar";
 
 // ─── Types ───────────────────────────────────────────────────────────
@@ -614,6 +616,22 @@ function SettingsTab() {
           <Toggle label="Require Email Verification" description="Users must verify email before accessing dashboard" checked={false} onChange={() => {}} />
           <Toggle label="Rate Limiting" description="Limit API requests per IP" checked={true} onChange={() => {}} />
         </div>
+      </GlassCard>
+
+      {/* Account */}
+      <GlassCard className="p-4 sm:p-6">
+        <div className="flex items-center gap-2 mb-4 sm:mb-5">
+          <LogOut className="w-4 h-4 sm:w-5 sm:h-5 text-red-400" />
+          <h2 className="text-base sm:text-lg font-bold text-white">Account</h2>
+        </div>
+        <p className="text-sm text-slate-400 mb-4">Sign out dari admin panel.</p>
+        <button
+          onClick={() => signOut({ callbackUrl: "/" })}
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium bg-red-400/10 text-red-400 border border-red-400/15 hover:bg-red-400/20 transition-colors"
+        >
+          <LogOut className="w-4 h-4" />
+          Logout
+        </button>
       </GlassCard>
     </div>
   );
