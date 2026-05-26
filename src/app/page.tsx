@@ -23,7 +23,7 @@ import { BioPreview } from "@/components/bio/bio-preview";
 import { useBioApp } from "@/components/providers/app-provider";
 
 const workflow = [
-  { title: "Register dummy", detail: "Akun starter langsung berisi profil, link, dan analytics.", icon: CheckCircle2 },
+  { title: "Register", detail: "Langkah awal untuk membuat bio link", icon: CheckCircle2 },
   { title: "Edit workspace", detail: "Profile, link aktif, urutan drag/drop, dan tema sinkron realtime.", icon: LayoutDashboard },
   { title: "Publish /u/username", detail: "QR, copy, share, dan halaman publik siap dicoba.", icon: QrCode },
 ];
@@ -147,7 +147,7 @@ export default function Home() {
             <span className="bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">
               LinkUS
             </span>{" "}
-            Bio Link
+        
           </h1>
           <p
             className="animate-fade-slide-up mt-6 max-w-2xl text-base leading-8 text-zinc-400 sm:text-lg"
