@@ -9,20 +9,17 @@ import {
   HelpCircle,
   LayoutDashboard,
   Link as LinkIcon,
-  Moon,
   Palette,
   QrCode,
   Shield,
   Smartphone,
   Sparkles,
   Star,
-  Sun,
   Zap,
 } from "lucide-react";
 import Link from "next/link";
 import { BioPreview } from "@/components/bio/bio-preview";
 import { useBioApp } from "@/components/providers/app-provider";
-import { ToggleSwitch } from "@/components/ui/toggle-switch";
 import { formatNumber } from "@/lib/utils";
 
 const workflow = [
@@ -110,69 +107,110 @@ const faqs = [
 ];
 
 export default function Home() {
-  const { state, currentUser, toggleDarkMode } = useBioApp();
+  const { state, currentUser } = useBioApp();
   const demoUser = currentUser ?? state.users[0];
 
   return (
-    <main className="min-h-screen overflow-hidden bg-[linear-gradient(135deg,#f8fafc,#ecfeff_44%,#fff7ed)] text-slate-950 dark:bg-[linear-gradient(135deg,#09090b,#111827_48%,#052e2b)] dark:text-white">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-5 sm:px-6">
+    <main className="relative min-h-screen overflow-hidden bg-[#06060a] text-white">
+      {/* ── Mesh Gradient Orbs ── */}
+      <div className="pointer-events-none fixed inset-0 overflow-hidden" aria-hidden="true">
+        <div
+          className="absolute -left-32 -top-32 h-[500px] w-[500px] rounded-full bg-cyan-500/35 blur-[80px]"
+          style={{ animation: "floatOrb 20s ease-in-out infinite" }}
+        />
+        <div
+          className="absolute -bottom-32 -right-32 h-[600px] w-[600px] rounded-full bg-violet-500/35 blur-[80px]"
+          style={{ animation: "floatOrb 20s ease-in-out infinite 3s" }}
+        />
+        <div
+          className="absolute left-1/2 top-1/2 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-500/35 blur-[80px]"
+          style={{ animation: "floatOrb 20s ease-in-out infinite 6s" }}
+        />
+      </div>
+
+      {/* ── Nav ── */}
+      <nav className="relative z-10 mx-auto flex max-w-7xl items-center justify-between px-4 py-5 sm:px-6">
         <Link href="/" className="flex items-center gap-3">
-          <span className="grid size-10 place-items-center rounded-2xl bg-slate-950 text-white dark:bg-white dark:text-slate-950">
+          <span className="grid size-10 place-items-center rounded-2xl bg-white/10 text-cyan-400 backdrop-blur-sm">
             <Sparkles className="size-5" />
           </span>
           <span className="text-base font-black tracking-tight">LinkPilot</span>
         </Link>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <Link
             href="/login"
-            className="hidden text-sm font-semibold text-slate-600 transition hover:text-slate-950 dark:text-zinc-300 dark:hover:text-white sm:block"
+            className="hidden text-sm font-semibold text-zinc-400 transition hover:text-white sm:block"
           >
             Login
           </Link>
-          {state.darkMode ? <Moon className="size-4 text-zinc-300" /> : <Sun className="size-4 text-slate-600" />}
-          <ToggleSwitch checked={state.darkMode} onChange={toggleDarkMode} label="Dark mode" />
+          <Link
+            href="/register"
+            className="inline-flex h-9 items-center justify-center rounded-lg bg-white/10 px-4 text-sm font-bold text-white backdrop-blur-sm transition hover:bg-white/15"
+          >
+            Register
+          </Link>
         </div>
       </nav>
 
-      <section className="mx-auto grid max-w-7xl gap-8 px-4 pb-10 pt-4 sm:px-6 lg:grid-cols-[minmax(0,1fr)_430px] lg:items-center">
+      {/* ── Hero ── */}
+      <section className="relative z-10 mx-auto grid max-w-7xl gap-8 px-4 pb-10 pt-4 sm:px-6 lg:grid-cols-[minmax(0,1fr)_430px] lg:items-center">
         <div className="max-w-3xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/74 px-3 py-2 text-xs font-bold uppercase tracking-[0.18em] text-slate-600 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/7 dark:text-zinc-300">
+          <div
+            className="animate-fade-slide-up inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] px-3 py-2 text-xs font-bold uppercase tracking-[0.18em] text-zinc-400 backdrop-blur-xl"
+            style={{ animationDelay: "calc(var(--i, 0) * 0.08s)" }}
+          >
             <span className="size-2 rounded-full bg-cyan-400" />
             Bio link SaaS
           </div>
-          <h1 className="mt-6 font-serif text-5xl font-semibold leading-[0.95] tracking-normal text-slate-950 dark:text-white sm:text-7xl">
-            LinkPilot Bio Link
+          <h1
+            className="animate-fade-slide-up mt-6 font-serif text-5xl font-semibold leading-[0.95] tracking-normal sm:text-7xl"
+            style={{ "--i": 1, animationDelay: "calc(1 * 0.08s)" } as React.CSSProperties}
+          >
+            <span className="bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">
+              LinkPilot
+            </span>{" "}
+            Bio Link
           </h1>
-          <p className="mt-6 max-w-2xl text-base leading-8 text-slate-600 dark:text-zinc-300 sm:text-lg">
+          <p
+            className="animate-fade-slide-up mt-6 max-w-2xl text-base leading-8 text-zinc-400 sm:text-lg"
+            style={{ "--i": 2, animationDelay: "calc(2 * 0.08s)" } as React.CSSProperties}
+          >
             Satu halaman bio link yang terasa seperti produk SaaS matang: editor realtime,
             template visual, QR code, analytics dummy, dan data yang tersimpan di browser.
           </p>
 
-          <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+          <div
+            className="animate-fade-slide-up mt-7 flex flex-col gap-3 sm:flex-row"
+            style={{ "--i": 3, animationDelay: "calc(3 * 0.08s)" } as React.CSSProperties}
+          >
             <Link
               href="/register"
-              className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-slate-950 px-5 text-sm font-bold text-white shadow-xl shadow-slate-950/18 transition hover:-translate-y-0.5 hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-zinc-200"
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-cyan-400 to-emerald-400 px-5 text-sm font-bold text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:-translate-y-0.5 hover:shadow-cyan-500/30"
             >
               Register dummy
               <ArrowRight className="size-4" />
             </Link>
             <Link
               href="/dashboard"
-              className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white/78 px-5 text-sm font-bold text-slate-950 backdrop-blur transition hover:-translate-y-0.5 hover:bg-white dark:border-white/10 dark:bg-white/7 dark:text-white dark:hover:bg-white/12"
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-white/[0.06] bg-[#0c0c10]/80 px-5 text-sm font-bold text-white backdrop-blur-xl transition hover:-translate-y-0.5 hover:bg-[#141418]/80"
             >
               Buka dashboard
               <LayoutDashboard className="size-4" />
             </Link>
           </div>
 
-          <div className="mt-8 grid gap-3 sm:grid-cols-4">
-            {featureRows.map((item) => (
+          <div
+            className="animate-fade-slide-up mt-8 grid gap-3 sm:grid-cols-4"
+            style={{ "--i": 4, animationDelay: "calc(4 * 0.08s)" } as React.CSSProperties}
+          >
+            {featureRows.map((item, idx) => (
               <div
                 key={item.label}
-                className="rounded-2xl border border-white/70 bg-white/68 p-4 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/7"
+                className="glass-card p-4 transition-all duration-200 hover:bg-white/[0.06]"
+                style={{ "--i": 5 + idx, animationDelay: `calc(${5 + idx} * 0.08s)` } as React.CSSProperties}
               >
-                <item.icon className="size-5 text-slate-950 dark:text-white" />
-                <p className="mt-3 text-sm font-bold text-slate-700 dark:text-zinc-200">
+                <item.icon className="size-5 text-cyan-400" />
+                <p className="mt-3 text-sm font-bold text-zinc-300">
                   {item.label}
                 </p>
               </div>
@@ -181,63 +219,66 @@ export default function Home() {
         </div>
 
         <div className="relative">
-          <div className="absolute -left-8 top-10 hidden w-44 rounded-3xl border border-white/70 bg-white/82 p-4 shadow-2xl shadow-slate-950/12 backdrop-blur dark:border-white/10 dark:bg-zinc-950/76 sm:block">
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">
+          <div className="absolute -left-8 top-10 hidden w-44 rounded-3xl bg-[#0c0c10]/80 p-4 shadow-2xl backdrop-blur-xl border border-white/[0.06] sm:block">
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-zinc-500">
               Views
             </p>
-            <p className="mt-2 text-3xl font-black text-slate-950 dark:text-white">
+            <p className="mt-2 text-3xl font-black text-white">
               {formatNumber(demoUser.totalViews)}
             </p>
-            <div className="mt-4 h-2 rounded-full bg-slate-100 dark:bg-white/10">
-              <div className="h-full w-4/5 rounded-full bg-cyan-400" />
+            <div className="mt-4 h-2 rounded-full bg-white/[0.06]">
+              <div className="h-full w-4/5 rounded-full bg-gradient-to-r from-cyan-400 to-emerald-400" />
             </div>
           </div>
           <BioPreview user={demoUser} framed compact disableLinks />
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-4 px-4 pb-14 sm:px-6 lg:grid-cols-3">
-        {workflow.map((item) => (
+      {/* ── Workflow ── */}
+      <section className="relative z-10 mx-auto grid max-w-7xl gap-4 px-4 pb-14 sm:px-6 lg:grid-cols-3">
+        {workflow.map((item, idx) => (
           <article
             key={item.title}
-            className="rounded-[1.75rem] border border-slate-200 bg-white/76 p-5 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/7"
+            className="animate-fade-slide-up glass-card-lg p-5 transition-all duration-200 hover:bg-white/[0.06]"
+            style={{ "--i": idx, animationDelay: `calc(${idx} * 0.08s)` } as React.CSSProperties}
           >
-            <div className="grid size-11 place-items-center rounded-2xl bg-slate-950 text-white dark:bg-white dark:text-slate-950">
+            <div className="grid size-11 place-items-center rounded-2xl bg-gradient-to-br from-cyan-400/20 to-emerald-400/20 text-cyan-400">
               <item.icon className="size-5" />
             </div>
-            <h2 className="mt-5 text-lg font-bold text-slate-950 dark:text-white">
+            <h2 className="mt-5 text-lg font-bold text-white">
               {item.title}
             </h2>
-            <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-zinc-400">
+            <p className="mt-2 text-sm leading-6 text-zinc-400">
               {item.detail}
             </p>
           </article>
         ))}
       </section>
 
-      {/* Testimonials */}
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
+      {/* ── Testimonials ── */}
+      <section className="relative z-10 mx-auto max-w-7xl px-4 py-16 sm:px-6">
         <div className="text-center">
-          <h2 className="font-serif text-3xl font-semibold text-slate-950 dark:text-white sm:text-4xl">
+          <h2 className="font-serif text-3xl font-semibold text-white sm:text-4xl">
             Dipercaya Creator Indonesia
           </h2>
-          <p className="mt-4 text-slate-600 dark:text-zinc-300">
+          <p className="mt-4 text-zinc-400">
             Ribuan creator sudah pakai LinkPilot untuk presence digital mereka.
           </p>
         </div>
         <div className="mt-10 grid gap-6 sm:grid-cols-3">
-          {testimonials.map((item) => (
+          {testimonials.map((item, idx) => (
             <article
               key={item.name}
-              className="rounded-[1.75rem] border border-slate-200 bg-white/76 p-6 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/7"
+              className="animate-fade-slide-up glass-card-lg p-6 transition-all duration-200 hover:bg-white/[0.06]"
+              style={{ "--i": idx, animationDelay: `calc(${idx} * 0.08s)` } as React.CSSProperties}
             >
               <div className="flex gap-1">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star key={i} className="size-4 fill-amber-400 text-amber-400" />
                 ))}
               </div>
-              <p className="mt-4 text-sm leading-6 text-slate-600 dark:text-zinc-300">
-                "{item.text}"
+              <p className="mt-4 text-sm leading-6 text-zinc-400">
+                &ldquo;{item.text}&rdquo;
               </p>
               <div className="mt-5 flex items-center gap-3">
                 <img
@@ -246,8 +287,8 @@ export default function Home() {
                   className="size-10 rounded-full object-cover"
                 />
                 <div>
-                  <p className="text-sm font-bold text-slate-950 dark:text-white">{item.name}</p>
-                  <p className="text-xs text-slate-500 dark:text-zinc-400">{item.role}</p>
+                  <p className="text-sm font-bold text-white">{item.name}</p>
+                  <p className="text-xs text-zinc-500">{item.role}</p>
                 </div>
               </div>
             </article>
@@ -255,40 +296,41 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Pricing */}
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
+      {/* ── Pricing ── */}
+      <section className="relative z-10 mx-auto max-w-7xl px-4 py-16 sm:px-6">
         <div className="text-center">
-          <h2 className="font-serif text-3xl font-semibold text-slate-950 dark:text-white sm:text-4xl">
+          <h2 className="font-serif text-3xl font-semibold text-white sm:text-4xl">
             Harga Transparan
           </h2>
-          <p className="mt-4 text-slate-600 dark:text-zinc-300">
+          <p className="mt-4 text-zinc-400">
             Pilih plan yang sesuai kebutuhan. Upgrade atau downgrade kapan saja.
           </p>
         </div>
         <div className="mt-10 grid gap-6 sm:grid-cols-3">
-          {pricingTiers.map((tier) => (
+          {pricingTiers.map((tier, idx) => (
             <article
               key={tier.name}
-              className={`relative rounded-[1.75rem] border p-6 shadow-sm backdrop-blur ${
+              className={`animate-fade-slide-up relative p-6 backdrop-blur-xl transition-all duration-200 hover:bg-white/[0.06] ${
                 tier.popular
-                  ? "border-cyan-400 bg-white/90 shadow-xl shadow-cyan-400/20 dark:border-cyan-300 dark:bg-white/12"
-                  : "border-slate-200 bg-white/76 dark:border-white/10 dark:bg-white/7"
+                  ? "glass-card-lg border-cyan-400/30 shadow-lg shadow-cyan-500/10"
+                  : "glass-card-lg"
               }`}
+              style={{ "--i": idx, animationDelay: `calc(${idx} * 0.08s)` } as React.CSSProperties}
             >
               {tier.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-cyan-400 px-4 py-1 text-xs font-bold text-slate-950">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-cyan-400 to-emerald-400 px-4 py-1 text-xs font-bold text-slate-950">
                   Paling Populer
                 </div>
               )}
-              <h3 className="text-lg font-bold text-slate-950 dark:text-white">{tier.name}</h3>
+              <h3 className="text-lg font-bold text-white">{tier.name}</h3>
               <div className="mt-3 flex items-baseline gap-1">
-                <span className="text-3xl font-black text-slate-950 dark:text-white">{tier.price}</span>
-                <span className="text-sm text-slate-500 dark:text-zinc-400">{tier.period}</span>
+                <span className="text-3xl font-black text-white">{tier.price}</span>
+                <span className="text-sm text-zinc-500">{tier.period}</span>
               </div>
               <ul className="mt-6 space-y-3">
                 {tier.features.map((feature) => (
-                  <li key={feature} className="flex items-center gap-2 text-sm text-slate-600 dark:text-zinc-300">
-                    <CheckCircle2 className="size-4 text-cyan-500" />
+                  <li key={feature} className="flex items-center gap-2 text-sm text-zinc-400">
+                    <CheckCircle2 className="size-4 text-cyan-400" />
                     {feature}
                   </li>
                 ))}
@@ -297,8 +339,8 @@ export default function Home() {
                 href="/register"
                 className={`mt-8 inline-flex h-11 w-full items-center justify-center rounded-xl text-sm font-bold transition ${
                   tier.popular
-                    ? "bg-cyan-400 text-slate-950 hover:bg-cyan-300"
-                    : "bg-slate-950 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-zinc-200"
+                    ? "bg-gradient-to-r from-cyan-400 to-emerald-400 text-slate-950 hover:shadow-lg hover:shadow-cyan-500/20"
+                    : "border border-white/[0.06] bg-white/[0.04] text-white hover:bg-white/[0.08]"
                 }`}
               >
                 {tier.cta}
@@ -308,27 +350,28 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
+      {/* ── FAQ ── */}
+      <section className="relative z-10 mx-auto max-w-3xl px-4 py-16 sm:px-6">
         <div className="text-center">
-          <h2 className="font-serif text-3xl font-semibold text-slate-950 dark:text-white sm:text-4xl">
+          <h2 className="font-serif text-3xl font-semibold text-white sm:text-4xl">
             Pertanyaan Umum
           </h2>
         </div>
         <div className="mt-10 space-y-4">
-          {faqs.map((item) => (
+          {faqs.map((item, idx) => (
             <details
               key={item.q}
-              className="group rounded-2xl border border-slate-200 bg-white/76 backdrop-blur dark:border-white/10 dark:bg-white/7"
+              className="group animate-fade-slide-up glass-card-lg"
+              style={{ "--i": idx, animationDelay: `calc(${idx} * 0.08s)` } as React.CSSProperties}
             >
-              <summary className="flex cursor-pointer items-center justify-between gap-3 p-5 text-sm font-bold text-slate-950 dark:text-white">
+              <summary className="flex cursor-pointer items-center justify-between gap-3 p-5 text-sm font-bold text-white">
                 <span className="flex items-center gap-3">
-                  <HelpCircle className="size-5 text-cyan-500" />
+                  <HelpCircle className="size-5 text-cyan-400" />
                   {item.q}
                 </span>
-                <span className="text-slate-400 transition group-open:rotate-180">▼</span>
+                <span className="text-zinc-500 transition group-open:rotate-180">▼</span>
               </summary>
-              <p className="px-5 pb-5 text-sm leading-6 text-slate-600 dark:text-zinc-300">
+              <p className="px-5 pb-5 text-sm leading-6 text-zinc-400">
                 {item.a}
               </p>
             </details>
@@ -336,21 +379,21 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-slate-200 bg-white/50 py-10 dark:border-white/10 dark:bg-white/5">
+      {/* ── Footer ── */}
+      <footer className="relative z-10 border-t border-white/[0.06] bg-[#06060a]/80 py-10 backdrop-blur-sm">
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 px-4 sm:flex-row sm:justify-between sm:px-6">
           <div className="flex items-center gap-2">
-            <Sparkles className="size-4 text-slate-950 dark:text-white" />
-            <span className="text-sm font-bold text-slate-950 dark:text-white">LinkPilot</span>
+            <Sparkles className="size-4 text-cyan-400" />
+            <span className="text-sm font-bold text-white">LinkPilot</span>
           </div>
-          <p className="text-xs text-slate-500 dark:text-zinc-400">
+          <p className="text-xs text-zinc-500">
             © 2026 LinkPilot. Bio link SaaS untuk creator Indonesia.
           </p>
           <div className="flex gap-4">
-            <Link href="/login" className="text-xs text-slate-500 hover:text-slate-950 dark:text-zinc-400 dark:hover:text-white">
+            <Link href="/login" className="text-xs text-zinc-500 hover:text-white">
               Login
             </Link>
-            <Link href="/register" className="text-xs text-slate-500 hover:text-slate-950 dark:text-zinc-400 dark:hover:text-white">
+            <Link href="/register" className="text-xs text-zinc-500 hover:text-white">
               Register
             </Link>
           </div>

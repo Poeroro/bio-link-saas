@@ -54,7 +54,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${manrope.variable} ${fraunces.variable} h-full antialiased`}
     >
-      <body className="min-h-full">
+      <body className="min-h-full bg-[#06060a] text-white">
         <SessionProviderWrapper>
           <AppProvider>{children}</AppProvider>
         </SessionProviderWrapper>

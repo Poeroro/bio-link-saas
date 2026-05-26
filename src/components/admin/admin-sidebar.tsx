@@ -22,7 +22,7 @@ export default function AdminSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 shrink-0 bg-slate-900 border-r border-slate-800 flex flex-col min-h-screen">
+    <aside className="w-64 shrink-0 bg-[#0c0c10]/80 backdrop-blur-xl border-r border-white/[0.06] flex flex-col min-h-screen">
       <div className="p-6 flex items-center gap-2">
         <Shield className="w-6 h-6 text-cyan-400" />
         <span className="text-lg font-bold text-white">Admin Panel</span>
@@ -38,8 +38,8 @@ export default function AdminSidebar() {
               href={item.href}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
                 active
-                  ? "bg-cyan-400/10 text-cyan-400"
-                  : "text-slate-400 hover:text-white hover:bg-slate-800"
+                  ? "bg-cyan-400/10 text-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.12)]"
+                  : "text-slate-400 hover:text-white hover:bg-white/[0.04]"
               }`}
             >
               <item.icon className="w-5 h-5" />
@@ -48,10 +48,10 @@ export default function AdminSidebar() {
           );
         })}
       </nav>
-      <div className="p-3 border-t border-slate-800">
+      <div className="p-3 border-t border-white/[0.06]">
         <Link
           href="/dashboard"
-          className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+          className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-colors"
         >
           <ChevronLeft className="w-5 h-5" />
           Back to Dashboard
