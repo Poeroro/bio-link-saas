@@ -54,6 +54,7 @@ type BioAppContextValue = {
   deleteLink: (linkId: string) => void;
   toggleLink: (linkId: string) => void;
   moveLink: (activeId: string, overId: string) => void;
+  saveLinkOrder: (links: BioLink[]) => Promise<void>;
   setTheme: (themeId: string) => void;
   recordPublicVisit: (username: string) => void;
   recordLinkClick: (username: string, linkId: string) => void;
@@ -463,6 +464,29 @@ export function AppProvider({ children }: { children: ReactNode }) {
     [updateCurrentUser],
   );
 
+  const saveLinkOrder = useCallback(
+    async (links: BioLink[]) => {
+      try {
+        const res = await fetch("/api/links/reorder", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            links: links.map((l, i) => ({ id: l.id, order: i })),
+          }),
+        });
+        if (res.ok) {
+          addToast({ title: "Urutan link disimpan", tone: "success" });
+        } else {
+          addToast({ title: "Gagal menyimpan urutan", tone: "error" });
+        }
+      } catch (e) {
+        console.error("saveLinkOrder sync:", e);
+        addToast({ title: "Gagal menyimpan urutan", tone: "error" });
+      }
+    },
+    [addToast],
+  );
+
   const setTheme = useCallback(
     async (themeId: string) => {
       updateCurrentUser((user) => ({ ...user, themeId }));
@@ -566,6 +590,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       deleteLink,
       toggleLink,
       moveLink,
+      saveLinkOrder,
       setTheme,
       recordPublicVisit,
       recordLinkClick,
@@ -584,6 +609,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       login,
       logout,
       moveLink,
+      saveLinkOrder,
       recordLinkClick,
       recordPublicVisit,
       register,

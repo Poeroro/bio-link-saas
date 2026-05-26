@@ -58,6 +58,7 @@ export function LinkManager({
   onDelete,
   onToggle,
   onMove,
+  onSaveOrder,
 }: {
   links: BioLink[];
   onAdd: (link: Omit<BioLink, "id" | "clicks" | "active" | "createdAt">) => void;
@@ -65,6 +66,7 @@ export function LinkManager({
   onDelete: (linkId: string) => void;
   onToggle: (linkId: string) => void;
   onMove: (activeId: string, overId: string) => void;
+  onSaveOrder: (links: BioLink[]) => void;
 }) {
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -77,6 +79,7 @@ export function LinkManager({
     scheduleEnd: "",
   });
   const [editDraft, setEditDraft] = useState(draft);
+  const [hasOrderChanges, setHasOrderChanges] = useState(false);
 
   const submitNew = () => {
     onAdd({
@@ -178,6 +181,7 @@ export function LinkManager({
                   event.preventDefault();
                   if (draggingId) {
                     onMove(draggingId, link.id);
+                    setHasOrderChanges(true);
                   }
                   setDraggingId(null);
                 }}
@@ -323,6 +327,15 @@ export function LinkManager({
           />
         )}
       </div>
+
+      {hasOrderChanges && links.length > 1 && (
+        <div className="mt-4 flex justify-end">
+          <Button onClick={() => { onSaveOrder(links); setHasOrderChanges(false); }}>
+            <Save className="size-4" />
+            Simpan Urutan
+          </Button>
+        </div>
+      )}
     </SectionCard>
   );
 }

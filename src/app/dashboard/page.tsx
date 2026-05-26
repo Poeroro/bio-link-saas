@@ -74,6 +74,7 @@ export default function DashboardPage() {
     deleteLink,
     toggleLink,
     moveLink,
+    saveLinkOrder,
     setTheme,
  } = useBioApp();
 
@@ -372,6 +373,7 @@ export default function DashboardPage() {
                     onDelete={deleteLink}
                     onToggle={toggleLink}
                     onMove={moveLink}
+                    onSaveOrder={saveLinkOrder}
                   />
                 </div>
 
