@@ -1,5 +1,4 @@
 "use client";
-import { SparkleLogo } from "@/components/sparkle-logo";
 
 import {
   ArrowRight,
@@ -113,9 +112,6 @@ export default function Home() {
       {/* ── Nav ── */}
       <nav className="relative z-10 mx-auto flex max-w-7xl items-center justify-between px-4 py-5 sm:px-6">
         <Link href="/" className="flex items-center gap-3">
-          <span className="grid size-10 place-items-center rounded-2xl bg-white/10 text-cyan-400 backdrop-blur-sm">
-            <SparkleLogo className="size-5" />
-          </span>
           <SiteName />
         </Link>
         <div className="flex items-center gap-4">
@@ -387,7 +383,6 @@ export default function Home() {
       <footer className="relative z-10 border-t border-white/[0.06] bg-[#06060a]/80 py-10 backdrop-blur-sm">
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 px-4 sm:flex-row sm:justify-between sm:px-6">
           <div className="flex items-center gap-2">
-            <SparkleLogo className="size-4 text-cyan-400" />
             <span className="text-sm font-bold text-white"><SiteName /></span>
           </div>
           <p className="text-xs text-zinc-500">

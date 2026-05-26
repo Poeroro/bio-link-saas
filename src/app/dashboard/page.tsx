@@ -1,5 +1,4 @@
 'use client';
-import { SparkleLogo } from '@/components/sparkle-logo';
 
 /* eslint-disable @next/next/no-img-element */
 
@@ -123,9 +122,6 @@ export default function DashboardPage() {
     return (
       <main className="grid min-h-screen place-items-center bg-[#06060a] p-4">
         <section className="max-w-md rounded-2xl border border-white/[0.06] bg-[#0c0c10]/80 backdrop-blur-xl p-6 text-center">
-          <div className="mx-auto grid size-12 place-items-center rounded-2xl bg-cyan-400 text-slate-950">
-            <SparkleLogo className="size-5" />
-          </div>
           <h1 className="mt-5 text-2xl font-bold text-white">
             Sesi dashboard belum aktif
           </h1>
@@ -169,9 +165,6 @@ export default function DashboardPage() {
         <header className="sticky top-0 z-30 border-b border-white/[0.06] bg-[#06060a]/90 backdrop-blur-xl">
           <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-4 px-4 py-3 sm:px-6">
             <Link href="/" className="flex items-center gap-3">
-              <span className="grid size-10 place-items-center rounded-2xl bg-cyan-400 text-slate-950">
-                <SparkleLogo className="size-5" />
-              </span>
               <span className="hidden text-base font-black tracking-tight sm:block">
                 <SiteName />
               </span>

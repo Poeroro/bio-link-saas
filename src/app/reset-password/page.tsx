@@ -1,5 +1,4 @@
 "use client";
-import { SparkleLogo } from "@/components/sparkle-logo";
 
 import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -68,9 +67,6 @@ function ResetPasswordContent() {
     <main className="grid min-h-screen place-items-center bg-[#06060a] p-4">
       <div className="w-full max-w-md">
         <div className="rounded-2xl border border-white/[0.06] bg-[#0c0c10]/80 backdrop-blur-xl p-6">
-          <div className="mx-auto grid size-12 place-items-center rounded-2xl bg-cyan-400 text-slate-950">
-            <SparkleLogo className="size-5" />
-          </div>
 
           {status === "done" ? (
             <div className="mt-6 text-center">

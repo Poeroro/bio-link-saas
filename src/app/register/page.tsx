@@ -1,5 +1,4 @@
 "use client";
-import { SparkleLogo } from "@/components/sparkle-logo";
 
 import { ArrowRight, Loader2 } from "lucide-react";
 import Link from "next/link";
@@ -75,9 +74,6 @@ export default function RegisterPage() {
       <div className="mx-auto flex min-h-[calc(100vh-3rem)] max-w-6xl flex-col">
         <nav className="flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <span className="grid size-10 place-items-center rounded-2xl bg-slate-950 text-white dark:bg-white dark:text-slate-950">
-              <SparkleLogo className="size-5" />
-            </span>
             <span className="text-base font-black tracking-tight text-slate-950 dark:text-white">
               <SiteName />
             </span>
