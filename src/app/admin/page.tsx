@@ -167,23 +167,6 @@ export default function AdminPage() {
       <MeshOrbs />
       <AdminSidebar activeTab={tab} onTabChange={setTab} />
       <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto relative z-10 pt-16 lg:pt-8">
-        {/* Tab nav — mobile: scrollable, desktop: inline */}
-        <div className="flex gap-1 mb-6 sm:mb-8 bg-[#0c0c10]/80 backdrop-blur-xl border border-white/[0.06] rounded-2xl p-1 w-fit max-w-full overflow-x-auto">
-          {(["overview", "users", "domains", "settings"] as Tab[]).map((t) => (
-            <button
-              key={t}
-              onClick={() => setTab(t)}
-              className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-medium capitalize transition-colors whitespace-nowrap ${
-                tab === t
-                  ? "bg-cyan-400/10 text-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.12)]"
-                  : "text-slate-400 hover:text-white hover:bg-white/[0.04]"
-              }`}
-            >
-              {t}
-            </button>
-          ))}
-        </div>
-
         {tab === "overview" && <OverviewTab />}
         {tab === "users" && <UsersTab />}
         {tab === "domains" && <DomainsTab />}
