@@ -1,11 +1,10 @@
 import { type AuthOptions } from "next-auth";
-import { PrismaAdapter } from "@auth/prisma-adapter";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 
 export const authOptions: AuthOptions = {
-  adapter: PrismaAdapter(prisma) as AuthOptions["adapter"],
+  // No PrismaAdapter — credentials-only with JWT doesn't need DB sessions
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -15,7 +14,7 @@ export const authOptions: AuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          throw new Error("Invalid credentials");
+          return null;
         }
 
         const user = await prisma.user.findUnique({
@@ -23,7 +22,7 @@ export const authOptions: AuthOptions = {
         });
 
         if (!user || !user.password) {
-          throw new Error("Invalid credentials");
+          return null;
         }
 
         const isValid = await bcrypt.compare(
@@ -32,7 +31,7 @@ export const authOptions: AuthOptions = {
         );
 
         if (!isValid) {
-          throw new Error("Invalid credentials");
+          return null;
         }
 
         return {
