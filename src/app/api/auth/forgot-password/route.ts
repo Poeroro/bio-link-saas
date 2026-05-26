@@ -4,6 +4,8 @@ import { prisma } from "@/lib/prisma";
 import { sendEmail, resetPasswordEmailHtml } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
+  // Detect origin from request headers (works in production without env var)
+  const reqOrigin = req.headers.get("origin") || req.nextUrl.origin;
   const { email } = await req.json();
 
   if (!email || typeof email !== "string") {
@@ -32,9 +34,8 @@ export async function POST(req: NextRequest) {
   const siteSetting = await prisma.setting.findUnique({ where: { key: "siteName" } });
   const siteName = siteSetting?.value || "LinkPilot";
 
-  // Build reset URL
-  const origin = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-  const resetUrl = `${origin}/reset-password?token=${token}&email=${encodeURIComponent(normalizedEmail)}`;
+  // Build reset URL — use detected origin so it works without NEXT_PUBLIC_SITE_URL
+  const resetUrl = `${reqOrigin}/reset-password?token=${token}&email=${encodeURIComponent(normalizedEmail)}`;
 
   // Send email
   try {
