@@ -1,0 +1,132 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Auth tables (NextAuth) ───────────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?   // bcrypt hashed (credentials provider)
+  bio           String?
+  location      String?
+  username      String    @unique
+  themeId       String    @default("default")
+  customCss     String?
+  plan          Plan      @default(FREE)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts      Account[]
+  sessions      Session[]
+  links         Link[]
+  clickEvents   ClickEvent[]
+  customDomain  CustomDomain?
+}
+
+enum Plan {
+  FREE
+  PRO
+  BUSINESS
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ─── Business tables ──────────────────────────────────────────────
+
+model Link {
+  id            String   @id @default(cuid())
+  userId        String
+  kind          String   // website, youtube, tiktok, instagram, etc
+  label         String
+  url           String
+  description   String?
+  icon          String?
+  visible       Boolean  @default(true)
+  order         Int      @default(0)
+  clicks        Int      @default(0)
+  scheduleStart DateTime?
+  scheduleEnd   DateTime?
+  customCss     String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  clickEvents ClickEvent[]
+
+  @@index([userId, order])
+}
+
+model ClickEvent {
+  id        String   @id @default(cuid())
+  linkId    String
+  userId    String
+  ip        String?
+  country   String?
+  city      String?
+  referer   String?
+  userAgent String?
+  device    String?  // mobile, desktop, tablet
+  browser   String?
+  os        String?
+  createdAt DateTime @default(now())
+
+  link Link @relation(fields: [linkId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([linkId, createdAt])
+  @@index([userId, createdAt])
+}
+
+model CustomDomain {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  domain    String   @unique
+  verified  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

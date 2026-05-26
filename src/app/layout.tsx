@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fraunces, Manrope } from "next/font/google";
 import { AppProvider } from "@/components/providers/app-provider";
+import { SessionProviderWrapper } from "@/components/providers/session-provider";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -54,7 +55,9 @@ export default function RootLayout({
       className={`${manrope.variable} ${fraunces.variable} h-full antialiased`}
     >
       <body className="min-h-full">
-        <AppProvider>{children}</AppProvider>
+        <SessionProviderWrapper>
+          <AppProvider>{children}</AppProvider>
+        </SessionProviderWrapper>
       </body>
     </html>
   );
