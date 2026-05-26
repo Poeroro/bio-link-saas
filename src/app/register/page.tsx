@@ -51,7 +51,11 @@ export default function RegisterPage() {
 
     // Check if email verification is required
     try {
-      const settingsRes = await fetch("/api/auth/send-verification", { method: "POST" });
+      const settingsRes = await fetch("/api/auth/send-verification", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: form.email }),
+      });
       const sendData = await settingsRes.json();
       // send-verification returns { required: true/false }
       if (sendData.required) {
