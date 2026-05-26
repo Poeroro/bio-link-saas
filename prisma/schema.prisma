@@ -8,56 +8,109 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ─── Auth tables (NextAuth) ──────────────────────────────────────
-
-model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String    @unique
-  emailVerified DateTime?
-  image         String?
-  password      String?   // bcrypt hashed (credentials provider)
-  bio           String?
-  location      String?
-  username      String    @unique
-  themeId       String    @default("default")
-  customCss     String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  isAdmin       Boolean   @default(false)
-
-  accounts      Account[]
-  sessions      Session[]
-  links         Link[]
-  clickEvents   ClickEvent[]
-}
-
 model Account {
-  id                String  @id @default(cuid())
+  id                String  @id
   userId            String
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  User              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
 
+model ClickEvent {
+  id        String   @id
+  linkId    String
+  userId    String
+  ip        String?
+  country   String?
+  city      String?
+  referer   String?
+  userAgent String?
+  device    String?
+  browser   String?
+  os        String?
+  createdAt DateTime @default(now())
+  Link      Link     @relation(fields: [linkId], references: [id], onDelete: Cascade)
+  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([linkId, createdAt])
+  @@index([userId, createdAt])
+}
+
+model CustomDomain {
+  id        String   @id
+  userId    String   @unique
+  domain    String   @unique
+  verified  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Link {
+  id            String       @id
+  userId        String
+  kind          String
+  label         String
+  url           String
+  description   String?
+  icon          String?
+  visible       Boolean      @default(true)
+  order         Int          @default(0)
+  clicks        Int          @default(0)
+  scheduleStart DateTime?
+  scheduleEnd   DateTime?
+  customCss     String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime
+  ClickEvent    ClickEvent[]
+  User          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, order])
+}
+
 model Session {
-  id           String   @id @default(cuid())
+  id           String   @id
   sessionToken String   @unique
   userId       String
   expires      DateTime
+  User         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+model Setting {
+  key   String @id
+  value String
+}
+
+model User {
+  id            String        @id
+  name          String?
+  email         String        @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  bio           String?
+  location      String?
+  username      String        @unique
+  themeId       String        @default("default")
+  customCss     String?
+  plan          Plan          @default(FREE)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime
+  isAdmin       Boolean       @default(false)
+  Account       Account[]
+  ClickEvent    ClickEvent[]
+  CustomDomain  CustomDomain?
+  Link          Link[]
+  Session       Session[]
 }
 
 model VerificationToken {
@@ -68,53 +121,8 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-// ─── Business tables ──────────────────────────────────────────────
-
-model Link {
-  id            String   @id @default(cuid())
-  userId        String
-  kind          String   // website, youtube, tiktok, instagram, etc
-  label         String
-  url           String
-  description   String?
-  icon          String?
-  visible       Boolean  @default(true)
-  order         Int      @default(0)
-  clicks        Int      @default(0)
-  scheduleStart DateTime?
-  scheduleEnd   DateTime?
-  customCss     String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-
-  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  clickEvents ClickEvent[]
-
-  @@index([userId, order])
-}
-
-model ClickEvent {
-  id        String   @id @default(cuid())
-  linkId    String
-  userId    String
-  ip        String?
-  country   String?
-  city      String?
-  referer   String?
-  userAgent String?
-  device    String?  // mobile, desktop, tablet
-  browser   String?
-  os        String?
-  createdAt DateTime @default(now())
-
-  link Link @relation(fields: [linkId], references: [id], onDelete: Cascade)
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([linkId, createdAt])
-  @@index([userId, createdAt])
-}
-
-model Setting {
-  key   String @id
-  value String @db.Text
+enum Plan {
+  FREE
+  PRO
+  BUSINESS
 }
