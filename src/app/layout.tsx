@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Fraunces, Manrope } from "next/font/google";
 import { AppProvider } from "@/components/providers/app-provider";
 import { SessionProviderWrapper } from "@/components/providers/session-provider";
-import { prisma } from "@/lib/prisma";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -16,17 +15,8 @@ const fraunces = Fraunces({
   axes: ["SOFT", "WONK", "opsz"],
 });
 
-async function getSiteName(): Promise<string> {
-  try {
-    const setting = await prisma.setting.findUnique({ where: { key: "siteName" } });
-    return setting?.value || "LinkPilot";
-  } catch {
-    return "LinkPilot";
-  }
-}
-
 export async function generateMetadata(): Promise<Metadata> {
-  const siteName = await getSiteName();
+  const siteName = "LinkUS";
   const desc = "Satu halaman untuk semua link penting. Dashboard realtime, 14+ tema, analytics, QR code, dan export data. Gratis!";
   return {
     title: {
