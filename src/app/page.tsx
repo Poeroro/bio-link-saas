@@ -45,7 +45,7 @@ const testimonials = [
     name: "Sari Dewi",
     role: "Content Creator",
     avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=100&q=80",
-    text: "LinkPilot bikin bio link gue keliatan profesional tanpa perlu coding. Dashboard-nya intuitif banget!",
+    text: "LinkUS bikin bio link gue keliatan profesional tanpa perlu coding. Dashboard-nya intuitif banget!",
  },
   {
     name: "Rizky Pratama",
@@ -74,8 +74,8 @@ const pricingTiers = [
 
 const faqs = [
   {
-    q: "Apa itu LinkPilot?",
-    a: "LinkPilot adalah bio link SaaS yang memungkinkan kamu membuat satu halaman untuk semua link penting. Seperti Linktree, tapi dengan fitur lebih lengkap dan tema yang bisa dikustomisasi.",
+    q: "Apa itu LinkUS?",
+    a: "LinkUS adalah bio link SaaS yang memungkinkan kamu membuat satu halaman untuk semua link penting. Seperti Linktree, tapi dengan fitur lebih lengkap dan tema yang bisa dikustomisasi.",
  },
   {
     q: "Apakah data saya aman?",
@@ -83,7 +83,7 @@ const faqs = [
  },
   {
     q: "Berapa biayanya?",
-    a: "LinkPilot 100% gratis. Semua fitur tersedia untuk semua pengguna tanpa biaya.",
+    a: "LinkUS 100% gratis. Semua fitur tersedia untuk semua pengguna tanpa biaya.",
  },
 ];
 
@@ -156,7 +156,7 @@ export default function Home() {
             style={{ "--i": 1, animationDelay: "calc(1 * 0.08s)" } as React.CSSProperties}
           >
             <span className="bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">
-              LinkPilot
+              LinkUS
             </span>{" "}
             Bio Link
           </h1>
@@ -262,7 +262,7 @@ export default function Home() {
             Dipercaya Creator Indonesia
           </h2>
           <p className="mt-4 text-zinc-400">
-            Ribuan creator sudah pakai LinkPilot untuk presence digital mereka.
+            Ribuan creator sudah pakai LinkUS untuk presence digital mereka.
           </p>
         </div>
         <div className="mt-10 grid gap-6 sm:grid-cols-3">
@@ -381,29 +381,10 @@ export default function Home() {
 
       {/* ── Footer ── */}
       <footer className="relative z-10 border-t border-white/[0.06] bg-[#06060a]/80 py-10 backdrop-blur-sm">
-        <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 px-4 sm:flex-row sm:justify-between sm:px-6">
-          <div className="flex items-center gap-2">
-            <SiteName />
-          </div>
+        <div className="mx-auto flex max-w-7xl items-center justify-center px-4 sm:px-6">
           <p className="text-xs text-zinc-500">
-            © 2026 <SiteName />. Bio link SaaS untuk creator Indonesia.
+            Vibe Coding ©Muhashi. Bio link SaaS untuk semua.
           </p>
-          <div className="flex gap-4">
-            {currentUser ? (
-              <Link href="/dashboard" className="text-xs text-cyan-400 hover:text-white">
-                Dashboard
-              </Link>
-            ) : (
-              <>
-                <Link href="/login" className="text-xs text-zinc-500 hover:text-white">
-                  Login
-                </Link>
-                <Link href="/register" className="text-xs text-zinc-500 hover:text-white">
-                  Register
-                </Link>
-              </>
-            )}
-          </div>
         </div>
       </footer>
     </main>
