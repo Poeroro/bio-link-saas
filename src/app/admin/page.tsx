@@ -15,6 +15,8 @@ import {
   MousePointerClick,
   Eye,
   EyeOff,
+  Edit,
+  X,
   Save,
   RefreshCw,
   Database,
@@ -240,6 +242,8 @@ function UsersTab() {
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
+  const [editUser, setEditUser] = useState<AdminUser | null>(null);
+  const [editForm, setEditForm] = useState({ name: "", email: "", username: "", plan: "FREE", isAdmin: false });
 
   const loadUsers = (q?: string) => {
     setLoading(true);
@@ -253,12 +257,19 @@ function UsersTab() {
 
   const handleSearch = () => loadUsers(search);
 
-  const toggleAdmin = async (userId: string, current: boolean) => {
+  const openEdit = (u: AdminUser) => {
+    setEditUser(u);
+    setEditForm({ name: u.name || "", email: u.email, username: u.username, plan: u.plan, isAdmin: u.isAdmin });
+  };
+
+  const saveEdit = async () => {
+    if (!editUser) return;
     await fetch("/api/admin/users", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, field: "isAdmin", value: !current }),
+      body: JSON.stringify({ userId: editUser.id, updates: editForm }),
     });
+    setEditUser(null);
     loadUsers(search);
   };
 
@@ -334,11 +345,11 @@ function UsersTab() {
                     </td>
                     <td className="p-4 text-right">
                       <button
-                        onClick={() => toggleAdmin(u.id, u.isAdmin)}
+                        onClick={() => openEdit(u)}
                         className="p-2 rounded-lg text-slate-400 hover:text-cyan-400 hover:bg-white/[0.04] transition-colors"
-                        title={u.isAdmin ? "Remove admin" : "Make admin"}
+                        title="Edit user"
                       >
-                        {u.isAdmin ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        <Edit className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => deleteUser(u.id)}
@@ -354,6 +365,50 @@ function UsersTab() {
             </table>
           </div>
         </GlassCard>
+      )}
+
+      {/* Edit Modal */}
+      {editUser && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setEditUser(null)}>
+          <div className="w-full max-w-md bg-[#16161c] border border-white/[0.08] rounded-2xl p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-bold text-white">Edit User</h2>
+              <button onClick={() => setEditUser(null)} className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-white/[0.06] transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-xs font-medium text-slate-400 mb-1.5">Name</label>
+                <input type="text" value={editForm.name} onChange={(e) => setEditForm({ ...editForm, name: e.target.value })} className="w-full px-3 py-2 bg-[#0c0c10] border border-white/[0.06] rounded-lg text-white text-sm focus:outline-none focus:border-cyan-400" />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-slate-400 mb-1.5">Email</label>
+                <input type="email" value={editForm.email} onChange={(e) => setEditForm({ ...editForm, email: e.target.value })} className="w-full px-3 py-2 bg-[#0c0c10] border border-white/[0.06] rounded-lg text-white text-sm focus:outline-none focus:border-cyan-400" />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-slate-400 mb-1.5">Username</label>
+                <input type="text" value={editForm.username} onChange={(e) => setEditForm({ ...editForm, username: e.target.value })} className="w-full px-3 py-2 bg-[#0c0c10] border border-white/[0.06] rounded-lg text-white text-sm focus:outline-none focus:border-cyan-400" />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-slate-400 mb-1.5">Plan</label>
+                <select value={editForm.plan} onChange={(e) => setEditForm({ ...editForm, plan: e.target.value })} className="w-full px-3 py-2 bg-[#0c0c10] border border-white/[0.06] rounded-lg text-white text-sm focus:outline-none focus:border-cyan-400">
+                  <option value="FREE">FREE</option>
+                  <option value="PRO">PRO</option>
+                  <option value="BUSINESS">BUSINESS</option>
+                </select>
+              </div>
+              <div className="flex items-center gap-3">
+                <input type="checkbox" id="isAdmin" checked={editForm.isAdmin} onChange={(e) => setEditForm({ ...editForm, isAdmin: e.target.checked })} className="w-4 h-4 rounded border-white/[0.06] bg-[#0c0c10] text-cyan-400 focus:ring-cyan-400" />
+                <label htmlFor="isAdmin" className="text-sm text-slate-300">Admin</label>
+              </div>
+            </div>
+            <div className="flex justify-end gap-3 mt-6">
+              <button onClick={() => setEditUser(null)} className="px-4 py-2 rounded-lg text-sm text-slate-400 hover:text-white transition-colors">Cancel</button>
+              <button onClick={saveEdit} className="px-5 py-2 rounded-lg text-sm font-medium bg-cyan-400/10 text-cyan-400 border border-cyan-400/15 hover:bg-cyan-400/20 transition-colors">Save</button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

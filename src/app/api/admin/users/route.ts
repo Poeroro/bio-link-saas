@@ -48,25 +48,45 @@ export async function PATCH(req: NextRequest) {
   }
 
   const body = await req.json();
-  const { userId, field, value } = body as {
+  const { userId, field, value, updates } = body as {
     userId: string;
-    field: string;
-    value: unknown;
+    field?: string;
+    value?: unknown;
+    updates?: Record<string, unknown>;
   };
 
-  if (!userId || !field) {
+  if (!userId) {
+    return NextResponse.json({ error: "Missing userId" }, { status: 400 });
+  }
+
+  let data: Record<string, unknown>;
+
+  if (updates) {
+    // New format: full edit modal
+    const allowed = ["name", "email", "username", "plan", "isAdmin"] as const;
+    data = {};
+    for (const key of allowed) {
+      if (key in updates) data[key] = updates[key];
+    }
+  } else if (field) {
+    // Legacy format: single field toggle
+    const allowed = ["isAdmin", "plan"] as const;
+    if (!allowed.includes(field as (typeof allowed)[number])) {
+      return NextResponse.json({ error: "Invalid field" }, { status: 400 });
+    }
+    data = { [field]: value };
+  } else {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
 
-  const allowed = ["isAdmin", "plan"] as const;
-  if (!allowed.includes(field as (typeof allowed)[number])) {
-    return NextResponse.json({ error: "Invalid field" }, { status: 400 });
+  if (Object.keys(data).length === 0) {
+    return NextResponse.json({ error: "No valid fields" }, { status: 400 });
   }
 
   const user = await prisma.user.update({
     where: { id: userId },
-    data: { [field]: value },
-    select: { id: true, name: true, email: true, isAdmin: true, plan: true },
+    data,
+    select: { id: true, name: true, email: true, username: true, isAdmin: true, plan: true },
   });
 
   return NextResponse.json(user);
