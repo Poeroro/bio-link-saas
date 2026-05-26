@@ -89,16 +89,28 @@ export default function AdminPage() {
 
   if (!sessionUser) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-        <div className="text-slate-400">Loading...</div>
+      <div className="min-h-screen bg-[#06060a] flex items-center justify-center">
+        {/* Mesh gradient orbs */}
+        <div className="fixed inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full bg-cyan-500/[0.07] blur-[80px] animate-[meshFloat1_20s_ease-in-out_infinite]" />
+          <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-purple-500/[0.06] blur-[80px] animate-[meshFloat2_25s_ease-in-out_infinite]" />
+          <div className="absolute top-[30%] right-[20%] w-[400px] h-[400px] rounded-full bg-emerald-500/[0.05] blur-[80px] animate-[meshFloat3_22s_ease-in-out_infinite]" />
+        </div>
+        <div className="relative text-slate-400">Loading...</div>
       </div>
     );
   }
 
   if (isAdmin === false) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-        <div className="bg-slate-900 rounded-2xl p-8 text-center max-w-md">
+      <div className="min-h-screen bg-[#06060a] flex items-center justify-center">
+        {/* Mesh gradient orbs */}
+        <div className="fixed inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full bg-cyan-500/[0.07] blur-[80px] animate-[meshFloat1_20s_ease-in-out_infinite]" />
+          <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-purple-500/[0.06] blur-[80px] animate-[meshFloat2_25s_ease-in-out_infinite]" />
+          <div className="absolute top-[30%] right-[20%] w-[400px] h-[400px] rounded-full bg-emerald-500/[0.05] blur-[80px] animate-[meshFloat3_22s_ease-in-out_infinite]" />
+        </div>
+        <div className="relative bg-[#0c0c10]/80 backdrop-blur-xl rounded-2xl p-8 text-center max-w-md border border-white/[0.06]">
           <Shield className="w-12 h-12 text-red-400 mx-auto mb-4" />
           <h1 className="text-xl font-bold text-white mb-2">Access Denied</h1>
           <p className="text-slate-400">You do not have admin privileges.</p>
@@ -108,31 +120,89 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 flex">
-      <AdminSidebar />
-      <main className="flex-1 p-8 overflow-auto">
-        {/* Tab nav */}
-        <div className="flex gap-1 mb-8 bg-slate-900 rounded-2xl p-1 w-fit">
-          {(["overview", "users", "domains", "settings"] as Tab[]).map((t) => (
-            <button
-              key={t}
-              onClick={() => setTab(t)}
-              className={`px-4 py-2 rounded-xl text-sm font-medium capitalize transition-colors ${
-                tab === t
-                  ? "bg-cyan-400/10 text-cyan-400"
-                  : "text-slate-400 hover:text-white"
-              }`}
-            >
-              {t}
-            </button>
-          ))}
-        </div>
+    <div className="min-h-screen bg-[#06060a] text-white flex">
+      {/* Mesh gradient orbs */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full bg-cyan-500/[0.07] blur-[80px] animate-[meshFloat1_20s_ease-in-out_infinite]" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-purple-500/[0.06] blur-[80px] animate-[meshFloat2_25s_ease-in-out_infinite]" />
+        <div className="absolute top-[30%] right-[20%] w-[400px] h-[400px] rounded-full bg-emerald-500/[0.05] blur-[80px] animate-[meshFloat3_22s_ease-in-out_infinite]" />
+      </div>
 
-        {tab === "overview" && <OverviewTab />}
-        {tab === "users" && <UsersTab />}
-        {tab === "domains" && <DomainsTab />}
-        {tab === "settings" && <SettingsTab />}
-      </main>
+      {/* Global keyframes */}
+      {/* eslint-disable-next-line @next/next/no-css-tags */}
+      <style>{`
+        @keyframes meshFloat1 {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          33% { transform: translate(60px, 40px) scale(1.05); }
+          66% { transform: translate(-30px, 60px) scale(0.95); }
+        }
+        @keyframes meshFloat2 {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          33% { transform: translate(-50px, -30px) scale(1.08); }
+          66% { transform: translate(40px, -50px) scale(0.92); }
+        }
+        @keyframes meshFloat3 {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          33% { transform: translate(30px, -40px) scale(1.03); }
+          66% { transform: translate(-40px, 30px) scale(0.97); }
+        }
+        @keyframes fadeSlideUp {
+          from { opacity: 0; transform: translateY(16px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
+
+      <div className="relative z-10 flex w-full">
+        <AdminSidebar />
+        <main className="flex-1 p-8 overflow-auto">
+          {/* Tab nav */}
+          <div className="flex gap-1 mb-8 bg-[#0c0c10]/80 backdrop-blur-xl rounded-2xl p-1 w-fit border border-white/[0.06]">
+            {(["overview", "users", "domains", "settings"] as Tab[]).map((t) => (
+              <button
+                key={t}
+                onClick={() => setTab(t)}
+                className={`px-4 py-2 rounded-xl text-sm font-medium capitalize transition-all duration-200 ${
+                  tab === t
+                    ? "bg-cyan-400/10 text-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.12)]"
+                    : "text-slate-400 hover:text-white hover:bg-white/[0.04]"
+                }`}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
+
+          {tab === "overview" && <OverviewTab />}
+          {tab === "users" && <UsersTab />}
+          {tab === "domains" && <DomainsTab />}
+          {tab === "settings" && <SettingsTab />}
+        </main>
+      </div>
+    </div>
+  );
+}
+
+// ─── Glass Card Component ───────────────────────────────────────────
+function GlassCard({
+  children,
+  className = "",
+  style,
+  glow,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  style?: React.CSSProperties;
+  glow?: string;
+}) {
+  return (
+    <div
+      className={`bg-[#0c0c10]/80 backdrop-blur-xl rounded-2xl border border-white/[0.06] ${className}`}
+      style={{
+        ...style,
+        ...(glow ? { boxShadow: `0 0 20px ${glow}` } : {}),
+      }}
+    >
+      {children}
     </div>
   );
 }
@@ -150,33 +220,54 @@ function OverviewTab() {
   if (!stats) return <TabSkeleton />;
 
   const cards = [
-    { label: "Total Users", value: stats.totalUsers, icon: Users, color: "text-cyan-400" },
-    { label: "Total Links", value: stats.totalLinks, icon: Link2, color: "text-emerald-400" },
-    { label: "Total Clicks", value: stats.totalClicks, icon: MousePointerClick, color: "text-purple-400" },
-    { label: "New Today", value: stats.newUsersToday, icon: Activity, color: "text-amber-400" },
+    { label: "Total Users", value: stats.totalUsers, icon: Users, color: "text-cyan-400", glow: "rgba(34,211,238,0.08)", borderColor: "border-cyan-400/20" },
+    { label: "Total Links", value: stats.totalLinks, icon: Link2, color: "text-emerald-400", glow: "rgba(52,211,153,0.08)", borderColor: "border-emerald-400/20" },
+    { label: "Total Clicks", value: stats.totalClicks, icon: MousePointerClick, color: "text-purple-400", glow: "rgba(192,132,252,0.08)", borderColor: "border-purple-400/20" },
+    { label: "New Today", value: stats.newUsersToday, icon: Activity, color: "text-amber-400", glow: "rgba(251,191,36,0.08)", borderColor: "border-amber-400/20" },
   ];
 
   return (
     <div className="space-y-8">
-      <h1 className="text-2xl font-bold text-white">Platform Overview</h1>
+      <h1
+        className="text-2xl font-bold text-white"
+        style={{ animation: "fadeSlideUp 0.4s ease both" }}
+      >
+        Platform Overview
+      </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {cards.map((c) => (
-          <div key={c.label} className="bg-slate-900 rounded-2xl p-6 border border-slate-800">
+        {cards.map((c, i) => (
+          <GlassCard
+            key={c.label}
+            className={`p-6 border ${c.borderColor}`}
+            style={{
+              animation: "fadeSlideUp 0.4s ease both",
+              animationDelay: `calc(${i} * 0.06s)`,
+            }}
+            glow={c.glow}
+          >
             <div className="flex items-center gap-3 mb-3">
               <c.icon className={`w-5 h-5 ${c.color}`} />
               <span className="text-sm text-slate-400">{c.label}</span>
             </div>
             <div className="text-3xl font-bold text-white">{c.value.toLocaleString()}</div>
-          </div>
+          </GlassCard>
         ))}
       </div>
 
-      <div className="bg-slate-900 rounded-2xl p-6 border border-slate-800">
-        <h2 className="text-lg font-bold text-white mb-4">New This Week: {stats.newUsersWeek}</h2>
+      <GlassCard
+        className="p-6"
+        style={{
+          animation: "fadeSlideUp 0.4s ease both",
+          animationDelay: "0.3s",
+        }}
+      >
+        <h2 className="text-lg font-bold text-white mb-4">
+          New This Week: {stats.newUsersWeek}
+        </h2>
         <h3 className="text-sm font-medium text-slate-400 mb-3">Top Users by Clicks</h3>
         <table className="w-full text-sm">
           <thead>
-            <tr className="text-left text-slate-500 border-b border-slate-800">
+            <tr className="text-left text-slate-500 border-b border-white/[0.06]">
               <th className="pb-2">User</th>
               <th className="pb-2">Username</th>
               <th className="pb-2 text-right">Clicks</th>
@@ -184,18 +275,23 @@ function OverviewTab() {
           </thead>
           <tbody>
             {stats.topUsers.map((u) => (
-              <tr key={u.id} className="border-b border-slate-800/50">
+              <tr
+                key={u.id}
+                className="border-b border-white/[0.03] hover:bg-[#1e1e24] transition-colors duration-200"
+              >
                 <td className="py-2 text-white flex items-center gap-2">
                   <Crown className="w-4 h-4 text-amber-400" />
                   {u.name || u.email}
                 </td>
                 <td className="py-2 text-slate-400">@{u.username}</td>
-                <td className="py-2 text-right text-cyan-400 font-medium">{u.totalClicks.toLocaleString()}</td>
+                <td className="py-2 text-right text-cyan-400 font-medium">
+                  {u.totalClicks.toLocaleString()}
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
-      </div>
+      </GlassCard>
     </div>
   );
 }
@@ -239,8 +335,16 @@ function UsersTab() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-white">Users</h1>
-      <div className="flex gap-2">
+      <h1
+        className="text-2xl font-bold text-white"
+        style={{ animation: "fadeSlideUp 0.4s ease both" }}
+      >
+        Users
+      </h1>
+      <div
+        className="flex gap-2"
+        style={{ animation: "fadeSlideUp 0.4s ease both", animationDelay: "0.06s" }}
+      >
         <div className="relative flex-1 max-w-md">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
           <input
@@ -249,12 +353,12 @@ function UsersTab() {
             onChange={(e) => setSearch(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             placeholder="Search by name, email, or username..."
-            className="w-full pl-10 pr-4 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-white text-sm focus:outline-none focus:border-cyan-400"
+            className="w-full pl-10 pr-4 py-2.5 bg-[#0c0c10]/80 backdrop-blur-xl border border-white/[0.06] rounded-xl text-white text-sm focus:outline-none focus:border-cyan-400/40 transition-colors"
           />
         </div>
         <button
           onClick={handleSearch}
-          className="px-4 py-2.5 bg-cyan-400/10 text-cyan-400 rounded-xl text-sm font-medium hover:bg-cyan-400/20 transition-colors"
+          className="px-4 py-2.5 bg-cyan-400/10 text-cyan-400 rounded-xl text-sm font-medium hover:bg-cyan-400/20 transition-colors border border-cyan-400/15"
         >
           Search
         </button>
@@ -263,10 +367,16 @@ function UsersTab() {
       {loading ? (
         <TabSkeleton />
       ) : (
-        <div className="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden">
+        <GlassCard
+          className="overflow-hidden"
+          style={{
+            animation: "fadeSlideUp 0.4s ease both",
+            animationDelay: "0.12s",
+          }}
+        >
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-slate-500 border-b border-slate-800">
+              <tr className="text-left text-slate-500 border-b border-white/[0.06]">
                 <th className="p-4">User</th>
                 <th className="p-4">Plan</th>
                 <th className="p-4 text-center">Links</th>
@@ -277,13 +387,16 @@ function UsersTab() {
             </thead>
             <tbody>
               {users.map((u) => (
-                <tr key={u.id} className="border-b border-slate-800/50 hover:bg-slate-800/30">
+                <tr
+                  key={u.id}
+                  className="border-b border-white/[0.03] hover:bg-[#1e1e24] transition-colors duration-200"
+                >
                   <td className="p-4">
                     <div className="text-white font-medium">{u.name || "—"}</div>
                     <div className="text-slate-500 text-xs">{u.email} · @{u.username}</div>
                   </td>
                   <td className="p-4">
-                    <span className="px-2 py-1 rounded-lg text-xs font-medium bg-slate-800 text-slate-300">
+                    <span className="px-2 py-1 rounded-lg text-xs font-medium bg-white/[0.04] text-slate-300 border border-white/[0.06]">
                       {u.plan}
                     </span>
                   </td>
@@ -299,14 +412,14 @@ function UsersTab() {
                   <td className="p-4 text-right">
                     <button
                       onClick={() => toggleAdmin(u.id, u.isAdmin)}
-                      className="p-2 rounded-lg text-slate-400 hover:text-cyan-400 hover:bg-slate-800 transition-colors"
+                      className="p-2 rounded-lg text-slate-400 hover:text-cyan-400 hover:bg-white/[0.04] transition-colors"
                       title={u.isAdmin ? "Remove admin" : "Make admin"}
                     >
                       {u.isAdmin ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
                     <button
                       onClick={() => deleteUser(u.id)}
-                      className="p-2 rounded-lg text-slate-400 hover:text-red-400 hover:bg-slate-800 transition-colors ml-1"
+                      className="p-2 rounded-lg text-slate-400 hover:text-red-400 hover:bg-white/[0.04] transition-colors ml-1"
                       title="Delete user"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -316,7 +429,7 @@ function UsersTab() {
               ))}
             </tbody>
           </table>
-        </div>
+        </GlassCard>
       )}
     </div>
   );
@@ -357,19 +470,36 @@ function DomainsTab() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-white">Custom Domains</h1>
+      <h1
+        className="text-2xl font-bold text-white"
+        style={{ animation: "fadeSlideUp 0.4s ease both" }}
+      >
+        Custom Domains
+      </h1>
       {loading ? (
         <TabSkeleton />
       ) : domains.length === 0 ? (
-        <div className="bg-slate-900 rounded-2xl p-8 text-center border border-slate-800">
+        <GlassCard
+          className="p-8 text-center"
+          style={{
+            animation: "fadeSlideUp 0.4s ease both",
+            animationDelay: "0.06s",
+          }}
+        >
           <Globe2 className="w-10 h-10 text-slate-600 mx-auto mb-3" />
           <p className="text-slate-400">No custom domains yet.</p>
-        </div>
+        </GlassCard>
       ) : (
-        <div className="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden">
+        <GlassCard
+          className="overflow-hidden"
+          style={{
+            animation: "fadeSlideUp 0.4s ease both",
+            animationDelay: "0.06s",
+          }}
+        >
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-slate-500 border-b border-slate-800">
+              <tr className="text-left text-slate-500 border-b border-white/[0.06]">
                 <th className="p-4">Domain</th>
                 <th className="p-4">User</th>
                 <th className="p-4 text-center">Status</th>
@@ -378,27 +508,34 @@ function DomainsTab() {
             </thead>
             <tbody>
               {domains.map((d) => (
-                <tr key={d.id} className="border-b border-slate-800/50 hover:bg-slate-800/30">
+                <tr
+                  key={d.id}
+                  className="border-b border-white/[0.03] hover:bg-[#1e1e24] transition-colors duration-200"
+                >
                   <td className="p-4 text-white font-medium">{d.domain}</td>
                   <td className="p-4 text-slate-400">{d.user.name || d.user.email}</td>
                   <td className="p-4 text-center">
                     {d.verified ? (
-                      <span className="px-2 py-1 rounded-lg text-xs font-medium bg-emerald-400/10 text-emerald-400">Verified</span>
+                      <span className="px-2 py-1 rounded-lg text-xs font-medium bg-emerald-400/10 text-emerald-400 border border-emerald-400/15">
+                        Verified
+                      </span>
                     ) : (
-                      <span className="px-2 py-1 rounded-lg text-xs font-medium bg-amber-400/10 text-amber-400">Pending</span>
+                      <span className="px-2 py-1 rounded-lg text-xs font-medium bg-amber-400/10 text-amber-400 border border-amber-400/15">
+                        Pending
+                      </span>
                     )}
                   </td>
                   <td className="p-4 text-right">
                     <button
                       onClick={() => toggleVerify(d.id, d.verified)}
-                      className="p-2 rounded-lg text-slate-400 hover:text-emerald-400 hover:bg-slate-800 transition-colors"
+                      className="p-2 rounded-lg text-slate-400 hover:text-emerald-400 hover:bg-white/[0.04] transition-colors"
                       title={d.verified ? "Mark unverified" : "Mark verified"}
                     >
                       {d.verified ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
                     <button
                       onClick={() => deleteDomain(d.id)}
-                      className="p-2 rounded-lg text-slate-400 hover:text-red-400 hover:bg-slate-800 transition-colors ml-1"
+                      className="p-2 rounded-lg text-slate-400 hover:text-red-400 hover:bg-white/[0.04] transition-colors ml-1"
                       title="Delete domain"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -408,7 +545,7 @@ function DomainsTab() {
               ))}
             </tbody>
           </table>
-        </div>
+        </GlassCard>
       )}
     </div>
   );
@@ -418,11 +555,22 @@ function DomainsTab() {
 function SettingsTab() {
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-white">Settings</h1>
-      <div className="bg-slate-900 rounded-2xl p-8 border border-slate-800 text-center">
+      <h1
+        className="text-2xl font-bold text-white"
+        style={{ animation: "fadeSlideUp 0.4s ease both" }}
+      >
+        Settings
+      </h1>
+      <GlassCard
+        className="p-8 text-center"
+        style={{
+          animation: "fadeSlideUp 0.4s ease both",
+          animationDelay: "0.06s",
+        }}
+      >
         <Settings className="w-10 h-10 text-slate-600 mx-auto mb-3" />
         <p className="text-slate-400">Admin settings coming soon.</p>
-      </div>
+      </GlassCard>
     </div>
   );
 }
@@ -431,8 +579,8 @@ function SettingsTab() {
 function TabSkeleton() {
   return (
     <div className="space-y-4 animate-pulse">
-      <div className="h-8 w-48 bg-slate-800 rounded-xl" />
-      <div className="h-64 bg-slate-800 rounded-2xl" />
+      <div className="h-8 w-48 bg-[#141418] rounded-xl" />
+      <div className="h-64 bg-[#141418] rounded-2xl" />
     </div>
   );
 }
