@@ -91,7 +91,7 @@ export function BioPreview({
           <div className={cn("mt-6 flex flex-col", compact ? "gap-2.5" : "gap-3")}>
             {activeLinks.length ? (
               activeLinks.map((link) => {
-                const Icon = linkIcons[link.kind];
+                const Icon = linkIcons[link.kind] ?? WebsiteIcon;
 
                 return (
                   <a
