@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-export function SiteName({ fallback = "LinkPilot" }: { fallback?: string }) {
+export function SiteName({ fallback = "Link US" }: { fallback?: string }) {
   const [name, setName] = useState(fallback);
 
   useEffect(() => {
@@ -12,5 +12,16 @@ export function SiteName({ fallback = "LinkPilot" }: { fallback?: string }) {
       .catch(() => {});
   }, []);
 
-  return <>{name}</>;
+  // Split: "Link" gets gradient, rest gets white
+  const linkPart = "Link";
+  const rest = name.startsWith(linkPart) ? name.slice(linkPart.length) : name;
+
+  return (
+    <span className="font-serif font-bold tracking-tight text-lg">
+      <span className="bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">
+        {linkPart}
+      </span>
+      <span className="text-white">{rest}</span>
+    </span>
+  );
 }

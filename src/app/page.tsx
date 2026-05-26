@@ -383,7 +383,7 @@ export default function Home() {
       <footer className="relative z-10 border-t border-white/[0.06] bg-[#06060a]/80 py-10 backdrop-blur-sm">
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 px-4 sm:flex-row sm:justify-between sm:px-6">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-bold text-white"><SiteName /></span>
+            <SiteName />
           </div>
           <p className="text-xs text-zinc-500">
             © 2026 <SiteName />. Bio link SaaS untuk creator Indonesia.
