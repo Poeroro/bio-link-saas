@@ -3,7 +3,6 @@
 import {
   BarChart3,
   Users,
-  Globe2,
   Settings,
   Shield,
   Menu,
@@ -11,12 +10,12 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
-type Tab = "overview" | "users" | "domains" | "settings";
+type Tab = "overview" | "users" | "settings";
 
 const navItems: { key: Tab; label: string; icon: typeof BarChart3 }[] = [
   { key: "overview", label: "Overview", icon: BarChart3 },
   { key: "users", label: "Users", icon: Users },
-  { key: "domains", label: "Domains", icon: Globe2 },
+
   { key: "settings", label: "Settings", icon: Settings },
 ];
 

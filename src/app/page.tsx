@@ -62,28 +62,12 @@ const testimonials = [
 
 const pricingTiers = [
   {
-    name: "Free",
+    name: "Gratis",
     price: "Rp 0",
     period: "selamanya",
-    features: ["5 link aktif", "3 tema dasar", "Analytics 7 hari", "QR code", "Share link"],
-    cta: "Mulai Gratis",
-    popular: false,
-  },
-  {
-    name: "Pro",
-    price: "Rp 49rb",
-    period: "/bulan",
-    features: ["Unlimited link", "14+ tema premium", "Analytics 30 hari", "Custom CSS", "Priority support", "Export data"],
-    cta: "Upgrade Pro",
+    features: ["Unlimited link", "Semua tema premium", "Analytics lengkap", "Custom CSS", "QR code", "Share link", "Export data", "Priority support"],
+    cta: "Mulai Sekarang",
     popular: true,
-  },
-  {
-    name: "Business",
-    price: "Rp 149rb",
-    period: "/bulan",
-    features: ["Semua fitur Pro", "Custom domain", "Team collaboration", "API access", "White-label", "Dedicated support"],
-    cta: "Hubungi Sales",
-    popular: false,
   },
 ];
 
@@ -94,15 +78,11 @@ const faqs = [
   },
   {
     q: "Apakah data saya aman?",
-    a: "Ya! Semua data tersimpan di browser kamu (localStorage). Tidak ada server yang menyimpan data pribadi. Kamu bisa export data kapan saja.",
+    a: "Ya! Semua data tersimpan aman di database kami. Kamu bisa export data kapan saja.",
   },
   {
-    q: "Bisa pakai custom domain?",
-    a: "Fitur custom domain tersedia di plan Business. Untuk plan Free dan Pro, kamu bisa pakai linkpilot.app/u/username.",
-  },
-  {
-    q: "Bagaimana cara upgrade?",
-    a: "Buka dashboard, pilih plan yang kamu mau, dan ikuti instruksi pembayaran. Upgrade instant dan langsung aktif.",
+    q: "Berapa biayanya?",
+    a: "LinkPilot 100% gratis. Semua fitur tersedia untuk semua pengguna tanpa biaya.",
   },
 ];
 
@@ -325,7 +305,7 @@ export default function Home() {
             Harga Transparan
           </h2>
           <p className="mt-4 text-zinc-400">
-            Pilih plan yang sesuai kebutuhan. Upgrade atau downgrade kapan saja.
+            Semua fitur tersedia untuk semua pengguna. Gratis selamanya.
           </p>
         </div>
         <div className="mt-10 grid gap-6 sm:grid-cols-3">

@@ -8,7 +8,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ─── Auth tables (NextAuth) ───────────────────────────────────────
+// ─── Auth tables (NextAuth) ──────────────────────────────────────
 
 model User {
   id            String    @id @default(cuid())
@@ -22,7 +22,6 @@ model User {
   username      String    @unique
   themeId       String    @default("default")
   customCss     String?
-  plan          Plan      @default(FREE)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   isAdmin       Boolean   @default(false)
@@ -31,13 +30,6 @@ model User {
   sessions      Session[]
   links         Link[]
   clickEvents   ClickEvent[]
-  customDomain  CustomDomain?
-}
-
-enum Plan {
-  FREE
-  PRO
-  BUSINESS
 }
 
 model Account {
@@ -120,16 +112,6 @@ model ClickEvent {
 
   @@index([linkId, createdAt])
   @@index([userId, createdAt])
-}
-
-model CustomDomain {
-  id        String   @id @default(cuid())
-  userId    String   @unique
-  domain    String   @unique
-  verified  Boolean  @default(false)
-  createdAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Setting {

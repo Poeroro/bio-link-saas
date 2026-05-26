@@ -5,7 +5,6 @@
 import {
   ArrowUpRight,
   BarChart3,
-  Globe2,
   Link as LinkIcon,
   LogOut,
   Moon,
@@ -22,10 +21,9 @@ import { useState } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import { AnalyticsPanel } from '@/components/dashboard/analytics-panel';
 import { CustomCssPanel } from '@/components/dashboard/custom-css-panel';
-import { DomainPanel } from '@/components/dashboard/domain-panel';
 import { ExportPanel } from '@/components/dashboard/export-panel';
 import { LinkManager } from '@/components/dashboard/link-manager';
-import { ProfileForm } from '@/components/dashboard/profile-form';
+import { ProfileForm, PasswordForm } from '@/components/dashboard/profile-form';
 import { QrSharePanel } from '@/components/dashboard/qr-share-panel';
 import { ThemePicker } from '@/components/dashboard/theme-picker';
 import { BioPreview } from '@/components/bio/bio-preview';
@@ -35,13 +33,12 @@ import { ToggleSwitch } from '@/components/ui/toggle-switch';
 import { cn } from '@/lib/utils';
 import { BIO_THEMES } from '@/lib/themes';
 
-type Tab = 'links' | 'analytics' | 'settings' | 'domains';
+type Tab = 'links' | 'analytics' | 'settings';
 
 const TABS: { id: Tab; label: string; icon: typeof LinkIcon }[] = [
   { id: 'links', label: 'Links', icon: LinkIcon },
   { id: 'analytics', label: 'Analytics', icon: BarChart3 },
   { id: 'settings', label: 'Settings', icon: Settings },
-  { id: 'domains', label: 'Domains', icon: Globe2 },
 ];
 
 function DashboardSkeleton() {
@@ -246,7 +243,7 @@ export default function DashboardPage() {
                   </p>
                   <div className="mt-3 flex items-center gap-2">
                     <span className="inline-flex items-center gap-1.5 rounded-full bg-white/[0.04] px-3 py-1 text-xs font-medium text-zinc-300">
-                      <Globe2 className="size-3" />
+                      <LinkIcon className="size-3" />
                       {profileUrl}
                     </span>
                     <button
@@ -352,6 +349,9 @@ export default function DashboardPage() {
               >
                 <ProfileForm user={currentUser} onSave={updateProfile} />
 
+                {/* Change password */}
+                <PasswordForm />
+
                 {/* Theme selector */}
                 <div className="rounded-2xl border border-white/[0.06] bg-[#0c0c10]/80 backdrop-blur-xl p-5">
                   <p className="text-xs font-bold uppercase tracking-[0.22em] text-cyan-400">
@@ -382,11 +382,7 @@ export default function DashboardPage() {
               </div>
             )}
 
-            {activeTab === 'domains' && (
-              <div style={{ animation: 'fadeSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both' }}>
-                <DomainPanel />
-              </div>
-            )}
+
           </section>
 
           {/* Sidebar preview */}

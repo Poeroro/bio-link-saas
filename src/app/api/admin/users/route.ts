@@ -29,7 +29,6 @@ export async function GET(req: NextRequest) {
       email: true,
       username: true,
       image: true,
-      plan: true,
       isAdmin: true,
       createdAt: true,
       _count: { select: { links: true, clickEvents: true } },
@@ -63,14 +62,14 @@ export async function PATCH(req: NextRequest) {
 
   if (updates) {
     // New format: full edit modal
-    const allowed = ["name", "email", "username", "plan", "isAdmin"] as const;
+    const allowed = ["name", "email", "username", "isAdmin"] as const;
     data = {};
     for (const key of allowed) {
       if (key in updates) data[key] = updates[key];
     }
   } else if (field) {
     // Legacy format: single field toggle
-    const allowed = ["isAdmin", "plan"] as const;
+    const allowed = ["isAdmin"] as const;
     if (!allowed.includes(field as (typeof allowed)[number])) {
       return NextResponse.json({ error: "Invalid field" }, { status: 400 });
     }
@@ -86,7 +85,7 @@ export async function PATCH(req: NextRequest) {
   const user = await prisma.user.update({
     where: { id: userId },
     data,
-    select: { id: true, name: true, email: true, username: true, isAdmin: true, plan: true },
+    select: { id: true, name: true, email: true, username: true, isAdmin: true },
   });
 
   return NextResponse.json(user);

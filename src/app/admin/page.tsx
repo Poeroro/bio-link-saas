@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Users,
-  Globe2,
   Settings,
   Shield,
   Trash2,
@@ -13,8 +12,6 @@ import {
   Activity,
   Link2,
   MousePointerClick,
-  Eye,
-  EyeOff,
   Edit,
   X,
   Save,
@@ -51,19 +48,12 @@ interface AdminUser {
   email: string;
   username: string;
   image: string | null;
-  plan: string;
   isAdmin: boolean;
   createdAt: string;
   _count: { links: number; clickEvents: number };
 }
 
-interface DomainEntry {
-  id: string;
-  domain: string;
-  verified: boolean;
-  createdAt: string;
-  user: { id: string; name: string | null; email: string; username: string };
-}
+
 
 // ─── Glass Card ──────────────────────────────────────────────────────
 function GlassCard({ children, className = "", style, glow }: { children: React.ReactNode; className?: string; style?: React.CSSProperties; glow?: string }) {
@@ -112,7 +102,7 @@ function StatCard({ label, value, icon: Icon, color, glow, borderColor, delay }:
 }
 
 // ─── Page ────────────────────────────────────────────────────────────
-type Tab = "overview" | "users" | "domains" | "settings";
+type Tab = "overview" | "users" | "settings";
 
 export default function AdminPage() {
   const router = useRouter();
@@ -171,7 +161,6 @@ export default function AdminPage() {
       <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto relative z-10 pt-16 lg:pt-8">
         {tab === "overview" && <OverviewTab />}
         {tab === "users" && <UsersTab />}
-        {tab === "domains" && <DomainsTab />}
         {tab === "settings" && <SettingsTab />}
       </main>
     </div>
@@ -243,7 +232,7 @@ function UsersTab() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [editUser, setEditUser] = useState<AdminUser | null>(null);
-  const [editForm, setEditForm] = useState({ name: "", email: "", username: "", plan: "FREE", isAdmin: false });
+  const [editForm, setEditForm] = useState({ name: "", email: "", username: "", isAdmin: false });
 
   const loadUsers = (q?: string) => {
     setLoading(true);
@@ -259,7 +248,7 @@ function UsersTab() {
 
   const openEdit = (u: AdminUser) => {
     setEditUser(u);
-    setEditForm({ name: u.name || "", email: u.email, username: u.username, plan: u.plan, isAdmin: u.isAdmin });
+    setEditForm({ name: u.name || "", email: u.email, username: u.username, isAdmin: u.isAdmin });
   };
 
   const saveEdit = async () => {
@@ -315,8 +304,7 @@ function UsersTab() {
               <thead>
                 <tr className="text-left text-slate-500 border-b border-white/[0.06]">
                   <th className="p-4">User</th>
-                  <th className="p-4">Plan</th>
-                  <th className="p-4 text-center">Links</th>
+                                    <th className="p-4 text-center">Links</th>
                   <th className="p-4 text-center">Clicks</th>
                   <th className="p-4 text-center">Admin</th>
                   <th className="p-4 text-right">Actions</th>
@@ -329,11 +317,7 @@ function UsersTab() {
                       <div className="text-white font-medium truncate max-w-[200px]">{u.name || "—"}</div>
                       <div className="text-slate-500 text-xs truncate max-w-[200px]">{u.email} · @{u.username}</div>
                     </td>
-                    <td className="p-4">
-                      <span className="px-2 py-1 rounded-lg text-xs font-medium bg-white/[0.04] border border-white/[0.06] text-slate-300">
-                        {u.plan}
-                      </span>
-                    </td>
+
                     <td className="p-4 text-center text-slate-300">{u._count.links}</td>
                     <td className="p-4 text-center text-cyan-400">{u._count.clickEvents}</td>
                     <td className="p-4 text-center">
@@ -390,14 +374,7 @@ function UsersTab() {
                 <label className="block text-xs font-medium text-slate-400 mb-1.5">Username</label>
                 <input type="text" value={editForm.username} onChange={(e) => setEditForm({ ...editForm, username: e.target.value })} className="w-full px-3 py-2 bg-[#0c0c10] border border-white/[0.06] rounded-lg text-white text-sm focus:outline-none focus:border-cyan-400" />
               </div>
-              <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1.5">Plan</label>
-                <select value={editForm.plan} onChange={(e) => setEditForm({ ...editForm, plan: e.target.value })} className="w-full px-3 py-2 bg-[#0c0c10] border border-white/[0.06] rounded-lg text-white text-sm focus:outline-none focus:border-cyan-400">
-                  <option value="FREE">FREE</option>
-                  <option value="PRO">PRO</option>
-                  <option value="BUSINESS">BUSINESS</option>
-                </select>
-              </div>
+
               <div className="flex items-center gap-3">
                 <input type="checkbox" id="isAdmin" checked={editForm.isAdmin} onChange={(e) => setEditForm({ ...editForm, isAdmin: e.target.checked })} className="w-4 h-4 rounded border-white/[0.06] bg-[#0c0c10] text-cyan-400 focus:ring-cyan-400" />
                 <label htmlFor="isAdmin" className="text-sm text-slate-300">Admin</label>
@@ -414,100 +391,6 @@ function UsersTab() {
   );
 }
 
-// ─── Domains Tab ─────────────────────────────────────────────────────
-function DomainsTab() {
-  const [domains, setDomains] = useState<DomainEntry[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  const loadDomains = () => {
-    setLoading(true);
-    fetch("/api/admin/domains")
-      .then((r) => r.json())
-      .then((data) => { setDomains(data); setLoading(false); });
-  };
-
-  useEffect(() => { loadDomains(); }, []);
-
-  const toggleVerify = async (domainId: string, current: boolean) => {
-    await fetch("/api/admin/domains", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ domainId, verified: !current }),
-    });
-    loadDomains();
-  };
-
-  const deleteDomain = async (domainId: string) => {
-    if (!confirm("Delete this domain?")) return;
-    await fetch("/api/admin/domains", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ domainId }),
-    });
-    loadDomains();
-  };
-
-  return (
-    <div className="space-y-4 sm:space-y-6">
-      <h1 className="text-xl sm:text-2xl font-bold text-white">Custom Domains</h1>
-      {loading ? (
-        <TabSkeleton />
-      ) : domains.length === 0 ? (
-        <GlassCard className="p-8 text-center">
-          <Globe2 className="w-10 h-10 text-slate-600 mx-auto mb-3" />
-          <p className="text-slate-400">No custom domains yet.</p>
-        </GlassCard>
-      ) : (
-        <GlassCard className="overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm min-w-[500px]">
-              <thead>
-                <tr className="text-left text-slate-500 border-b border-white/[0.06]">
-                  <th className="p-4">Domain</th>
-                  <th className="p-4">User</th>
-                  <th className="p-4 text-center">Status</th>
-                  <th className="p-4 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {domains.map((d) => (
-                  <tr key={d.id} className="border-b border-white/[0.03] hover:bg-[#1e1e24] transition-colors duration-200">
-                    <td className="p-4 text-white font-medium">{d.domain}</td>
-                    <td className="p-4 text-slate-400 truncate max-w-[150px]">{d.user.name || d.user.email}</td>
-                    <td className="p-4 text-center">
-                      {d.verified ? (
-                        <span className="px-2 py-1 rounded-lg text-xs font-medium bg-emerald-400/10 text-emerald-400 border border-emerald-400/15">Verified</span>
-                      ) : (
-                        <span className="px-2 py-1 rounded-lg text-xs font-medium bg-amber-400/10 text-amber-400 border border-amber-400/15">Pending</span>
-                      )}
-                    </td>
-                    <td className="p-4 text-right">
-                      <button
-                        onClick={() => toggleVerify(d.id, d.verified)}
-                        className="p-2 rounded-lg text-slate-400 hover:text-emerald-400 hover:bg-white/[0.04] transition-colors"
-                        title={d.verified ? "Mark unverified" : "Mark verified"}
-                      >
-                        {d.verified ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                      </button>
-                      <button
-                        onClick={() => deleteDomain(d.id)}
-                        className="p-2 rounded-lg text-slate-400 hover:text-red-400 hover:bg-white/[0.04] transition-colors ml-1"
-                        title="Delete domain"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </GlassCard>
-      )}
-    </div>
-  );
-}
-
 // ─── Settings Tab ────────────────────────────────────────────────────
 function SettingsTab() {
   const [saving, setSaving] = useState(false);
@@ -516,7 +399,6 @@ function SettingsTab() {
   const [settings, setSettings] = useState({
     siteName: "",
     siteDescription: "",
-    defaultPlan: "free",
     maxLinksPerUser: "50",
     maintenanceMode: false,
     registrationOpen: true,
@@ -525,7 +407,6 @@ function SettingsTab() {
     smtpUser: "",
     smtpPass: "",
     analyticsEnabled: true,
-    customDomainsEnabled: true,
     requireEmailVerification: false,
     rateLimiting: true,
   });
@@ -538,7 +419,6 @@ function SettingsTab() {
         setSettings({
           siteName: data.siteName || "",
           siteDescription: data.siteDescription || "",
-          defaultPlan: data.defaultPlan || "free",
           maxLinksPerUser: data.maxLinksPerUser || "50",
           maintenanceMode: data.maintenanceMode === "true",
           registrationOpen: data.registrationOpen === "true",
@@ -547,7 +427,6 @@ function SettingsTab() {
           smtpUser: data.smtpUser || "",
           smtpPass: data.smtpPass || "",
           analyticsEnabled: data.analyticsEnabled === "true",
-          customDomainsEnabled: data.customDomainsEnabled === "true",
           requireEmailVerification: data.requireEmailVerification === "true",
           rateLimiting: data.rateLimiting === "true",
         });
@@ -608,7 +487,6 @@ function SettingsTab() {
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           <Field label="Site Name" value={settings.siteName} onChange={(v) => handleChange("siteName", v)} />
-          <Field label="Default Plan" value={settings.defaultPlan} onChange={(v) => handleChange("defaultPlan", v)} selectOptions={["free", "pro", "business"]} />
           <Field label="Max Links/User" value={settings.maxLinksPerUser} onChange={(v) => handleChange("maxLinksPerUser", v)} type="number" />
           <div className="sm:col-span-2">
             <Field label="Site Description" value={settings.siteDescription} onChange={(v) => handleChange("siteDescription", v)} />
@@ -626,7 +504,6 @@ function SettingsTab() {
           <Toggle label="Open Registration" description="Allow new users to register" checked={settings.registrationOpen} onChange={(v) => handleChange("registrationOpen", v)} />
           <Toggle label="Maintenance Mode" description="Show maintenance page to non-admins" checked={settings.maintenanceMode} onChange={(v) => handleChange("maintenanceMode", v)} />
           <Toggle label="Analytics" description="Track clicks and page views" checked={settings.analyticsEnabled} onChange={(v) => handleChange("analyticsEnabled", v)} />
-          <Toggle label="Custom Domains" description="Allow users to connect custom domains" checked={settings.customDomainsEnabled} onChange={(v) => handleChange("customDomainsEnabled", v)} />
         </div>
       </GlassCard>
 

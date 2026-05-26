@@ -6,7 +6,6 @@ import { requireAdmin } from "@/lib/admin-helpers";
 const DEFAULTS: Record<string, string> = {
   siteName: "LinkPilot",
   siteDescription: "Satu halaman untuk semua link penting.",
-  defaultPlan: "free",
   maxLinksPerUser: "50",
   maintenanceMode: "false",
   registrationOpen: "true",
@@ -15,7 +14,6 @@ const DEFAULTS: Record<string, string> = {
   smtpUser: "",
   smtpPass: "",
   analyticsEnabled: "true",
-  customDomainsEnabled: "true",
   requireEmailVerification: "false",
   rateLimiting: "true",
 };

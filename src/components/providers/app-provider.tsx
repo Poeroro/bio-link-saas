@@ -128,6 +128,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }));
   }, [isReady, session?.user?.email, state.users, state.currentUserId]);
 
+
   useEffect(() => {
     if (!isReady) {
       return;
@@ -163,6 +164,62 @@ export function AppProvider({ children }: { children: ReactNode }) {
     },
     [],
   );
+
+  // ─── DB Sync Helpers ──────────────────────────────────────────────
+  const dbLinkToLocal = (dbLink: Record<string, unknown>): BioLink => ({
+    id: dbLink.id as string,
+    title: (dbLink.label as string) || "",
+    url: (dbLink.url as string) || "",
+    description: (dbLink.description as string) || "",
+    kind: (dbLink.kind as string as LinkKind) || "website",
+    active: dbLink.visible !== false,
+    clicks: (dbLink.clicks as number) || 0,
+    createdAt: dbLink.createdAt ? new Date(dbLink.createdAt as string).toISOString() : new Date().toISOString(),
+    scheduleStart: dbLink.scheduleStart ? new Date(dbLink.scheduleStart as string).toISOString() : undefined,
+    scheduleEnd: dbLink.scheduleEnd ? new Date(dbLink.scheduleEnd as string).toISOString() : undefined,
+  });
+
+  // Fetch profile + links from API on login
+  const fetchAndMergeProfile = useCallback(async () => {
+    try {
+      const res = await fetch("/api/profile");
+      if (!res.ok) return;
+      const dbUser = await res.json();
+      if (!dbUser?.id) return;
+      const dbLinks: BioLink[] = (dbUser.links || []).map(dbLinkToLocal);
+      setState((current) => ({
+        ...current,
+        users: current.users.map((u) =>
+          u.email.toLowerCase() === (dbUser.email as string).toLowerCase()
+            ? {
+                ...u,
+                id: dbUser.id as string,
+                name: (dbUser.name as string) || u.name,
+                username: (dbUser.username as string) || u.username,
+                bio: (dbUser.bio as string) ?? u.bio,
+                location: (dbUser.location as string) ?? u.location,
+                avatarUrl: (dbUser.image as string) || u.avatarUrl,
+                themeId: (dbUser.themeId as string) || u.themeId,
+                customCss: (dbUser.customCss as string) ?? u.customCss,
+                links: dbLinks.length > 0 ? dbLinks : u.links,
+                totalViews: (dbUser.totalViews as number) ?? u.totalViews,
+                totalClicks: (dbUser.totalClicks as number) ?? u.totalClicks,
+                subscribers: (dbUser.subscribers as number) ?? u.subscribers,
+              }
+            : u,
+        ),
+      }));
+    } catch (e) {
+      console.error("fetchAndMergeProfile:", e);
+    }
+  }, []);
+
+  // Fetch DB profile + links when session is ready
+  useEffect(() => {
+    if (isReady && session?.user?.email && state.currentUserId) {
+      fetchAndMergeProfile();
+    }
+  }, [isReady, session?.user?.email, state.currentUserId, fetchAndMergeProfile]);
 
   const login = useCallback(
     (email: string, password: string) => {
@@ -244,24 +301,44 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const updateProfile = useCallback(
-    (profile: Partial<UserProfile>) => {
+    async (profile: Partial<UserProfile>) => {
       updateCurrentUser((user) => ({
         ...user,
         ...profile,
         username: profile.username ? slugify(profile.username) : user.username,
       }));
       addToast({ title: "Profil diperbarui", tone: "success" });
+      // Sync to DB
+      try {
+        const body: Record<string, unknown> = {};
+        if (profile.name !== undefined) body.name = profile.name;
+        if (profile.username !== undefined) body.username = slugify(profile.username);
+        if (profile.bio !== undefined) body.bio = profile.bio;
+        if (profile.location !== undefined) body.location = profile.location;
+        if (profile.headline !== undefined) body.headline = profile.headline;
+        if (profile.themeId !== undefined) body.themeId = profile.themeId;
+        if (profile.customCss !== undefined) body.customCss = profile.customCss;
+        if (profile.avatarUrl !== undefined) body.image = profile.avatarUrl;
+        if (Object.keys(body).length > 0) {
+          await fetch("/api/profile", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          });
+        }
+      } catch (e) { console.error("updateProfile sync:", e); }
     },
     [addToast, updateCurrentUser],
   );
 
   const addLink = useCallback(
-    (link: LinkInput) => {
+    async (link: LinkInput) => {
+      const tempId = createId("link");
       updateCurrentUser((user) => ({
         ...user,
         links: [
           {
-            id: createId("link"),
+            id: tempId,
             title: link.title.trim() || "Link baru",
             url: normalizeUrl(link.url),
             description: link.description.trim() || "Tambahkan deskripsi singkat.",
@@ -276,12 +353,36 @@ export function AppProvider({ children }: { children: ReactNode }) {
         ],
       }));
       addToast({ title: "Link ditambahkan", tone: "success" });
+      // Sync to DB
+      try {
+        const res = await fetch("/api/links", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            kind: link.kind,
+            label: link.title.trim() || "Link baru",
+            url: normalizeUrl(link.url),
+            description: link.description.trim() || "Tambahkan deskripsi singkat.",
+            visible: true,
+            scheduleStart: link.scheduleStart || null,
+            scheduleEnd: link.scheduleEnd || null,
+          }),
+        });
+        if (res.ok) {
+          const dbLink = await res.json();
+          // Replace temp ID with real DB ID
+          updateCurrentUser((user) => ({
+            ...user,
+            links: user.links.map((l) => l.id === tempId ? dbLinkToLocal(dbLink) : l),
+          }));
+        }
+      } catch (e) { console.error("addLink sync:", e); }
     },
     [addToast, updateCurrentUser],
   );
 
   const updateLink = useCallback(
-    (linkId: string, patch: Partial<BioLink>) => {
+    async (linkId: string, patch: Partial<BioLink>) => {
       updateCurrentUser((user) => ({
         ...user,
         links: user.links.map((link) =>
@@ -295,30 +396,59 @@ export function AppProvider({ children }: { children: ReactNode }) {
         ),
       }));
       addToast({ title: "Link diperbarui", tone: "success" });
+      // Sync to DB
+      try {
+        const body: Record<string, unknown> = { id: linkId };
+        if (patch.title !== undefined) body.label = patch.title;
+        if (patch.url !== undefined) body.url = normalizeUrl(patch.url);
+        if (patch.description !== undefined) body.description = patch.description;
+        if (patch.kind !== undefined) body.kind = patch.kind;
+        if (patch.active !== undefined) body.visible = patch.active;
+        if (patch.scheduleStart !== undefined) body.scheduleStart = patch.scheduleStart;
+        if (patch.scheduleEnd !== undefined) body.scheduleEnd = patch.scheduleEnd;
+        await fetch("/api/links", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+      } catch (e) { console.error("updateLink sync:", e); }
     },
     [addToast, updateCurrentUser],
   );
 
   const deleteLink = useCallback(
-    (linkId: string) => {
+    async (linkId: string) => {
       updateCurrentUser((user) => ({
         ...user,
         links: user.links.filter((link) => link.id !== linkId),
       }));
       addToast({ title: "Link dihapus", tone: "info" });
+      // Sync to DB
+      try { await fetch(`/api/links?id=${linkId}`, { method: "DELETE" }); }
+      catch (e) { console.error("deleteLink sync:", e); }
     },
     [addToast, updateCurrentUser],
   );
 
   const toggleLink = useCallback(
-    (linkId: string) => {
+    async (linkId: string) => {
+      let newActive = false;
       updateCurrentUser((user) => ({
         ...user,
-        links: user.links.map((link) =>
-          link.id === linkId ? { ...link, active: !link.active } : link,
-        ),
+        links: user.links.map((link) => {
+          if (link.id === linkId) { newActive = !link.active; return { ...link, active: newActive }; }
+          return link;
+        }),
       }));
       addToast({ title: "Status link diubah", tone: "success" });
+      // Sync to DB
+      try {
+        await fetch("/api/links", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: linkId, visible: newActive }),
+        });
+      } catch (e) { console.error("toggleLink sync:", e); }
     },
     [addToast, updateCurrentUser],
   );
@@ -334,9 +464,17 @@ export function AppProvider({ children }: { children: ReactNode }) {
   );
 
   const setTheme = useCallback(
-    (themeId: string) => {
+    async (themeId: string) => {
       updateCurrentUser((user) => ({ ...user, themeId }));
       addToast({ title: "Tema diterapkan", tone: "success" });
+      // Sync to DB
+      try {
+        await fetch("/api/profile", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ themeId }),
+        });
+      } catch (e) { console.error("setTheme sync:", e); }
     },
     [addToast, updateCurrentUser],
   );
