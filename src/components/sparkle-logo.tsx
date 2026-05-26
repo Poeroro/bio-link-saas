@@ -6,9 +6,30 @@ export function SparkleLogo({ className = "size-5" }: { className?: string }) {
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 200 200"
       className={className}
-      fill="currentColor"
     >
-      <path d="M195.0,100.0 L193.6,100.1 L189.6,100.7 L183.2,102.3 L174.9,105.3 L165.2,110.0 L154.6,116.3 L143.9,124.3 L133.6,133.6 L124.3,143.9 L116.3,154.6 L110.0,165.2 L105.3,174.9 L102.3,183.2 L100.7,189.6 L100.1,193.6 L100.0,195.0 L99.9,193.6 L99.3,189.6 L97.7,183.2 L94.7,174.9 L90.0,165.2 L83.7,154.6 L75.7,143.9 L66.4,133.6 L56.1,124.3 L45.4,116.3 L34.8,110.0 L25.1,105.3 L16.8,102.3 L10.4,100.7 L6.4,100.1 L5.0,100.0 L6.4,99.9 L10.4,99.3 L16.8,97.7 L25.1,94.7 L34.8,90.0 L45.4,83.7 L56.1,75.7 L66.4,66.4 L75.7,56.1 L83.7,45.4 L90.0,34.8 L94.7,25.1 L97.7,16.8 L99.3,10.4 L99.9,6.4 L100.0,5.0 L100.1,6.4 L100.7,10.4 L102.3,16.8 L105.3,25.1 L110.0,34.8 L116.3,45.4 L124.3,56.1 L133.6,66.4 L143.9,75.7 L154.6,83.7 L165.2,90.0 L174.9,94.7 L183.2,97.7 L189.6,99.3 L193.6,99.9 Z" />
+      <defs>
+        <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style={{ stopColor: "#0052D4", stopOpacity: 1 }} />
+          <stop offset="100%" style={{ stopColor: "#4364F7", stopOpacity: 1 }} />
+        </linearGradient>
+      </defs>
+      <circle cx="100" cy="100" r="90" fill="#F8FAFC" />
+      <g transform="translate(15, 15)">
+        <path
+          d="M55,40 L55,100 Q55,130 85,130 L130,130"
+          fill="none"
+          stroke="url(#blueGrad)"
+          strokeWidth="20"
+          strokeLinecap="round"
+        />
+        <path
+          d="M85,40 L85,90 Q85,110 105,110 L115,110 Q135,110 135,90 L135,40"
+          fill="none"
+          stroke="#1E293B"
+          strokeWidth="20"
+          strokeLinecap="round"
+        />
+      </g>
     </svg>
   );
 }
