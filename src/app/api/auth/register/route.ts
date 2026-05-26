@@ -44,7 +44,7 @@ export async function POST(request: Request) {
     if (existingUser) {
       const field = existingUser.email === email ? "Email" : "Username";
       return NextResponse.json(
-        { error: `${field} already exists` },
+        { error: `${field} telah digunakan` },
         { status: 409 }
       );
     }
