@@ -472,9 +472,10 @@ function DomainsTab() {
 function SettingsTab() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [settings, setSettings] = useState({
-    siteName: "LinkPilot",
-    siteDescription: "Satu halaman untuk semua link penting.",
+    siteName: "",
+    siteDescription: "",
     defaultPlan: "free",
     maxLinksPerUser: "50",
     maintenanceMode: false,
@@ -485,7 +486,35 @@ function SettingsTab() {
     smtpPass: "",
     analyticsEnabled: true,
     customDomainsEnabled: true,
+    requireEmailVerification: false,
+    rateLimiting: true,
   });
+
+  useEffect(() => {
+    fetch("/api/admin/settings")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.error) return;
+        setSettings({
+          siteName: data.siteName || "",
+          siteDescription: data.siteDescription || "",
+          defaultPlan: data.defaultPlan || "free",
+          maxLinksPerUser: data.maxLinksPerUser || "50",
+          maintenanceMode: data.maintenanceMode === "true",
+          registrationOpen: data.registrationOpen === "true",
+          smtpHost: data.smtpHost || "",
+          smtpPort: data.smtpPort || "587",
+          smtpUser: data.smtpUser || "",
+          smtpPass: data.smtpPass || "",
+          analyticsEnabled: data.analyticsEnabled === "true",
+          customDomainsEnabled: data.customDomainsEnabled === "true",
+          requireEmailVerification: data.requireEmailVerification === "true",
+          rateLimiting: data.rateLimiting === "true",
+        });
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
 
   const handleChange = (key: string, value: string | boolean) => {
     setSettings((prev) => ({ ...prev, [key]: value }));
@@ -494,12 +523,28 @@ function SettingsTab() {
 
   const handleSave = async () => {
     setSaving(true);
-    // TODO: POST to /api/admin/settings when backend ready
-    await new Promise((r) => setTimeout(r, 800));
-    setSaving(false);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+    setSaved(false);
+    try {
+      // Convert booleans to strings for DB
+      const payload: Record<string, string> = {};
+      for (const [k, v] of Object.entries(settings)) {
+        payload[k] = String(v);
+      }
+      const res = await fetch("/api/admin/settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (res.ok) {
+        setSaved(true);
+        setTimeout(() => setSaved(false), 2000);
+      }
+    } finally {
+      setSaving(false);
+    }
   };
+
+  if (loading) return <TabSkeleton />;
 
   return (
     <div className="space-y-6 sm:space-y-8">
