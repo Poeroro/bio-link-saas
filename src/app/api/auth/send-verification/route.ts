@@ -6,9 +6,13 @@ import { prisma } from "@/lib/prisma";
 import { sendEmail, verificationEmailHtml, otpEmailHtml } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
+  const reqOrigin = req.headers.get("origin") || req.nextUrl.origin;
   // Allow authenticated or email-in-body for pre-login verification
   const session = await getServerSession(authOptions);
   let email = session?.user?.email || "";
+
+  // Normalize email
+  email = email.trim().toLowerCase();
 
   if (!email) {
     try {
@@ -18,6 +22,9 @@ export async function POST(req: NextRequest) {
       // no body
     }
   }
+
+  // Normalize email
+  email = email.trim().toLowerCase();
 
   if (!email) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -67,7 +74,7 @@ export async function POST(req: NextRequest) {
       data: { identifier: `verify:${email}`, token, expires },
     });
 
-    const origin = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+    const origin = reqOrigin;
     const verifyUrl = `${origin}/verify-email?token=${token}&email=${encodeURIComponent(email)}`;
 
     try {
