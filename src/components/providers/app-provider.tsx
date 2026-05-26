@@ -88,7 +88,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   // Auto-sync NextAuth session → AppProvider localStorage
   useEffect(() => {
-    if (!isReady || !session?.user?.email) {
+    if (!isReady) {
+      return;
+    }
+
+    // NextAuth session gone → clear local login
+    if (!session?.user?.email) {
+      if (state.currentUserId) {
+        setState((current) => ({ ...current, currentUserId: "" }));
+      }
       return;
     }
 
