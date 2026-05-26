@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 
 async function getSmtpSettings() {
   const rows = await prisma.setting.findMany({
-    where: { key: { in: ["smtpHost", "smtpPort", "smtpUser", "smtpPass", "siteName"] } },
+    where: { key: { in: ["smtpHost", "smtpPort", "smtpUser", "smtpPass", "smtpFrom", "siteName"] } },
   });
   const map: Record<string, string> = {};
   for (const r of rows) map[r.key] = r.value;
@@ -11,6 +11,7 @@ async function getSmtpSettings() {
     port: parseInt(map.smtpPort || "587", 10),
     user: map.smtpUser || "",
     pass: map.smtpPass || "",
+    from: map.smtpFrom || "",
     siteName: map.siteName || "LinkPilot",
   };
 }
@@ -22,6 +23,8 @@ export async function sendEmail(to: string, subject: string, html: string) {
     return false;
   }
 
+  const fromEmail = cfg.from || cfg.user;
+
   // Use Brevo REST API (avoids SMTP IP restrictions)
   if (cfg.host.includes("brevo.com") && (cfg.pass.startsWith("xkeysib-") || cfg.pass.startsWith("xsmtpsib-"))) {
     try {
@@ -32,7 +35,7 @@ export async function sendEmail(to: string, subject: string, html: string) {
           "api-key": cfg.pass,
         },
         body: JSON.stringify({
-          sender: { name: cfg.siteName, email: cfg.user },
+          sender: { name: cfg.siteName, email: fromEmail },
           to: [{ email: to }],
           subject,
           htmlContent: html,
@@ -50,79 +53,60 @@ export async function sendEmail(to: string, subject: string, html: string) {
     }
   }
 
-  // Fallback to SMTP for non-Brevo providers
-  const { createTransport } = await import("nodemailer");
-  const transporter = createTransport({
+  // SMTP fallback (nodemailer)
+  const nodemailer = await import("nodemailer");
+  const transporter = nodemailer.createTransport({
     host: cfg.host,
     port: cfg.port,
     secure: cfg.port === 465,
     auth: { user: cfg.user, pass: cfg.pass },
   });
 
-  await transporter.sendMail({
-    from: `"${cfg.siteName}" <${cfg.user}>`,
+  try {
+    await transporter.sendMail({
+      from: `"${cfg.siteName}" <${fromEmail}>`,
+      to,
+      subject,
+      html,
+    });
+    return true;
+  } catch (e) {
+    console.error("[email] SMTP error:", e);
+    return false;
+  }
+}
+
+export async function sendOtpEmail(to: string, code: string, siteName?: string) {
+  const name = siteName || "LinkPilot";
+  return sendEmail(
     to,
-    subject,
-    html,
-  });
-  return true;
+    `Kode Verifikasi ${name}`,
+    otpEmailHtml(name, code)
+  );
 }
 
-export function resetPasswordEmailHtml(siteName: string, resetUrl: string) {
-  return `
-    <div style="font-family:system-ui,-apple-system,sans-serif;max-width:480px;margin:0 auto;padding:32px;">
-      <h2 style="margin:0 0 16px;color:#06060a;">Reset Password</h2>
-      <p style="color:#52525b;line-height:1.6;">
-        Kamu menerima email ini karena ada permintaan reset password untuk akun ${siteName} kamu.
-      </p>
-      <a href="${resetUrl}"
-         style="display:inline-block;margin:20px 0;padding:12px 24px;background:#22d3ee;color:#06060a;font-weight:700;border-radius:16px;text-decoration:none;font-size:14px;">
-        Reset Password
-      </a>
-      <p style="color:#a1a1aa;font-size:13px;line-height:1.6;">
-        Link berlaku 1 jam. Jika kamu tidak meminta reset, abaikan email ini.
-      </p>
-      <hr style="border:none;border-top:1px solid #e4e4e7;margin:24px 0;" />
-      <p style="color:#a1a1aa;font-size:12px;">${siteName}</p>
+export function otpEmailHtml(siteName: string, code: string) {
+  return `<div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;padding:32px;">
+    <h2 style="color:#06b6d4;margin:0 0 16px;">${siteName}</h2>
+    <p style="color:#333;font-size:15px;">Gunakan kode berikut untuk verifikasi email kamu:</p>
+    <div style="background:#f0fdfa;border:2px solid #06b6d4;border-radius:12px;padding:24px;text-align:center;margin:24px 0;">
+      <span style="font-size:36px;font-weight:bold;letter-spacing:8px;color:#0e7490;">${code}</span>
     </div>
-  `;
+    <p style="color:#666;font-size:13px;">Kode ini berlaku selama <strong>10 menit</strong>. Jangan bagikan kode ini ke siapapun.</p>
+    <hr style="border:none;border-top:1px solid #eee;margin:24px 0;" />
+    <p style="color:#999;font-size:12px;">Email ini dikirim oleh ${siteName}. Jika kamu tidak merasa mendaftar, abaikan email ini.</p>
+  </div>`;
 }
 
-export function verificationEmailHtml(siteName: string, verifyUrl: string) {
-  return `
-    <div style="font-family:system-ui,-apple-system,sans-serif;max-width:480px;margin:0 auto;padding:32px;">
-      <h2 style="margin:0 0 16px;color:#06060a;">Verifikasi Email</h2>
-      <p style="color:#52525b;line-height:1.6;">
-        Selamat datang di ${siteName}! Klik tombol di bawah untuk verifikasi email kamu.
-      </p>
-      <a href="${verifyUrl}"
-         style="display:inline-block;margin:20px 0;padding:12px 24px;background:#22d3ee;color:#06060a;font-weight:700;border-radius:16px;text-decoration:none;font-size:14px;">
-        Verifikasi Email
-      </a>
-      <p style="color:#a1a1aa;font-size:13px;line-height:1.6;">
-        Link berlaku 24 jam.
-      </p>
-      <hr style="border:none;border-top:1px solid #e4e4e7;margin:24px 0;" />
-      <p style="color:#a1a1aa;font-size:12px;">${siteName}</p>
+export function verificationEmailHtml(siteName: string, url: string) {
+  return `<div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;padding:32px;">
+    <h2 style="color:#06b6d4;margin:0 0 16px;">${siteName}</h2>
+    <p style="color:#333;font-size:15px;">Klik tombol di bawah untuk verifikasi email kamu:</p>
+    <div style="text-align:center;margin:24px 0;">
+      <a href="${url}" style="display:inline-block;background:#06b6d4;color:#fff;text-decoration:none;padding:14px 32px;border-radius:10px;font-weight:600;font-size:15px;">Verifikasi Email</a>
     </div>
-  `;
-}
-
-export function otpEmailHtml(siteName: string, otp: string) {
-  return `
-    <div style="font-family:system-ui,-apple-system,sans-serif;max-width:480px;margin:0 auto;padding:32px;">
-      <h2 style="margin:0 0 16px;color:#06060a;">Kode Verifikasi</h2>
-      <p style="color:#52525b;line-height:1.6;">
-        Gunakan kode berikut untuk verifikasi email kamu di ${siteName}:
-      </p>
-      <div style="margin:20px 0;padding:16px 32px;background:#f4f4f5;border-radius:12px;text-align:center;">
-        <span style="font-size:32px;font-weight:800;letter-spacing:8px;color:#06060a;">${otp}</span>
-      </div>
-      <p style="color:#a1a1aa;font-size:13px;line-height:1.6;">
-        Kode berlaku 10 menit. Jika kamu tidak meminta kode ini, abaikan email ini.
-      </p>
-      <hr style="border:none;border-top:1px solid #e4e4e7;margin:24px 0;" />
-      <p style="color:#a1a1aa;font-size:12px;">${siteName}</p>
-    </div>
-  `;
+    <p style="color:#666;font-size:13px;">Link ini berlaku selama <strong>24 jam</strong>.</p>
+    <hr style="border:none;border-top:1px solid #eee;margin:24px 0;" />
+    <p style="color:#999;font-size:12px;">Email ini dikirim oleh ${siteName}. Jika kamu tidak merasa mendaftar, abaikan email ini.</p>
+  </div>`;
 }
