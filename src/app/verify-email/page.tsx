@@ -215,10 +215,9 @@ function VerifyEmailContent() {
                   </p>
                   <button
                     onClick={sendVerification}
-                    disabled={status === "sending"}
-                    className="h-11 w-full rounded-xl bg-cyan-400 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:opacity-50"
+                    className="h-11 w-full rounded-xl bg-cyan-400 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
                   >
-                    {status === "sending" ? "Mengirim..." : "Kirim Verifikasi"}
+                    Kirim Verifikasi
                   </button>
                 </div>
               ) : (
@@ -240,10 +239,9 @@ function VerifyEmailContent() {
                   {error && <p className="text-sm text-red-400">{error}</p>}
                   <button
                     type="submit"
-                    disabled={status === "sending"}
-                    className="h-11 rounded-xl bg-cyan-400 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:opacity-50"
+                    className="h-11 rounded-xl bg-cyan-400 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
                   >
-                    {status === "sending" ? "Mengirim..." : "Kirim Verifikasi"}
+                    Kirim Verifikasi
                   </button>
                 </form>
               )}
