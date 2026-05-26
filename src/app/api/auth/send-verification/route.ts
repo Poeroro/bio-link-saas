@@ -51,9 +51,10 @@ export async function POST(req: NextRequest) {
 
     try {
       await sendEmail(email, `Kode Verifikasi — ${siteName}`, otpEmailHtml(siteName, otp));
-    } catch (e) {
-      console.error("[send-verification] email error:", e);
-      return NextResponse.json({ error: "Gagal mengirim email" }, { status: 500 });
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : String(e);
+      console.error("[send-verification] email error:", msg);
+      return NextResponse.json({ error: "Gagal mengirim email", detail: msg }, { status: 500 });
     }
 
     return NextResponse.json({ ok: true, required: true, method: "otp" });
