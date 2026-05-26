@@ -13,7 +13,6 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -69,7 +68,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [isReady, setIsReady] = useState(false);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
   const { data: session } = useSession();
-  const syncedSessionRef = useRef(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -94,11 +92,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    // Already synced this session
-    if (syncedSessionRef.current) {
-      return;
-    }
-
     // Check if a local user with this email exists
     const existingUser = state.users.find(
       (u) => u.email.toLowerCase() === session.user!.email!.toLowerCase(),
@@ -109,7 +102,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       if (state.currentUserId !== existingUser.id) {
         setState((current) => ({ ...current, currentUserId: existingUser.id }));
       }
-      syncedSessionRef.current = true;
       return;
     }
 
@@ -126,8 +118,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       users: [...current.users, newUser],
       currentUserId: newUser.id,
     }));
-    syncedSessionRef.current = true;
-  }, [isReady, session, state.users, state.currentUserId]);
+  }, [isReady, session?.user?.email, state.users, state.currentUserId]);
 
   useEffect(() => {
     if (!isReady) {
