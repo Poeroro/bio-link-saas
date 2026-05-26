@@ -19,12 +19,44 @@
   --foreground: #fafafa;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-manrope), "Aptos", "Segoe UI", sans-serif;
 }
 
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+/* Tap highlight */
 button,
 a,
 input,
@@ -33,7 +65,64 @@ select {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Selection */
 ::selection {
   background: #67e8f9;
   color: #0f172a;
+}
+
+.dark ::selection {
+  background: #0e7490;
+  color: #f0f9ff;
+}
+
+/* Focus ring utility */
+.focus-ring {
+  outline: none;
+}
+
+.focus-ring:focus-visible {
+  outline: 2px solid #06b6d4;
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+.dark .focus-ring:focus-visible {
+  outline-color: #22d3ee;
+}
+
+/* Transition utilities */
+.transition-base {
+  transition-property: color, background-color, border-color, box-shadow, opacity, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.transition-slow {
+  transition-property: color, background-color, border-color, box-shadow, opacity, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+/* Animated gradient background for landing */
+@keyframes gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.bg-gradient-animated {
+  background: linear-gradient(
+    -45deg,
+    #06b6d4,
+    #8b5cf6,
+    #ec4899,
+    #f59e0b
+  );
+  background-size: 400% 400%;
+  animation: gradient-shift 12s ease infinite;
 }

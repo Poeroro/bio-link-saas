@@ -16,6 +16,8 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnalyticsPanel } from "@/components/dashboard/analytics-panel";
+import { CustomCssPanel } from "@/components/dashboard/custom-css-panel";
+import { ExportPanel } from "@/components/dashboard/export-panel";
 import { LinkManager } from "@/components/dashboard/link-manager";
 import { ProfileForm } from "@/components/dashboard/profile-form";
 import { QrSharePanel } from "@/components/dashboard/qr-share-panel";
@@ -193,6 +195,10 @@ export default function DashboardPage() {
           <div id="analytics">
             <AnalyticsPanel user={currentUser} />
           </div>
+
+          <CustomCssPanel />
+
+          <ExportPanel />
         </section>
 
         <aside className="xl:sticky xl:top-24 xl:h-[calc(100vh-7rem)]">

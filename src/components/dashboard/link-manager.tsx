@@ -5,15 +5,20 @@ import {
   Camera,
   Download,
   Edit3,
+  GitFork,
   Globe2,
   GripVertical,
   Mail,
+  MessageCircle,
   Music2,
+  Send,
   Plus,
   Save,
   ShoppingBag,
   SquarePlay,
   Trash2,
+  Tv,
+  Video,
 } from "lucide-react";
 import { useState } from "react";
 import type { BioLink, LinkKind } from "@/lib/types";
@@ -34,8 +39,16 @@ const LINK_KIND_OPTIONS: Array<{
   { value: "shop", label: "Shop", icon: ShoppingBag },
   { value: "calendar", label: "Calendar", icon: CalendarDays },
   { value: "newsletter", label: "Newsletter", icon: Mail },
-  { value: "music", label: "Music", icon: Music2 },
+  { value: "music", label: "Spotify", icon: Music2 },
   { value: "download", label: "Download", icon: Download },
+  { value: "tiktok", label: "TikTok", icon: Video },
+  { value: "twitter", label: "Twitter/X", icon: MessageCircle },
+  { value: "telegram", label: "Telegram", icon: Send },
+  { value: "github", label: "GitHub", icon: GitFork },
+  { value: "facebook", label: "Facebook", icon: Globe2 },
+  { value: "spotify", label: "Spotify", icon: Music2 },
+  { value: "discord", label: "Discord", icon: MessageCircle },
+  { value: "twitch", label: "Twitch", icon: Tv },
 ];
 
 export function LinkManager({
@@ -60,16 +73,24 @@ export function LinkManager({
     url: "https://example.com/campaign",
     description: "Landing page terbaru untuk audience utama.",
     kind: "website" as LinkKind,
+    scheduleStart: "",
+    scheduleEnd: "",
   });
   const [editDraft, setEditDraft] = useState(draft);
 
   const submitNew = () => {
-    onAdd(draft);
+    onAdd({
+      ...draft,
+      scheduleStart: draft.scheduleStart || undefined,
+      scheduleEnd: draft.scheduleEnd || undefined,
+    });
     setDraft({
       title: "",
       url: "",
       description: "",
       kind: "website",
+      scheduleStart: "",
+      scheduleEnd: "",
     });
   };
 
@@ -80,11 +101,17 @@ export function LinkManager({
       url: link.url,
       description: link.description,
       kind: link.kind,
+      scheduleStart: link.scheduleStart ?? "",
+      scheduleEnd: link.scheduleEnd ?? "",
     });
   };
 
   const saveEditing = (linkId: string) => {
-    onUpdate(linkId, editDraft);
+    onUpdate(linkId, {
+      ...editDraft,
+      scheduleStart: editDraft.scheduleStart || undefined,
+      scheduleEnd: editDraft.scheduleEnd || undefined,
+    });
     setEditingId(null);
   };
 
@@ -202,6 +229,30 @@ export function LinkManager({
                         }))
                       }
                       className="h-11 rounded-2xl border border-slate-200 bg-white px-4 text-sm text-slate-950 outline-none focus:border-slate-950 dark:border-white/10 dark:bg-zinc-950 dark:text-white dark:focus:border-white md:col-span-2"
+                    />
+                    <input
+                      type="date"
+                      value={editDraft.scheduleStart}
+                      onChange={(event) =>
+                        setEditDraft((current) => ({
+                          ...current,
+                          scheduleStart: event.target.value,
+                        }))
+                      }
+                      placeholder="Schedule start"
+                      className="h-11 rounded-2xl border border-slate-200 bg-white px-4 text-sm text-slate-950 outline-none focus:border-slate-950 dark:border-white/10 dark:bg-zinc-950 dark:text-white dark:focus:border-white"
+                    />
+                    <input
+                      type="date"
+                      value={editDraft.scheduleEnd}
+                      onChange={(event) =>
+                        setEditDraft((current) => ({
+                          ...current,
+                          scheduleEnd: event.target.value,
+                        }))
+                      }
+                      placeholder="Schedule end"
+                      className="h-11 rounded-2xl border border-slate-200 bg-white px-4 text-sm text-slate-950 outline-none focus:border-slate-950 dark:border-white/10 dark:bg-zinc-950 dark:text-white dark:focus:border-white"
                     />
                     <Button onClick={() => saveEditing(link.id)}>
                       <Save className="size-4" />

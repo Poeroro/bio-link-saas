@@ -61,3 +61,41 @@ export function getPublicUrl(username: string) {
 
   return `${window.location.origin}/u/${username}`;
 }
+
+export function isLinkScheduledActive(link: BioLink): boolean {
+  const now = new Date();
+
+  if (link.scheduleStart) {
+    const start = new Date(link.scheduleStart);
+    if (now < start) return false;
+  }
+
+  if (link.scheduleEnd) {
+    const end = new Date(link.scheduleEnd);
+    if (now > end) return false;
+  }
+
+  return true;
+}
+
+export function getRelativeTime(date: string | Date): string {
+  const now = Date.now();
+  const then = typeof date === "string" ? new Date(date).getTime() : date.getTime();
+  const diffMs = now - then;
+  const diffSec = Math.floor(diffMs / 1000);
+  const diffMin = Math.floor(diffSec / 60);
+  const diffHour = Math.floor(diffMin / 60);
+  const diffDay = Math.floor(diffHour / 24);
+  const diffWeek = Math.floor(diffDay / 7);
+  const diffMonth = Math.floor(diffDay / 30);
+
+  if (diffSec < 60) return "baru saja";
+  if (diffMin < 60) return `${diffMin} menit lalu`;
+  if (diffHour < 24) return `${diffHour} jam lalu`;
+  if (diffDay < 7) return `${diffDay} hari lalu`;
+  if (diffWeek < 5) return `${diffWeek} minggu lalu`;
+  if (diffMonth < 12) return `${diffMonth} bulan lalu`;
+
+  const diffYear = Math.floor(diffDay / 365);
+  return `${diffYear} tahun lalu`;
+}

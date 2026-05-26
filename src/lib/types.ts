@@ -6,7 +6,15 @@ export type LinkKind =
   | "calendar"
   | "newsletter"
   | "music"
-  | "download";
+  | "download"
+  | "tiktok"
+  | "twitter"
+  | "telegram"
+  | "github"
+  | "facebook"
+  | "spotify"
+  | "discord"
+  | "twitch";
 
 export type BioLink = {
   id: string;
@@ -17,6 +25,8 @@ export type BioLink = {
   active: boolean;
   clicks: number;
   createdAt: string;
+  scheduleStart?: string;
+  scheduleEnd?: string;
 };
 
 export type AnalyticsDay = {
@@ -42,6 +52,7 @@ export type UserProfile = {
   totalViews: number;
   totalClicks: number;
   subscribers: number;
+  customCss?: string;
 };
 
 export type AppState = {
@@ -73,3 +84,5 @@ export type BioTheme = {
   avatarClass: string;
   accentClass: string;
 };
+
+export type ExportData = (user: UserProfile) => string;

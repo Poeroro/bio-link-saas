@@ -7,14 +7,19 @@ import {
   Camera,
   Download,
   Globe2,
+  GitFork,
   Mail,
+  MessageCircle,
+  Music,
   Music2,
+  Send,
   ShoppingBag,
   SquarePlay,
+  Tv,
 } from "lucide-react";
 import type { BioLink, LinkKind, UserProfile } from "@/lib/types";
 import { getTheme } from "@/lib/themes";
-import { cn, formatNumber } from "@/lib/utils";
+import { cn, formatNumber, isLinkScheduledActive } from "@/lib/utils";
 import { EmptyState } from "@/components/ui/empty-state";
 
 const linkIcons: Record<LinkKind, typeof Globe2> = {
@@ -26,6 +31,14 @@ const linkIcons: Record<LinkKind, typeof Globe2> = {
   newsletter: Mail,
   music: Music2,
   download: Download,
+  tiktok: Music,
+  twitter: MessageCircle,
+  telegram: Send,
+  github: GitFork,
+  facebook: Globe2,
+  spotify: Music2,
+  discord: MessageCircle,
+  twitch: Tv,
 };
 
 export function BioPreview({
@@ -42,7 +55,7 @@ export function BioPreview({
   onLinkClick?: (link: BioLink) => void;
 }) {
   const theme = getTheme(user.themeId);
-  const activeLinks = user.links.filter((link) => link.active);
+  const activeLinks = user.links.filter((link) => link.active && isLinkScheduledActive(link));
 
   return (
     <div
@@ -52,6 +65,7 @@ export function BioPreview({
         theme.pageClass,
       )}
     >
+      {user.customCss ? <style dangerouslySetInnerHTML={{ __html: user.customCss }} /> : null}
       <div className={cn("mx-auto flex min-h-full w-full max-w-xl flex-col px-4 py-6", compact ? "gap-4" : "gap-6 sm:py-10")}>
         <article className={cn("relative overflow-hidden rounded-[2rem] p-5 sm:p-7", theme.surfaceClass)}>
           <div className="absolute right-6 top-6 flex gap-2">

@@ -33,6 +33,8 @@ type LinkInput = {
   url: string;
   description: string;
   kind: LinkKind;
+  scheduleStart?: string;
+  scheduleEnd?: string;
 };
 
 type BioAppContextValue = {
@@ -54,6 +56,8 @@ type BioAppContextValue = {
   setTheme: (themeId: string) => void;
   recordPublicVisit: (username: string) => void;
   recordLinkClick: (username: string, linkId: string) => void;
+  exportData: () => string;
+  importData: (json: string) => boolean;
 };
 
 const BioAppContext = createContext<BioAppContextValue | undefined>(undefined);
@@ -221,6 +225,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
             active: true,
             clicks: 0,
             createdAt: new Date().toISOString(),
+            scheduleStart: link.scheduleStart || undefined,
+            scheduleEnd: link.scheduleEnd || undefined,
           },
           ...user.links,
         ],
@@ -338,6 +344,29 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }));
   }, []);
 
+  const exportData = useCallback(() => {
+    return JSON.stringify(state, null, 2);
+  }, [state]);
+
+  const importData = useCallback(
+    (json: string) => {
+      try {
+        const parsed = JSON.parse(json) as AppState;
+        if (!parsed.users || !Array.isArray(parsed.users)) {
+          addToast({ title: "Import gagal", description: "Format data tidak valid.", tone: "error" });
+          return false;
+        }
+        setState(parsed);
+        addToast({ title: "Data diimport", description: `${parsed.users.length} akun berhasil dimuat.`, tone: "success" });
+        return true;
+      } catch {
+        addToast({ title: "Import gagal", description: "File JSON tidak valid.", tone: "error" });
+        return false;
+      }
+    },
+    [addToast],
+  );
+
   const value = useMemo(
     () => ({
       state,
@@ -358,6 +387,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       setTheme,
       recordPublicVisit,
       recordLinkClick,
+      exportData,
+      importData,
     }),
     [
       addLink,
@@ -365,6 +396,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       currentUser,
       deleteLink,
       dismissToast,
+      exportData,
+      importData,
       isReady,
       login,
       logout,

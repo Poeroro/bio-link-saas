@@ -84,12 +84,6 @@ export const DEMO_USER: UserProfile = {
   })),
 };
 
-export const DEFAULT_STATE: AppState = {
-  users: [DEMO_USER],
-  currentUserId: DEMO_USER.id,
-  darkMode: false,
-};
-
 export function createStarterUser(input: {
   name: string;
   username?: string;
@@ -147,3 +141,86 @@ function createStarterLink(
     createdAt,
   };
 }
+
+export const DEMO_USER_2: UserProfile = {
+  id: "user_rendra",
+  name: "Rendra Wicaksono",
+  username: "rendra.dev",
+  email: "rendra@biolink.test",
+  password: "demo123",
+  headline: "Full-stack developer & open-source enthusiast",
+  bio: "Membangun tools dan produk digital yang simpel, cepat, dan open. Suka ngoprek stack baru dan berbagi lewat tulisan serta proyek open-source.",
+  location: "Bandung, ID",
+  avatarUrl:
+    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+  themeId: "midnight-neon",
+  totalViews: 9760,
+  totalClicks: 3214,
+  subscribers: 642,
+  links: [
+    {
+      id: "link_github",
+      title: "GitHub repos",
+      url: "https://github.com",
+      description: "Proyek open-source dan kontribusi.",
+      kind: "github",
+      active: true,
+      clicks: 1340,
+      createdAt: "2026-03-15",
+    },
+    {
+      id: "link_blog",
+      title: "Technical blog",
+      url: "https://dev.to",
+      description: "Tutorial, catatan teknis, dan refleksi engineering.",
+      kind: "website",
+      active: true,
+      clicks: 892,
+      createdAt: "2026-03-22",
+    },
+    {
+      id: "link_saas",
+      title: "SaaS starter kit",
+      url: "https://gumroad.com",
+      description: "Boilerplate Next.js + Stripe + Prisma.",
+      kind: "shop",
+      active: true,
+      clicks: 546,
+      createdAt: "2026-04-05",
+      scheduleStart: "2026-04-01T00:00:00+07:00",
+      scheduleEnd: "2026-06-01T00:00:00+07:00",
+    },
+    {
+      id: "link_twitter",
+      title: "Twitter / X",
+      url: "https://x.com",
+      description: "Hot takes dan thread teknis.",
+      kind: "twitter",
+      active: true,
+      clicks: 324,
+      createdAt: "2026-04-12",
+    },
+    {
+      id: "link_discord",
+      title: "Dev community Discord",
+      url: "https://discord.gg",
+      description: "Diskusi, pairing session, dan code review.",
+      kind: "discord",
+      active: false,
+      clicks: 112,
+      createdAt: "2026-05-10",
+    },
+  ],
+  analytics: Array.from({ length: 14 }, (_, index) => ({
+    date: daysAgo(13 - index),
+    visits: 420 + index * 28 + (index % 3) * 40,
+    clicks: 160 + index * 15 + (index % 4) * 18,
+    signups: 10 + (index % 5) * 5,
+  })),
+};
+
+export const DEFAULT_STATE: AppState = {
+  users: [DEMO_USER, DEMO_USER_2],
+  currentUserId: DEMO_USER.id,
+  darkMode: false,
+};
