@@ -1,9 +1,10 @@
 "use client";
+import { SparkleLogo } from "@/components/sparkle-logo";
 
 import { Suspense, useState, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Sparkles, CheckCircle2, Mail } from "lucide-react";
+import { CheckCircle2, Mail } from "lucide-react";
 
 function VerifyEmailContent() {
   const searchParams = useSearchParams();
@@ -21,8 +22,8 @@ function VerifyEmailContent() {
   useEffect(() => {
     if (token && emailParam) {
       verifyWithToken(token, emailParam);
-    }
-  }, []);
+ }
+ }, []);
 
   async function verifyWithToken(t: string, e: string) {
     setStatus("verifying");
@@ -31,19 +32,19 @@ function VerifyEmailContent() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: e, token: t }),
-      });
+ });
       if (res.ok) {
         setStatus("done");
-      } else {
+ } else {
         const data = await res.json();
         setError(data.error || "Verifikasi gagal");
         setStatus("error");
-      }
-    } catch {
+ }
+ } catch {
       setError("Gagal menghubungi server");
       setStatus("error");
-    }
-  }
+ }
+ }
 
   async function sendVerification() {
     if (!email) return;
@@ -54,28 +55,28 @@ function VerifyEmailContent() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
-      });
+ });
       if (res.ok) {
         const data = await res.json();
         setMethod(data.method);
         setStatus("sent");
-      } else {
+ } else {
         const data = await res.json();
         setError(data.error || "Gagal mengirim verifikasi");
         setStatus("error");
-      }
-    } catch {
+ }
+ } catch {
       setError("Gagal menghubungi server");
       setStatus("error");
-    }
-  }
+ }
+ }
 
   async function verifyOtp() {
     const code = otp.join("");
     if (code.length !== 6) {
       setError("Masukkan 6 digit kode");
       return;
-    }
+ }
     setStatus("verifying");
     setError("");
     try {
@@ -83,19 +84,19 @@ function VerifyEmailContent() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, code }),
-      });
+ });
       if (res.ok) {
         setStatus("done");
-      } else {
+ } else {
         const data = await res.json();
         setError(data.error || "Verifikasi gagal");
         setStatus("error");
-      }
-    } catch {
+ }
+ } catch {
       setError("Gagal menghubungi server");
       setStatus("error");
-    }
-  }
+ }
+ }
 
   function handleOtpChange(index: number, value: string) {
     if (value.length > 1) value = value.slice(-1);
@@ -105,14 +106,14 @@ function VerifyEmailContent() {
     setOtp(newOtp);
     if (value && index < 5) {
       inputRefs.current[index + 1]?.focus();
-    }
-  }
+ }
+ }
 
   function handleOtpKeyDown(index: number, e: React.KeyboardEvent) {
     if (e.key === "Backspace" && !otp[index] && index > 0) {
       inputRefs.current[index - 1]?.focus();
-    }
-  }
+ }
+ }
 
   function handleOtpPaste(e: React.ClipboardEvent) {
     e.preventDefault();
@@ -120,15 +121,15 @@ function VerifyEmailContent() {
     if (pasted.length === 6) {
       setOtp(pasted.split(""));
       inputRefs.current[5]?.focus();
-    }
-  }
+ }
+ }
 
   return (
     <main className="grid min-h-screen place-items-center bg-[#06060a] p-4">
       <div className="w-full max-w-md">
         <div className="rounded-2xl border border-white/[0.06] bg-[#0c0c10]/80 backdrop-blur-xl p-6">
           <div className="mx-auto grid size-12 place-items-center rounded-2xl bg-cyan-400 text-slate-950">
-            <Sparkles className="size-5" />
+            <SparkleLogo className="size-5" />
           </div>
 
           {status === "done" ? (

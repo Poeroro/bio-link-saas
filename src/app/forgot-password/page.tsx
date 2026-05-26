@@ -1,8 +1,9 @@
 "use client";
+import { SparkleLogo } from "@/components/sparkle-logo";
 
 import { useState } from "react";
 import Link from "next/link";
-import { Sparkles, Mail, ArrowLeft } from "lucide-react";
+import { Mail, ArrowLeft } from "lucide-react";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -19,27 +20,27 @@ export default function ForgotPasswordPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
-      });
+ });
 
       if (res.ok) {
         setStatus("sent");
-      } else {
+ } else {
         const data = await res.json();
         setError(data.error || "Terjadi kesalahan");
         setStatus("error");
-      }
-    } catch {
+ }
+ } catch {
       setError("Gagal menghubungi server");
       setStatus("error");
-    }
-  }
+ }
+ }
 
   return (
     <main className="grid min-h-screen place-items-center bg-[#06060a] p-4">
       <div className="w-full max-w-md">
         <div className="rounded-2xl border border-white/[0.06] bg-[#0c0c10]/80 backdrop-blur-xl p-6">
           <div className="mx-auto grid size-12 place-items-center rounded-2xl bg-cyan-400 text-slate-950">
-            <Sparkles className="size-5" />
+            <SparkleLogo className="size-5" />
           </div>
 
           {status === "sent" ? (

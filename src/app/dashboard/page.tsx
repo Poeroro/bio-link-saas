@@ -1,4 +1,5 @@
 'use client';
+import { SparkleLogo } from '@/components/sparkle-logo';
 
 /* eslint-disable @next/next/no-img-element */
 
@@ -11,7 +12,7 @@ import {
   Palette,
   Save,
   Settings,
-  Sparkles,
+  
   Sun,
   UserRound,
 } from 'lucide-react';
@@ -75,7 +76,7 @@ export default function DashboardPage() {
     toggleLink,
     moveLink,
     setTheme,
-  } = useBioApp();
+ } = useBioApp();
 
   const [verifyRequired, setVerifyRequired] = useState(false);
   const [sending, setSending] = useState(false);
@@ -90,12 +91,12 @@ export default function DashboardPage() {
           const email = session?.user?.email || '';
           setTimeout(() => {
             router.replace(`/verify-email?email=${encodeURIComponent(email)}`);
-          }, 500);
-        }
-      })
+ }, 500);
+ }
+ })
       .catch(() => {})
       .finally(() => setChecking(false));
-  }, []);
+ }, []);
 
   if (!isReady || checking) {
     return (
@@ -105,7 +106,7 @@ export default function DashboardPage() {
         </div>
       </main>
     );
-  }
+ }
 
   if (verifyRequired) {
     return (
@@ -116,14 +117,14 @@ export default function DashboardPage() {
         </div>
       </main>
     );
-  }
+ }
 
   if (!currentUser) {
     return (
       <main className="grid min-h-screen place-items-center bg-[#06060a] p-4">
         <section className="max-w-md rounded-2xl border border-white/[0.06] bg-[#0c0c10]/80 backdrop-blur-xl p-6 text-center">
           <div className="mx-auto grid size-12 place-items-center rounded-2xl bg-cyan-400 text-slate-950">
-            <Sparkles className="size-5" />
+            <SparkleLogo className="size-5" />
           </div>
           <h1 className="mt-5 text-2xl font-bold text-white">
             Sesi dashboard belum aktif
@@ -148,7 +149,7 @@ export default function DashboardPage() {
         </section>
       </main>
     );
-  }
+ }
 
   const profileUrl = typeof window !== 'undefined' 
     ? `${window.location.host}/u/${currentUser.username}`
@@ -169,7 +170,7 @@ export default function DashboardPage() {
           <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-4 px-4 py-3 sm:px-6">
             <Link href="/" className="flex items-center gap-3">
               <span className="grid size-10 place-items-center rounded-2xl bg-cyan-400 text-slate-950">
-                <Sparkles className="size-5" />
+                <SparkleLogo className="size-5" />
               </span>
               <span className="hidden text-base font-black tracking-tight sm:block">
                 <SiteName />
@@ -228,7 +229,7 @@ export default function DashboardPage() {
                   logout();
                   signOut({ redirect: false });
                   router.push('/login');
-                }}
+ }}
               >
                 <LogOut className="size-4" />
               </Button>
@@ -276,9 +277,9 @@ export default function DashboardPage() {
                       try {
                         await fetch('/api/auth/send-verification', { method: 'POST' });
                         router.push(`/verify-email?email=${encodeURIComponent(session?.user?.email || '')}`);
-                      } catch {}
+ } catch {}
                       setSending(false);
-                    }}
+ }}
                     disabled={sending}
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-amber-400/10 text-amber-300 border border-amber-400/15 hover:bg-amber-400/20 transition disabled:opacity-50"
                   >
@@ -312,8 +313,8 @@ export default function DashboardPage() {
                         addToast({
                           title: 'Profile link copied',
                           tone: 'success',
-                        });
-                      }}
+ });
+ }}
                       className="text-zinc-500 transition hover:text-cyan-400"
                       aria-label="Copy profile link"
                     >
@@ -406,8 +407,8 @@ export default function DashboardPage() {
                             title: 'Preview realtime',
                             description: 'Buka halaman publik untuk klik link asli.',
                             tone: 'info',
-                          })
-                        }
+ })
+ }
                       />
                     </div>
                   </div>
@@ -421,7 +422,7 @@ export default function DashboardPage() {
                   user={currentUser}
                   onToast={(title, description) =>
                     addToast({ title, description, tone: 'success' })
-                  }
+ }
                 />
               </div>
             )}
@@ -507,8 +508,8 @@ export default function DashboardPage() {
                     description:
                       'Buka halaman publik untuk klik link asli.',
                     tone: 'info',
-                  })
-                }
+ })
+ }
               />
             </div>
           </aside>

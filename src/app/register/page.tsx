@@ -1,6 +1,7 @@
 "use client";
+import { SparkleLogo } from "@/components/sparkle-logo";
 
-import { ArrowRight, Loader2, Sparkles } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SiteName } from "@/components/site-logo";
@@ -16,7 +17,7 @@ export default function RegisterPage() {
     username: "",
     email: "",
     password: "",
-  });
+ });
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -27,27 +28,27 @@ export default function RegisterPage() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
-    });
+ });
 
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
       setIsLoading(false);
       setError(data.error ?? "Registrasi gagal. Coba lagi.");
       return;
-    }
+ }
 
     const result = await signIn("credentials", {
       email: form.email,
       password: form.password,
       redirect: false,
-    });
+ });
 
     setIsLoading(false);
 
     if (result?.error) {
       setError("Akun dibuat tapi login otomatis gagal. Silakan login manual.");
       return;
-    }
+ }
 
     // Check if email verification is required
     try {
@@ -55,19 +56,19 @@ export default function RegisterPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: form.email }),
-      });
+ });
       const sendData = await settingsRes.json();
       // send-verification returns { required: true/false }
       if (sendData.required) {
         router.push(`/verify-email?email=${encodeURIComponent(form.email)}`);
         return;
-      }
-    } catch {
+ }
+ } catch {
       // If verification check fails, just continue to dashboard
-    }
+ }
 
     router.push("/dashboard");
-  };
+ };
 
   return (
     <main className="min-h-screen bg-[linear-gradient(135deg,#f8fafc,#ecfeff_45%,#fef3c7)] px-4 py-6 dark:bg-[linear-gradient(135deg,#09090b,#111827_48%,#172554)]">
@@ -75,7 +76,7 @@ export default function RegisterPage() {
         <nav className="flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
             <span className="grid size-10 place-items-center rounded-2xl bg-slate-950 text-white dark:bg-white dark:text-slate-950">
-              <Sparkles className="size-5" />
+              <SparkleLogo className="size-5" />
             </span>
             <span className="text-base font-black tracking-tight text-slate-950 dark:text-white">
               <SiteName />
@@ -125,7 +126,7 @@ export default function RegisterPage() {
                     value={form.name}
                     onChange={(e) =>
                       setForm((f) => ({ ...f, name: e.target.value }))
-                    }
+ }
                     className="h-12 min-w-0 flex-1 bg-transparent px-4 text-sm outline-none"
                     placeholder="Nama lengkap"
                   />
@@ -146,7 +147,7 @@ export default function RegisterPage() {
                     value={form.username}
                     onChange={(e) =>
                       setForm((f) => ({ ...f, username: e.target.value }))
-                    }
+ }
                     className="h-12 min-w-0 flex-1 bg-transparent px-4 text-sm outline-none"
                     placeholder="username"
                   />
@@ -164,7 +165,7 @@ export default function RegisterPage() {
                     value={form.email}
                     onChange={(e) =>
                       setForm((f) => ({ ...f, email: e.target.value }))
-                    }
+ }
                     className="h-12 min-w-0 flex-1 bg-transparent px-4 text-sm outline-none"
                     placeholder="email@contoh.com"
                   />
@@ -183,7 +184,7 @@ export default function RegisterPage() {
                     value={form.password}
                     onChange={(e) =>
                       setForm((f) => ({ ...f, password: e.target.value }))
-                    }
+ }
                     className="h-12 min-w-0 flex-1 bg-transparent px-4 text-sm outline-none"
                     placeholder="••••••••"
                   />

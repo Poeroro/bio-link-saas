@@ -1,4 +1,5 @@
 "use client";
+import { SparkleLogo } from "@/components/sparkle-logo";
 
 import {
   ArrowRight,
@@ -13,7 +14,7 @@ import {
   QrCode,
   Shield,
   Smartphone,
-  Sparkles,
+  
   Star,
   Zap,
 } from "lucide-react";
@@ -46,19 +47,19 @@ const testimonials = [
     role: "Content Creator",
     avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=100&q=80",
     text: "LinkPilot bikin bio link gue keliatan profesional tanpa perlu coding. Dashboard-nya intuitif banget!",
-  },
+ },
   {
     name: "Rizky Pratama",
     role: "Freelance Designer",
     avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80",
     text: "Fitur tema dan QR code-nya juara. Klien gue suka banget sama hasilnya.",
-  },
+ },
   {
     name: "Maya Putri",
     role: "Small Business Owner",
     avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80",
     text: "Dari 0 ke 1000 views dalam seminggu! Analytics-nya membantu gue ngerti audience.",
-  },
+ },
 ];
 
 const pricingTiers = [
@@ -69,22 +70,22 @@ const pricingTiers = [
     features: ["Unlimited link", "Semua tema premium", "Analytics lengkap", "Custom CSS", "QR code", "Share link", "Export data", "Priority support"],
     cta: "Mulai Sekarang",
     popular: true,
-  },
+ },
 ];
 
 const faqs = [
   {
     q: "Apa itu LinkPilot?",
     a: "LinkPilot adalah bio link SaaS yang memungkinkan kamu membuat satu halaman untuk semua link penting. Seperti Linktree, tapi dengan fitur lebih lengkap dan tema yang bisa dikustomisasi.",
-  },
+ },
   {
     q: "Apakah data saya aman?",
     a: "Ya! Semua data tersimpan aman di database kami. Kamu bisa export data kapan saja.",
-  },
+ },
   {
     q: "Berapa biayanya?",
     a: "LinkPilot 100% gratis. Semua fitur tersedia untuk semua pengguna tanpa biaya.",
-  },
+ },
 ];
 
 export default function Home() {
@@ -113,7 +114,7 @@ export default function Home() {
       <nav className="relative z-10 mx-auto flex max-w-7xl items-center justify-between px-4 py-5 sm:px-6">
         <Link href="/" className="flex items-center gap-3">
           <span className="grid size-10 place-items-center rounded-2xl bg-white/10 text-cyan-400 backdrop-blur-sm">
-            <Sparkles className="size-5" />
+            <SparkleLogo className="size-5" />
           </span>
           <SiteName />
         </Link>
@@ -317,7 +318,7 @@ export default function Home() {
                 tier.popular
                   ? "glass-card-lg border-cyan-400/30 shadow-lg shadow-cyan-500/10"
                   : "glass-card-lg"
-              }`}
+ }`}
               style={{ "--i": idx, animationDelay: `calc(${idx} * 0.08s)` } as React.CSSProperties}
             >
               {tier.popular && (
@@ -344,7 +345,7 @@ export default function Home() {
                   tier.popular
                     ? "bg-gradient-to-r from-cyan-400 to-emerald-400 text-slate-950 hover:shadow-lg hover:shadow-cyan-500/20"
                     : "border border-white/[0.06] bg-white/[0.04] text-white hover:bg-white/[0.08]"
-                }`}
+ }`}
               >
                 {tier.cta}
               </Link>
@@ -386,7 +387,7 @@ export default function Home() {
       <footer className="relative z-10 border-t border-white/[0.06] bg-[#06060a]/80 py-10 backdrop-blur-sm">
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 px-4 sm:flex-row sm:justify-between sm:px-6">
           <div className="flex items-center gap-2">
-            <Sparkles className="size-4 text-cyan-400" />
+            <SparkleLogo className="size-4 text-cyan-400" />
             <span className="text-sm font-bold text-white"><SiteName /></span>
           </div>
           <p className="text-xs text-zinc-500">

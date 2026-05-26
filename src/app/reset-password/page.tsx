@@ -1,9 +1,10 @@
 "use client";
+import { SparkleLogo } from "@/components/sparkle-logo";
 
 import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Sparkles, CheckCircle2, Eye, EyeOff } from "lucide-react";
+import { CheckCircle2, Eye, EyeOff } from "lucide-react";
 
 function ResetPasswordContent() {
   const searchParams = useSearchParams();
@@ -27,18 +28,18 @@ function ResetPasswordContent() {
         </div>
       </main>
     );
-  }
+ }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (password !== confirm) {
       setError("Password tidak cocok");
       return;
-    }
+ }
     if (password.length < 6) {
       setError("Password minimal 6 karakter");
       return;
-    }
+ }
 
     setStatus("saving");
     setError("");
@@ -48,27 +49,27 @@ function ResetPasswordContent() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token, email, password }),
-      });
+ });
 
       if (res.ok) {
         setStatus("done");
-      } else {
+ } else {
         const data = await res.json();
         setError(data.error || "Terjadi kesalahan");
         setStatus("error");
-      }
-    } catch {
+ }
+ } catch {
       setError("Gagal menghubungi server");
       setStatus("error");
-    }
-  }
+ }
+ }
 
   return (
     <main className="grid min-h-screen place-items-center bg-[#06060a] p-4">
       <div className="w-full max-w-md">
         <div className="rounded-2xl border border-white/[0.06] bg-[#0c0c10]/80 backdrop-blur-xl p-6">
           <div className="mx-auto grid size-12 place-items-center rounded-2xl bg-cyan-400 text-slate-950">
-            <Sparkles className="size-5" />
+            <SparkleLogo className="size-5" />
           </div>
 
           {status === "done" ? (
