@@ -13,40 +13,45 @@ export const authOptions: AuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
+        try {
+          if (!credentials?.email || !credentials?.password) {
+            return null;
+          }
+
+          // Find by email or username
+          const identifier = credentials.email.trim().toLowerCase();
+          const user = await prisma.user.findFirst({
+            where: identifier.includes("@")
+              ? { email: identifier }
+              : { username: identifier },
+          });
+
+          if (!user || !user.password) {
+            return null;
+          }
+
+          const isValid = await bcrypt.compare(
+            credentials.password,
+            user.password
+          );
+
+          if (!isValid) {
+            return null;
+          }
+
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            image: user.image,
+            username: user.username,
+            isAdmin: user.isAdmin,
+            emailVerified: user.emailVerified ? true : false,
+          };
+        } catch (e) {
+          console.error("[AUTH] authorize error:", e);
           return null;
         }
-
-        // Find by email or username
-        const identifier = credentials.email.trim().toLowerCase();
-        const user = await prisma.user.findFirst({
-          where: identifier.includes("@")
-            ? { email: identifier }
-            : { username: identifier },
-        });
-
-        if (!user || !user.password) {
-          return null;
-        }
-
-        const isValid = await bcrypt.compare(
-          credentials.password,
-          user.password
-        );
-
-        if (!isValid) {
-          return null;
-        }
-
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          image: user.image,
-          username: user.username,
-          isAdmin: user.isAdmin,
-          emailVerified: user.emailVerified ? true : false,
-        };
       },
     }),
   ],
