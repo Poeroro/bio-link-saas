@@ -120,7 +120,7 @@ export default function AdminPage() {
       .catch(() => router.push("/login"));
   }, [router]);
 
-  if (!sessionUser) {
+  if (!sessionUser || isAdmin === null) {
     return (
       <div className="min-h-screen bg-[#06060a] flex items-center justify-center">
         <MeshOrbs />

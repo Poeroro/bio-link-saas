@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 
 interface RegisterBody {
+  name?: string;
   email?: string;
   username?: string;
   password?: string;
@@ -11,11 +12,18 @@ interface RegisterBody {
 export async function POST(request: Request) {
   try {
     const body: RegisterBody = await request.json();
-    const { email, username, password } = body;
+    const { name, email, username, password } = body;
 
     if (!email || !username || !password) {
       return NextResponse.json(
         { error: "Missing required fields: email, username, password" },
+        { status: 400 }
+      );
+    }
+
+    if (!/^[a-z0-9._-]+$/.test(username)) {
+      return NextResponse.json(
+        { error: "Username hanya boleh huruf kecil, angka, titik, dash" },
         { status: 400 }
       );
     }
@@ -45,6 +53,7 @@ export async function POST(request: Request) {
 
     const user = await prisma.user.create({
       data: {
+        name: name || null,
         email,
         username,
         password: hashedPassword,

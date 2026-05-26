@@ -19,7 +19,7 @@ import {
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 import { AnalyticsPanel } from '@/components/dashboard/analytics-panel';
 import { CustomCssPanel } from '@/components/dashboard/custom-css-panel';
 import { DomainPanel } from '@/components/dashboard/domain-panel';
@@ -120,7 +120,9 @@ export default function DashboardPage() {
     );
   }
 
-  const profileUrl = `bio-link-saas.vercel.app/u/${currentUser.username}`;
+  const profileUrl = typeof window !== 'undefined' 
+    ? `${window.location.host}/u/${currentUser.username}`
+    : `bio-link-saas.vercel.app/u/${currentUser.username}`;
 
   return (
     <main className="min-h-screen bg-[#06060a] text-white">
@@ -194,6 +196,7 @@ export default function DashboardPage() {
                 aria-label="Logout"
                 onClick={() => {
                   logout();
+                  signOut({ redirect: false });
                   router.push('/login');
                 }}
               >
