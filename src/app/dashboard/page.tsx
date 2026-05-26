@@ -409,7 +409,7 @@ export default function DashboardPage() {
                 <ArrowUpRight className="size-4" />
               </Link>
             </div>
-            <div className="h-[720px] max-h-[calc(100vh-10rem)] min-h-[620px] overflow-hidden rounded-2xl">
+            <div className="h-[720px] max-h-[calc(100vh-10rem)] min-h-[620px] overflow-y-auto overflow-x-hidden rounded-2xl">
               <BioPreview
                 user={currentUser}
                 framed

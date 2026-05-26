@@ -116,6 +116,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     // User doesn't exist locally → create from session
     const newUser = createStarterUser({
       name: session.user.name || session.user.email!.split("@")[0],
+      username: (session.user as { username?: string }).username || session.user.email!.split("@")[0],
       email: session.user.email!,
       password: "nextauth-managed",
     });
