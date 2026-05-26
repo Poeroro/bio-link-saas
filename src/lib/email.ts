@@ -1,4 +1,3 @@
-import { createTransport } from "nodemailer";
 import { prisma } from "@/lib/prisma";
 
 async function getSmtpSettings() {
@@ -23,6 +22,36 @@ export async function sendEmail(to: string, subject: string, html: string) {
     return false;
   }
 
+  // Use Brevo REST API (avoids SMTP IP restrictions)
+  if (cfg.host.includes("brevo.com") && cfg.pass.startsWith("xsmtpsib-")) {
+    try {
+      const res = await fetch("https://api.brevo.com/v3/smtp/email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "api-key": cfg.pass,
+        },
+        body: JSON.stringify({
+          sender: { name: cfg.siteName, email: cfg.user },
+          to: [{ email: to }],
+          subject,
+          htmlContent: html,
+        }),
+      });
+      if (!res.ok) {
+        const err = await res.text();
+        console.error("[email] Brevo API error:", res.status, err);
+        return false;
+      }
+      return true;
+    } catch (e) {
+      console.error("[email] Brevo API error:", e);
+      return false;
+    }
+  }
+
+  // Fallback to SMTP for non-Brevo providers
+  const { createTransport } = await import("nodemailer");
   const transporter = createTransport({
     host: cfg.host,
     port: cfg.port,
