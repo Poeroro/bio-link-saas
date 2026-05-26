@@ -110,3 +110,16 @@ export function verificationEmailHtml(siteName: string, url: string) {
     <p style="color:#999;font-size:12px;">Email ini dikirim oleh ${siteName}. Jika kamu tidak merasa mendaftar, abaikan email ini.</p>
   </div>`;
 }
+
+export function resetPasswordEmailHtml(siteName: string, url: string) {
+  return `<div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;padding:32px;">
+    <h2 style="color:#06b6d4;margin:0 0 16px;">${siteName}</h2>
+    <p style="color:#333;font-size:15px;">Klik tombol di bawah untuk reset password kamu:</p>
+    <div style="text-align:center;margin:24px 0;">
+      <a href="${url}" style="display:inline-block;background:#06b6d4;color:#fff;text-decoration:none;padding:14px 32px;border-radius:10px;font-weight:600;font-size:15px;">Reset Password</a>
+    </div>
+    <p style="color:#666;font-size:13px;">Link ini berlaku selama <strong>1 jam</strong>. Jika kamu tidak merasa minta reset, abaikan email ini.</p>
+    <hr style="border:none;border-top:1px solid #eee;margin:24px 0;" />
+    <p style="color:#999;font-size:12px;">Email ini dikirim oleh ${siteName}.</p>
+  </div>`;
+}
