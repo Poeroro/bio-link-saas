@@ -9,8 +9,10 @@ import {
   ChevronLeft,
   Menu,
   X,
+  LogOut,
 } from "lucide-react";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
 import { useState } from "react";
 
 type Tab = "overview" | "users" | "domains" | "settings";
@@ -94,7 +96,7 @@ export default function AdminSidebar({ activeTab, onTabChange }: Props) {
           </button>
         </div>
         {nav}
-        <div className="p-3 border-t border-white/[0.06]">
+        <div className="p-3 border-t border-white/[0.06] space-y-1">
           <Link
             href="/dashboard"
             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-colors"
@@ -102,6 +104,13 @@ export default function AdminSidebar({ activeTab, onTabChange }: Props) {
             <ChevronLeft className="w-5 h-5" />
             Back to Dashboard
           </Link>
+          <button
+            onClick={() => signOut({ callbackUrl: "/" })}
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-red-400 hover:text-red-300 hover:bg-red-400/[0.06] transition-colors text-left"
+          >
+            <LogOut className="w-5 h-5" />
+            Logout
+          </button>
         </div>
       </aside>
     </>
