@@ -15,9 +15,9 @@ export async function POST(req: NextRequest) {
   const normalizedEmail = email.trim().toLowerCase();
   const user = await prisma.user.findUnique({ where: { email: normalizedEmail } });
 
-  // Always return success to prevent email enumeration
+  // Email not found
   if (!user) {
-    return NextResponse.json({ ok: true });
+    return NextResponse.json({ error: "Email tidak ditemukan" }, { status: 404 });
   }
 
   // Generate token

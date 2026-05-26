@@ -9,7 +9,7 @@ export const authOptions: AuthOptions = {
     CredentialsProvider({
       name: "credentials",
       credentials: {
-        email: { label: "Email", type: "email" },
+        email: { label: "Email atau Username", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
@@ -17,8 +17,12 @@ export const authOptions: AuthOptions = {
           return null;
         }
 
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
+        // Find by email or username
+        const identifier = credentials.email.trim().toLowerCase();
+        const user = await prisma.user.findFirst({
+          where: identifier.includes("@")
+            ? { email: identifier }
+            : { username: identifier },
         });
 
         if (!user || !user.password) {

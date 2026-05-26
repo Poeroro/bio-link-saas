@@ -82,18 +82,18 @@ export default function LoginPage() {
             <form onSubmit={submit} className="grid gap-4">
               <label>
                 <span className="text-sm font-semibold text-slate-700 dark:text-zinc-200">
-                  Email
+                  Email atau Username
                 </span>
                 <div className="mt-2 flex rounded-2xl border border-slate-200 bg-white text-slate-950 transition focus-within:border-slate-950 dark:border-white/10 dark:bg-zinc-950/60 dark:text-white dark:focus-within:border-white">
                   <input
-                    type="email"
+                    type="text"
                     required
                     value={form.email}
                     onChange={(e) =>
                       setForm((f) => ({ ...f, email: e.target.value }))
  }
                     className="h-12 min-w-0 flex-1 bg-transparent px-4 text-sm outline-none"
-                    placeholder="email@contoh.com"
+                    placeholder="email@contoh.com atau username"
                   />
                 </div>
               </label>
