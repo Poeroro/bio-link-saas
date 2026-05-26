@@ -6,12 +6,22 @@ import { prisma } from "@/lib/prisma";
 import { sendEmail, verificationEmailHtml, otpEmailHtml } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
+  // Allow authenticated or email-in-body for pre-login verification
   const session = await getServerSession(authOptions);
-  if (!session?.user?.email) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  let email = session?.user?.email || "";
+
+  if (!email) {
+    try {
+      const body = await req.json();
+      if (body.email) email = body.email;
+    } catch {
+      // no body
+    }
   }
 
-  const email = session.user.email;
+  if (!email) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
   // Check settings
   const [reqVerify, method] = await Promise.all([

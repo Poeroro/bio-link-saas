@@ -53,6 +53,7 @@ function VerifyEmailContent() {
       const res = await fetch("/api/auth/send-verification", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
       });
       if (res.ok) {
         const data = await res.json();
@@ -216,7 +217,7 @@ function VerifyEmailContent() {
                     disabled={status === "sending"}
                     className="h-11 w-full rounded-xl bg-cyan-400 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:opacity-50"
                   >
-                    {status === "sending" ? "Mengirim..." : "Kirim Kode Verifikasi"}
+                    {status === "sending" ? "Mengirim..." : "Kirim Verifikasi"}
                   </button>
                 </div>
               ) : (
@@ -241,7 +242,7 @@ function VerifyEmailContent() {
                     disabled={status === "sending"}
                     className="h-11 rounded-xl bg-cyan-400 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:opacity-50"
                   >
-                    {status === "sending" ? "Mengirim..." : "Kirim Kode Verifikasi"}
+                    {status === "sending" ? "Mengirim..." : "Kirim Verifikasi"}
                   </button>
                 </form>
               )}

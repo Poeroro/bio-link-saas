@@ -30,6 +30,7 @@ export async function GET(req: NextRequest) {
       username: true,
       image: true,
       isAdmin: true,
+      emailVerified: true,
       createdAt: true,
       _count: { select: { links: true, clickEvents: true } },
     },

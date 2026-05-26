@@ -6,6 +6,8 @@ import {
   Users,
   Settings,
   Shield,
+  CheckCircle2,
+  XCircle,
   Trash2,
   Search,
   Crown,
@@ -49,6 +51,7 @@ interface AdminUser {
   username: string;
   image: string | null;
   isAdmin: boolean;
+  emailVerified: boolean;
   createdAt: string;
   _count: { links: number; clickEvents: number };
 }
@@ -304,7 +307,8 @@ function UsersTab() {
               <thead>
                 <tr className="text-left text-slate-500 border-b border-white/[0.06]">
                   <th className="p-4">User</th>
-                                    <th className="p-4 text-center">Links</th>
+                                    <th className="p-4 text-center">Email</th>
+                  <th className="p-4 text-center">Links</th>
                   <th className="p-4 text-center">Clicks</th>
                   <th className="p-4 text-center">Admin</th>
                   <th className="p-4 text-right">Actions</th>
@@ -317,7 +321,13 @@ function UsersTab() {
                       <div className="text-white font-medium truncate max-w-[200px]">{u.name || "—"}</div>
                       <div className="text-slate-500 text-xs truncate max-w-[200px]">{u.email} · @{u.username}</div>
                     </td>
-
+                    <td className="p-4 text-center">
+                      {u.emailVerified ? (
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400 mx-auto" />
+                      ) : (
+                        <XCircle className="w-4 h-4 text-red-400 mx-auto" />
+                      )}
+                    </td>
                     <td className="p-4 text-center text-slate-300">{u._count.links}</td>
                     <td className="p-4 text-center text-cyan-400">{u._count.clickEvents}</td>
                     <td className="p-4 text-center">
