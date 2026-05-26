@@ -21,7 +21,6 @@ import Link from "next/link";
 import { SiteName } from "@/components/site-logo";
 import { BioPreview } from "@/components/bio/bio-preview";
 import { useBioApp } from "@/components/providers/app-provider";
-import { formatNumber } from "@/lib/utils";
 
 const workflow = [
   { title: "Register dummy", detail: "Akun starter langsung berisi profil, link, dan analytics.", icon: CheckCircle2 },
@@ -61,16 +60,6 @@ const testimonials = [
  },
 ];
 
-const pricingTiers = [
-  {
-    name: "Gratis",
-    price: "Rp 0",
-    period: "selamanya",
-    features: ["Unlimited link", "Semua tema premium", "Analytics lengkap", "Custom CSS", "QR code", "Share link", "Export data", "Priority support"],
-    cta: "Mulai Sekarang",
-    popular: true,
- },
-];
 
 const faqs = [
   {
@@ -219,17 +208,6 @@ export default function Home() {
         </div>
 
         <div className="relative">
-          <div className="absolute -left-8 top-10 hidden w-44 rounded-3xl bg-[#0c0c10]/80 p-4 shadow-2xl backdrop-blur-xl border border-white/[0.06] sm:block">
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-zinc-500">
-              Views
-            </p>
-            <p className="mt-2 text-3xl font-black text-white">
-              {formatNumber(demoUser.totalViews)}
-            </p>
-            <div className="mt-4 h-2 rounded-full bg-white/[0.06]">
-              <div className="h-full w-4/5 rounded-full bg-gradient-to-r from-cyan-400 to-emerald-400" />
-            </div>
-          </div>
           <BioPreview user={demoUser} framed compact disableLinks />
         </div>
       </section>
@@ -296,59 +274,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Pricing ── */}
-      <section className="relative z-10 mx-auto max-w-7xl px-4 py-16 sm:px-6">
-        <div className="text-center">
-          <h2 className="font-serif text-3xl font-semibold text-white sm:text-4xl">
-            Harga Transparan
-          </h2>
-          <p className="mt-4 text-zinc-400">
-            Semua fitur tersedia untuk semua pengguna. Gratis selamanya.
-          </p>
-        </div>
-        <div className="mt-10 grid gap-6 sm:grid-cols-3">
-          {pricingTiers.map((tier, idx) => (
-            <article
-              key={tier.name}
-              className={`animate-fade-slide-up relative p-6 backdrop-blur-xl transition-all duration-200 hover:bg-white/[0.06] ${
-                tier.popular
-                  ? "glass-card-lg border-cyan-400/30 shadow-lg shadow-cyan-500/10"
-                  : "glass-card-lg"
- }`}
-              style={{ "--i": idx, animationDelay: `calc(${idx} * 0.08s)` } as React.CSSProperties}
-            >
-              {tier.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-cyan-400 to-emerald-400 px-4 py-1 text-xs font-bold text-slate-950">
-                  Paling Populer
-                </div>
-              )}
-              <h3 className="text-lg font-bold text-white">{tier.name}</h3>
-              <div className="mt-3 flex items-baseline gap-1">
-                <span className="text-3xl font-black text-white">{tier.price}</span>
-                <span className="text-sm text-zinc-500">{tier.period}</span>
-              </div>
-              <ul className="mt-6 space-y-3">
-                {tier.features.map((feature) => (
-                  <li key={feature} className="flex items-center gap-2 text-sm text-zinc-400">
-                    <CheckCircle2 className="size-4 text-cyan-400" />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-              <Link
-                href={currentUser ? "/dashboard" : "/register"}
-                className={`mt-8 inline-flex h-11 w-full items-center justify-center rounded-xl text-sm font-bold transition ${
-                  tier.popular
-                    ? "bg-gradient-to-r from-cyan-400 to-emerald-400 text-slate-950 hover:shadow-lg hover:shadow-cyan-500/20"
-                    : "border border-white/[0.06] bg-white/[0.04] text-white hover:bg-white/[0.08]"
- }`}
-              >
-                {tier.cta}
-              </Link>
-            </article>
-          ))}
-        </div>
-      </section>
 
       {/* ── FAQ ── */}
       <section className="relative z-10 mx-auto max-w-3xl px-4 py-16 sm:px-6">
