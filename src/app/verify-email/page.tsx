@@ -147,7 +147,7 @@ function VerifyEmailContent() {
                 Buka Dashboard
               </Link>
             </div>
-          ) : status === "sent" ? (
+          ) : status === "sent" || status === "sending" ? (
             <div className="mt-6">
               <div className="mx-auto grid size-12 place-items-center rounded-full bg-cyan-500/10 text-cyan-400">
                 <Mail className="size-5" />
@@ -193,9 +193,10 @@ function VerifyEmailContent() {
 
               <button
                 onClick={sendVerification}
-                className="mt-4 w-full text-center text-sm text-cyan-400 hover:text-cyan-300 transition"
+                disabled={status === "sending"}
+                className="mt-4 w-full text-center text-sm text-cyan-400 hover:text-cyan-300 transition disabled:opacity-50"
               >
-                Kirim ulang
+                {status === "sending" ? "Mengirim..." : "Kirim ulang"}
               </button>
             </div>
           ) : (
