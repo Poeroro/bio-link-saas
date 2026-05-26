@@ -1,20 +1,14 @@
 export type LinkKind =
-  | "website"
+  | "twitter"
   | "instagram"
   | "youtube"
-  | "shop"
-  | "calendar"
-  | "newsletter"
-  | "music"
-  | "download"
+  | "website"
   | "tiktok"
-  | "twitter"
+  | "whatsapp"
   | "telegram"
-  | "github"
-  | "facebook"
-  | "spotify"
   | "discord"
-  | "twitch";
+  | "twitch"
+  | "github";
 
 export type BioLink = {
   id: string;

@@ -1,26 +1,25 @@
 "use client";
 
 import {
-  CalendarDays,
-  Camera,
-  Download,
   Edit3,
-  GitFork,
-  Globe2,
   GripVertical,
-  Mail,
-  MessageCircle,
-  Music2,
-  Send,
   Plus,
   Save,
-  ShoppingBag,
-  SquarePlay,
   Trash2,
-  Tv,
-  Video,
 } from "lucide-react";
-import { useState } from "react";
+import {
+  TwitterIcon,
+  InstagramIcon,
+  YoutubeIcon,
+  WebsiteIcon,
+  TiktokIcon,
+  WhatsAppIcon,
+  TelegramIcon,
+  DiscordIcon,
+  TwitchIcon,
+  GithubIcon,
+} from "@/components/icons/social-icons";
+import React, { useState } from "react";
 import type { BioLink, LinkKind } from "@/lib/types";
 import { cn, formatNumber } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -28,27 +27,23 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { SectionCard } from "@/components/ui/section-card";
 import { ToggleSwitch } from "@/components/ui/toggle-switch";
 
+type IconComponent = (props: React.SVGProps<SVGSVGElement>) => React.JSX.Element;
+
 const LINK_KIND_OPTIONS: Array<{
   value: LinkKind;
   label: string;
-  icon: typeof Globe2;
+  icon: IconComponent;
 }> = [
-  { value: "website", label: "Website", icon: Globe2 },
-  { value: "instagram", label: "Instagram", icon: Camera },
-  { value: "youtube", label: "YouTube", icon: SquarePlay },
-  { value: "shop", label: "Shop", icon: ShoppingBag },
-  { value: "calendar", label: "Calendar", icon: CalendarDays },
-  { value: "newsletter", label: "Newsletter", icon: Mail },
-  { value: "music", label: "Spotify", icon: Music2 },
-  { value: "download", label: "Download", icon: Download },
-  { value: "tiktok", label: "TikTok", icon: Video },
-  { value: "twitter", label: "Twitter/X", icon: MessageCircle },
-  { value: "telegram", label: "Telegram", icon: Send },
-  { value: "github", label: "GitHub", icon: GitFork },
-  { value: "facebook", label: "Facebook", icon: Globe2 },
-  { value: "spotify", label: "Spotify", icon: Music2 },
-  { value: "discord", label: "Discord", icon: MessageCircle },
-  { value: "twitch", label: "Twitch", icon: Tv },
+  { value: "twitter", label: "Twitter", icon: TwitterIcon },
+  { value: "instagram", label: "Instagram", icon: InstagramIcon },
+  { value: "youtube", label: "YouTube", icon: YoutubeIcon },
+  { value: "website", label: "Website", icon: WebsiteIcon },
+  { value: "tiktok", label: "TikTok", icon: TiktokIcon },
+  { value: "whatsapp", label: "WhatsApp", icon: WhatsAppIcon },
+  { value: "telegram", label: "Telegram", icon: TelegramIcon },
+  { value: "discord", label: "Discord", icon: DiscordIcon },
+  { value: "twitch", label: "Twitch", icon: TwitchIcon },
+  { value: "github", label: "GitHub", icon: GithubIcon },
 ];
 
 export function LinkManager({

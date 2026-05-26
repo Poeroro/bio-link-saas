@@ -1,44 +1,36 @@
 "use client";
+import React from "react";
 
 /* eslint-disable @next/next/no-img-element */
 
 import {
-  CalendarDays,
-  Camera,
-  Download,
-  Globe2,
-  GitFork,
-  Mail,
-  MessageCircle,
-  Music,
-  Music2,
-  Send,
-  ShoppingBag,
-  SquarePlay,
-  Tv,
-} from "lucide-react";
+  TwitterIcon,
+  InstagramIcon,
+  YoutubeIcon,
+  WebsiteIcon,
+  TiktokIcon,
+  WhatsAppIcon,
+  TelegramIcon,
+  DiscordIcon,
+  TwitchIcon,
+  GithubIcon,
+} from "@/components/icons/social-icons";
 import type { BioLink, LinkKind, UserProfile } from "@/lib/types";
 import { getTheme } from "@/lib/themes";
 import { cn, formatNumber, isLinkScheduledActive } from "@/lib/utils";
 import { EmptyState } from "@/components/ui/empty-state";
 
-const linkIcons: Record<LinkKind, typeof Globe2> = {
-  website: Globe2,
-  instagram: Camera,
-  youtube: SquarePlay,
-  shop: ShoppingBag,
-  calendar: CalendarDays,
-  newsletter: Mail,
-  music: Music2,
-  download: Download,
-  tiktok: Music,
-  twitter: MessageCircle,
-  telegram: Send,
-  github: GitFork,
-  facebook: Globe2,
-  spotify: Music2,
-  discord: MessageCircle,
-  twitch: Tv,
+const linkIcons: Record<LinkKind, (props: React.SVGProps<SVGSVGElement>) => React.JSX.Element> = {
+  twitter: TwitterIcon,
+  instagram: InstagramIcon,
+  youtube: YoutubeIcon,
+  website: WebsiteIcon,
+  tiktok: TiktokIcon,
+  whatsapp: WhatsAppIcon,
+  telegram: TelegramIcon,
+  discord: DiscordIcon,
+  twitch: TwitchIcon,
+  github: GithubIcon,
 };
 
 export function BioPreview({
