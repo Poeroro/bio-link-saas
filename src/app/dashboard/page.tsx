@@ -19,7 +19,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { useSession, signOut } from 'next-auth/react';
-import { AlertTriangle, Mail } from 'lucide-react';
+import { AlertTriangle, Loader2, Mail } from 'lucide-react';
 import { SiteName } from '@/components/site-logo';
 import { AnalyticsPanel } from '@/components/dashboard/analytics-panel';
 import { CustomCssPanel } from '@/components/dashboard/custom-css-panel';
@@ -79,23 +79,40 @@ export default function DashboardPage() {
 
   const [verifyRequired, setVerifyRequired] = useState(false);
   const [sending, setSending] = useState(false);
+  const [checking, setChecking] = useState(true);
 
   useEffect(() => {
-    fetch('/api/admin/settings')
+    fetch('/api/auth/verification-status')
       .then(r => r.json())
       .then(d => {
-        if (d.requireEmailVerification === 'true' && !(session?.user as { emailVerified?: boolean })?.emailVerified) {
+        if (d.needsVerification) {
           setVerifyRequired(true);
+          const email = session?.user?.email || '';
+          setTimeout(() => {
+            router.replace(`/verify-email?email=${encodeURIComponent(email)}`);
+          }, 500);
         }
       })
-      .catch(() => {});
-  }, [session]);
+      .catch(() => {})
+      .finally(() => setChecking(false));
+  }, []);
 
-  if (!isReady) {
+  if (!isReady || checking) {
     return (
       <main className="grid min-h-screen place-items-center bg-[#06060a] p-4">
         <div className="w-full max-w-md">
           <DashboardSkeleton />
+        </div>
+      </main>
+    );
+  }
+
+  if (verifyRequired) {
+    return (
+      <main className="grid min-h-screen place-items-center bg-[#06060a] p-4">
+        <div className="w-full max-w-md rounded-2xl border border-white/[0.06] bg-[#0c0c10]/80 backdrop-blur-xl p-6 text-center">
+          <Loader2 className="size-8 animate-spin text-cyan-400 mx-auto mb-3" />
+          <p className="text-sm text-zinc-400">Mengarahkan ke halaman verifikasi...</p>
         </div>
       </main>
     );

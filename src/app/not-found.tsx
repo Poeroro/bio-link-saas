@@ -1,13 +1,9 @@
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
 
-export default async function NotFound() {
-  const siteSetting = await prisma.setting.findUnique({ where: { key: "siteName" } }).catch(() => null);
-  const siteName = siteSetting?.value || "LinkPilot";
+export default function NotFound() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 via-white to-slate-100 px-4 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950">
       <div className="w-full max-w-lg text-center">
-        {/* Animated 404 illustration */}
         <div className="relative mx-auto mb-8 h-48 w-48">
           <div className="absolute inset-0 animate-pulse rounded-full bg-gradient-to-br from-violet-400/20 to-fuchsia-400/20 dark:from-violet-500/10 dark:to-fuchsia-500/10" />
           <div className="absolute inset-4 animate-bounce rounded-full bg-gradient-to-br from-violet-100 to-fuchsia-100 dark:from-violet-900/40 dark:to-fuchsia-900/40" />
@@ -19,10 +15,7 @@ export default async function NotFound() {
         </div>
 
         <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm dark:border-white/10 dark:bg-white/7">
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400 dark:text-zinc-500">
-            {siteName}
-          </p>
-          <h1 className="mt-2 text-2xl font-semibold text-slate-950 dark:text-white">
+          <h1 className="text-2xl font-semibold text-slate-950 dark:text-white">
             Page not found
           </h1>
           <p className="mt-3 text-sm text-slate-600 dark:text-zinc-300">
@@ -30,7 +23,6 @@ export default async function NotFound() {
             Try searching for a username instead.
           </p>
 
-          {/* Search suggestion */}
           <div className="mt-6">
             <div className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 dark:border-white/10 dark:bg-white/5">
               <svg

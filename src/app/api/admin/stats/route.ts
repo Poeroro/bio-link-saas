@@ -37,7 +37,7 @@ export async function GET() {
     take: 10,
   });
 
-  const topUsers = topUsersRaw.map((u) => ({
+  const topUsers = topUsersRaw.map((u: (typeof topUsersRaw)[number]) => ({
     ...u,
     totalClicks: u._count.clickEvents,
   }));

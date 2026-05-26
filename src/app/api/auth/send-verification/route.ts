@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
   ]);
 
   if (reqVerify?.value !== "true") {
-    return NextResponse.json({ error: "Verifikasi email tidak diaktifkan" }, { status: 400 });
+    return NextResponse.json({ required: false });
   }
 
   const verificationMethod = method?.value || "link";
@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Gagal mengirim email" }, { status: 500 });
     }
 
-    return NextResponse.json({ ok: true, method: "otp" });
+    return NextResponse.json({ ok: true, required: true, method: "otp" });
   } else {
     // Link verification
     const token = randomBytes(32).toString("hex");
@@ -66,6 +66,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Gagal mengirim email" }, { status: 500 });
     }
 
-    return NextResponse.json({ ok: true, method: "link" });
+    return NextResponse.json({ ok: true, required: true, method: "link" });
   }
 }

@@ -51,16 +51,15 @@ export default function RegisterPage() {
 
     // Check if email verification is required
     try {
-      const settingsRes = await fetch("/api/admin/settings");
-      const settingsData = await settingsRes.json();
-      if (settingsData.requireEmailVerification === "true") {
-        // Send verification
-        await fetch("/api/auth/send-verification", { method: "POST" });
+      const settingsRes = await fetch("/api/auth/send-verification", { method: "POST" });
+      const sendData = await settingsRes.json();
+      // send-verification returns { required: true/false }
+      if (sendData.required) {
         router.push(`/verify-email?email=${encodeURIComponent(form.email)}`);
         return;
       }
     } catch {
-      // If settings fetch fails, just continue to dashboard
+      // If verification check fails, just continue to dashboard
     }
 
     router.push("/dashboard");
