@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { randomBytes } from "crypto";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { sendEmail, verificationEmailHtml, otpEmailHtml } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   const reqOrigin = req.headers.get("origin") || req.nextUrl.origin;
   // Allow authenticated or email-in-body for pre-login verification
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   let email = session?.user?.email || "";
 
   // Normalize email

@@ -1,12 +1,11 @@
-import { type AuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+import NextAuth from "next-auth";
+import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 
-export const authOptions: AuthOptions = {
-  // No PrismaAdapter — credentials-only with JWT doesn't need DB sessions
+export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
-    CredentialsProvider({
+    Credentials({
       name: "credentials",
       credentials: {
         email: { label: "Email atau Username", type: "text" },
@@ -18,8 +17,7 @@ export const authOptions: AuthOptions = {
             return null;
           }
 
-          // Find by email or username
-          const identifier = credentials.email.trim().toLowerCase();
+          const identifier = (credentials.email as string).trim().toLowerCase();
           const user = await prisma.user.findFirst({
             where: identifier.includes("@")
               ? { email: identifier }
@@ -31,7 +29,7 @@ export const authOptions: AuthOptions = {
           }
 
           const isValid = await bcrypt.compare(
-            credentials.password,
+            credentials.password as string,
             user.password
           );
 
@@ -83,4 +81,4 @@ export const authOptions: AuthOptions = {
       return session;
     },
   },
-};
+});
