@@ -117,7 +117,7 @@ export function LinkManager({
 
   return (
     <SectionCard title="Tambah & Kelola Link" eyebrow="Link stack">
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_auto]">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto]">
         <input
           value={draft.title}
           onChange={(event) => setDraft((current) => ({ ...current, title: event.target.value }))}
@@ -190,7 +190,7 @@ export function LinkManager({
                 )}
               >
                 {isEditing ? (
-                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_auto]">
+                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto]">
                     <input
                       value={editDraft.title}
                       onChange={(event) =>

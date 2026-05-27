@@ -118,7 +118,7 @@ export function AnalyticsPanel() {
       {data && !loading && (
         <>
           {/* Stat cards */}
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
             <StatCard
               label="Total clicks"
               value={data.totalClicks}
@@ -259,7 +259,7 @@ export function AnalyticsPanel() {
             <p className="mb-4 text-sm font-semibold text-white">
               Device breakdown
             </p>
-            <div className="grid gap-4 sm:grid-cols-3">
+            <div className="grid grid-cols-3 gap-4">
               <DeviceStat
                 icon={Smartphone}
                 label="Mobile"
