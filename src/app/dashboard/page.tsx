@@ -155,7 +155,7 @@ export default function DashboardPage() {
     : `bio-link-saas.vercel.app/u/${currentUser.username}`;
 
   return (
-    <main className="min-h-screen bg-[#06060a] text-white">
+    <main className="min-h-screen overflow-x-hidden bg-[#06060a] text-white">
       {/* Floating mesh orbs */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-cyan-500/[0.07] blur-[80px] animate-[floatOrb_20s_ease-in-out_infinite]" />
