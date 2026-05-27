@@ -18,6 +18,7 @@ import {
   DiscordIcon,
   TwitchIcon,
   GithubIcon,
+  FacebookIcon,
 } from "@/components/icons/social-icons";
 import React, { useState } from "react";
 import type { BioLink, LinkKind } from "@/lib/types";
@@ -44,6 +45,7 @@ const LINK_KIND_OPTIONS: Array<{
   { value: "discord", label: "Discord", icon: DiscordIcon },
   { value: "twitch", label: "Twitch", icon: TwitchIcon },
   { value: "github", label: "GitHub", icon: GithubIcon },
+  { value: "facebook", label: "Facebook", icon: FacebookIcon },
 ];
 
 export function LinkManager({
@@ -115,7 +117,7 @@ export function LinkManager({
 
   return (
     <SectionCard title="Tambah & Kelola Link" eyebrow="Link stack">
-      <div className="grid gap-3 rounded-3xl bg-slate-50 p-3 dark:bg-white/5 sm:grid-cols-[1fr_1fr_auto]">
+      <div className="grid gap-3 rounded-2xl bg-slate-50 p-4 dark:bg-white/5 sm:grid-cols-[1fr_1fr_auto] sm:p-5">
         <input
           value={draft.title}
           onChange={(event) => setDraft((current) => ({ ...current, title: event.target.value }))}

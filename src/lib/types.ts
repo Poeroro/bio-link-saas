@@ -8,7 +8,8 @@ export type LinkKind =
   | "telegram"
   | "discord"
   | "twitch"
-  | "github";
+  | "github"
+  | "facebook";
 
 export type BioLink = {
   id: string;

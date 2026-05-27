@@ -14,6 +14,7 @@ import {
   DiscordIcon,
   TwitchIcon,
   GithubIcon,
+  FacebookIcon,
 } from "@/components/icons/social-icons";
 import type { BioLink, LinkKind, UserProfile } from "@/lib/types";
 import { getTheme } from "@/lib/themes";
@@ -31,6 +32,7 @@ const linkIcons: Record<LinkKind, (props: React.SVGProps<SVGSVGElement>) => Reac
   discord: DiscordIcon,
   twitch: TwitchIcon,
   github: GithubIcon,
+  facebook: FacebookIcon,
 };
 
 export function BioPreview({
