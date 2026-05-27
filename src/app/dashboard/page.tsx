@@ -185,7 +185,7 @@ export default function DashboardPage() {
               />
             </button>
 
-            <Link href="/" className="flex items-center gap-3">
+            <Link href="/dashboard" className="flex items-center gap-3">
               <span className="hidden text-base font-black tracking-tight sm:block">
                 <SiteName />
               </span>
@@ -265,7 +265,7 @@ export default function DashboardPage() {
               mobileMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-8 opacity-0"
             }`}
           >
-            <Link href="/" onClick={() => setMobileMenuOpen(false)}>
+            <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)}>
               <SiteName />
             </Link>
             <div className="h-px w-16 bg-white/10" />
@@ -290,16 +290,6 @@ export default function DashboardPage() {
 
             <div className="h-px w-16 bg-white/10" />
 
-            {/* User info */}
-            {session?.user?.email && (
-              <p className="text-sm text-zinc-500">{session.user.email}</p>
-            )}
-
-            <div className="flex items-center gap-3">
-              {state.darkMode ? <Moon className="size-4 text-zinc-400" /> : <Sun className="size-4 text-zinc-400" />}
-              <ToggleSwitch checked={state.darkMode} onChange={toggleDarkMode} label="Dark mode" />
-            </div>
-
             <Link
               href={`/u/${currentUser.username}`}
               target="_blank"
@@ -309,15 +299,6 @@ export default function DashboardPage() {
               View Profile
               <ArrowUpRight className="size-5" />
             </Link>
-
-            <button
-              type="button"
-              onClick={() => { logout(); signOut({ redirect: false }); router.push('/login'); }}
-              className="inline-flex items-center gap-2 text-base font-semibold text-red-400 transition hover:text-red-300"
-            >
-              <LogOut className="size-5" />
-              Logout
-            </button>
           </div>
         </div>
 

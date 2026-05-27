@@ -74,7 +74,7 @@ export default async function PublicBioPage({
     <main className="relative min-h-screen">
       <div className="fixed left-1/2 top-4 z-20 flex -translate-x-1/2 items-center gap-2 rounded-2xl border border-white/60 bg-white/78 p-1.5 shadow-xl shadow-slate-950/12 backdrop-blur-xl dark:border-white/10 dark:bg-zinc-950/72">
         <Link
-          href="/"
+          href="/dashboard"
           className="grid size-10 place-items-center rounded-xl text-slate-700 transition hover:bg-slate-100 dark:text-zinc-200 dark:hover:bg-white/10"
           aria-label="Home"
         >
