@@ -357,7 +357,7 @@ export default function DashboardPage() {
                   <p className="text-sm font-bold uppercase tracking-[0.22em] text-cyan-400">
                     Dashboard
                   </p>
-                  <h1 className="mt-3 text-3xl font-bold leading-tight text-white sm:text-4xl">
+                  <h1 className="mt-3 text-2xl font-bold leading-tight text-white sm:text-3xl lg:text-4xl">
                     {currentUser.headline}
                   </h1>
                   <p className="mt-2 text-sm text-zinc-400">
@@ -386,11 +386,11 @@ export default function DashboardPage() {
                     </button>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 rounded-2xl bg-white/[0.04] p-3">
+                <div className="flex items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.03] p-3">
                   <img
                     src={currentUser.avatarUrl}
                     alt={currentUser.name}
-                    className="size-12 rounded-2xl object-cover"
+                    className="size-10 rounded-xl object-cover sm:size-12 sm:rounded-2xl"
                   />
                   <div>
                     <p className="text-sm font-bold text-white">
