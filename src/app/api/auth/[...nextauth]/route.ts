@@ -1,8 +1,9 @@
+import { NextRequest } from "next/server";
 import { handlers } from "@/lib/auth";
 
 const { GET: _GET, POST: _POST } = handlers;
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   try {
     return await _GET(req);
   } catch (e) {
@@ -11,7 +12,7 @@ export async function GET(req: Request) {
   }
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     return await _POST(req);
   } catch (e) {
