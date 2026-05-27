@@ -155,7 +155,7 @@ export default function DashboardPage() {
     : `bio-link-saas.vercel.app/u/${currentUser.username}`;
 
   return (
-    <main className="min-h-screen w-full max-w-full bg-[#06060a] text-white">
+    <main className="min-h-screen bg-[#06060a] text-white">
       {/* Floating mesh orbs */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-cyan-500/[0.07] blur-[80px] animate-[floatOrb_20s_ease-in-out_infinite]" />
@@ -163,10 +163,11 @@ export default function DashboardPage() {
         <div className="absolute top-[30%] right-[20%] w-[400px] h-[400px] rounded-full bg-emerald-500/[0.05] blur-[80px] animate-[floatOrb_22s_ease-in-out_infinite]" />
       </div>
 
-      <div className="relative z-10">
+      <div className="relative z-10 px-4 py-5">
+        <div className="w-full max-w-[360px] mx-auto">
         {/* Header */}
-        <header className="sticky top-0 z-30 border-b border-white/[0.06] bg-[#06060a]/90 backdrop-blur-xl">
-          <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-4 px-4 py-3 sm:px-6">
+        <header className="sticky top-0 z-30 border-b border-white/[0.06] bg-[#06060a]/90 backdrop-blur-xl -mx-4 -mt-5 px-4 py-3 sm:px-4">
+          <div className="flex items-center justify-between gap-4">
             {/* Hamburger button - mobile only */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -321,7 +322,7 @@ export default function DashboardPage() {
           </div>
         </header>
 
-        <div className="mx-auto grid max-w-[1500px] gap-6 px-4 py-6 sm:px-6 xl:grid-cols-[minmax(0,1fr)_430px]">
+        <div className="grid gap-6 py-6">
           <section className="grid gap-5">
             {/* User info card */}
             <div
@@ -447,8 +448,8 @@ export default function DashboardPage() {
                   />
                 </div>
 
-                {/* Preview Bio Page — mobile/tablet: inline, above theme picker */}
-                <div className="xl:hidden">
+                {/* Preview Bio Page */}
+                <div>
                   <div className="rounded-2xl border border-white/[0.06] bg-[#0c0c10]/80 backdrop-blur-xl p-4">
                     <div className="mb-3 flex items-center justify-between">
                       <h2 className="text-lg font-semibold text-white">Preview</h2>
@@ -540,44 +541,7 @@ export default function DashboardPage() {
 
 
           </section>
-
-          {/* Sidebar preview — desktop only */}
-          <aside className="hidden xl:block xl:sticky xl:top-24 xl:h-[calc(100vh-7rem)]">
-            <div className="mb-3 flex items-center justify-between">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-zinc-500">
-                  Realtime
-                </p>
-                <h2 className="text-lg font-semibold text-white">
-                  Preview Bio Page
-                </h2>
-              </div>
-              <Link
-                href={`/u/${currentUser.username}`}
-                target="_blank"
-                className="inline-flex items-center gap-1.5 rounded-lg bg-white/[0.06] px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-white/[0.10]"
-              >
-                View
-                <ArrowUpRight className="size-3" />
-              </Link>
-            </div>
-            <div className="h-[720px] max-h-[calc(100vh-10rem)] min-h-[620px] overflow-y-auto overflow-x-hidden rounded-2xl">
-              <BioPreview
-                user={currentUser}
-                framed
-                compact
-                disableLinks
-                onLinkClick={() =>
-                  addToast({
-                    title: 'Preview realtime',
-                    description:
-                      'Buka halaman publik untuk klik link asli.',
-                    tone: 'info',
- })
- }
-              />
-            </div>
-          </aside>
+        </div>
         </div>
       </div>
     </main>
