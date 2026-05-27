@@ -80,11 +80,11 @@ export function AnalyticsPanel() {
           <p className="text-xs font-bold uppercase tracking-[0.22em] text-cyan-400">
             Analytics
           </p>
-          <h2 className="mt-1 text-lg font-semibold text-white">
+          <h2 className="mt-1 text-lg font-semibold text-slate-950 dark:text-white">
             Click performance
           </h2>
         </div>
-        <div className="inline-flex gap-1 rounded-2xl border border-white/10 bg-white/5 p-1">
+        <div className="inline-flex gap-1 rounded-2xl border border-slate-200 dark:border-white/10 bg-white/5 p-1">
           {PERIODS.map((p) => (
             <button
               key={p.value}
@@ -94,7 +94,7 @@ export function AnalyticsPanel() {
                 'rounded-xl px-4 py-1.5 text-sm font-semibold transition',
                 period === p.value
                   ? 'bg-cyan-400 text-slate-950'
-                  : 'text-zinc-400 hover:text-white',
+                  : 'text-zinc-400 hover:text-slate-950 dark:text-white',
               )}
             >
               {p.label}
@@ -105,7 +105,7 @@ export function AnalyticsPanel() {
 
       {/* Loading / error */}
       {loading && (
-        <div className="grid h-40 place-items-center rounded-2xl border border-white/10 bg-white/5">
+        <div className="grid h-40 place-items-center rounded-2xl border border-slate-200 dark:border-white/10 bg-white/5">
           <div className="size-8 animate-spin rounded-full border-2 border-cyan-400 border-t-transparent" />
         </div>
       )}
@@ -152,8 +152,8 @@ export function AnalyticsPanel() {
           </div>
 
           {/* Clicks per day chart */}
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-            <p className="mb-4 text-sm font-semibold text-white">
+          <div className="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/5 p-5">
+            <p className="mb-4 text-sm font-semibold text-slate-950 dark:text-white">
               Clicks per day
             </p>
             <div className="flex h-48 items-end gap-1.5">
@@ -172,7 +172,7 @@ export function AnalyticsPanel() {
                         className="w-full max-w-[40px] rounded-t-lg bg-cyan-400 transition group-hover:bg-cyan-300"
                         style={{ height: `${height}%` }}
                       />
-                      <span className="pointer-events-none absolute -top-6 whitespace-nowrap rounded-lg bg-slate-900 px-2 py-1 text-xs font-semibold text-white opacity-0 shadow-lg transition group-hover:opacity-100">
+                      <span className="pointer-events-none absolute -top-6 whitespace-nowrap rounded-lg bg-slate-900 px-2 py-1 text-xs font-semibold text-slate-950 dark:text-white opacity-0 shadow-lg transition group-hover:opacity-100">
                         {day.clicks}
                       </span>
                     </div>
@@ -191,15 +191,15 @@ export function AnalyticsPanel() {
           </div>
 
           {/* Top links table */}
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-            <p className="mb-4 text-sm font-semibold text-white">
+          <div className="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/5 p-5">
+            <p className="mb-4 text-sm font-semibold text-slate-950 dark:text-white">
               Top links
             </p>
             {data.topLinks.length > 0 ? (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-sm">
                   <thead>
-                    <tr className="border-b border-white/10 text-xs uppercase tracking-wider text-zinc-500">
+                    <tr className="border-b border-slate-200 dark:border-white/10 text-xs uppercase tracking-wider text-zinc-500">
                       <th className="pb-3 pr-4 font-semibold">#</th>
                       <th className="pb-3 pr-4 font-semibold">Label</th>
                       <th className="pb-3 text-right font-semibold">
@@ -225,7 +225,7 @@ export function AnalyticsPanel() {
                           <td className="py-3 pr-4 font-mono text-zinc-500">
                             {i + 1}
                           </td>
-                          <td className="py-3 pr-4 text-white">
+                          <td className="py-3 pr-4 text-slate-950 dark:text-white">
                             <div className="flex items-center gap-3">
                               <span className="truncate">
                                 {link.label}
@@ -255,8 +255,8 @@ export function AnalyticsPanel() {
           </div>
 
           {/* Device breakdown */}
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-            <p className="mb-4 text-sm font-semibold text-white">
+          <div className="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/5 p-5">
+            <p className="mb-4 text-sm font-semibold text-slate-950 dark:text-white">
               Device breakdown
             </p>
             <div className="grid grid-cols-3 gap-4">
@@ -328,7 +328,7 @@ function StatCard({
   };
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
+    <div className="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/5 p-5">
       <div className="flex items-center justify-between">
         <p className="text-sm text-zinc-400">{label}</p>
         <div
@@ -340,7 +340,7 @@ function StatCard({
           <Icon className="size-5" />
         </div>
       </div>
-      <p className="mt-3 text-3xl font-bold tracking-tight text-white">
+      <p className="mt-3 text-3xl font-bold tracking-tight text-slate-950 dark:text-white">
         {value.toLocaleString()}
       </p>
     </div>
@@ -361,7 +361,7 @@ function DeviceStat({
       <Icon className="size-5 text-zinc-400" />
       <div>
         <p className="text-xs text-zinc-500">{label}</p>
-        <p className="text-lg font-bold text-white">{pct}%</p>
+        <p className="text-lg font-bold text-slate-950 dark:text-white">{pct}%</p>
       </div>
     </div>
   );

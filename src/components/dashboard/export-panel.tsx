@@ -105,7 +105,7 @@ export function ExportPanel() {
             type="button"
             onClick={handleClear}
             onBlur={() => setConfirmClear(false)}
-            className="mt-3 inline-flex items-center gap-2 rounded-2xl bg-rose-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-rose-700"
+            className="mt-3 inline-flex items-center gap-2 rounded-2xl bg-rose-600 px-5 py-2.5 text-sm font-semibold text-slate-950 dark:text-white transition hover:bg-rose-700"
           >
             {confirmClear ? <CheckCircle2 className="size-4" /> : <Trash2 className="size-4" />}
             {confirmClear ? "Click again to confirm" : "Clear all data"}

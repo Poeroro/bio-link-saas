@@ -17,18 +17,18 @@ export function SectionCard({
   return (
     <section
       className={cn(
-        "rounded-2xl border border-white/[0.06] bg-[#0c0c10]/80 backdrop-blur-xl p-5 sm:p-6",
+        "rounded-2xl border border-slate-200 bg-slate-50/80 backdrop-blur-xl dark:border-white/[0.06] dark:bg-[#0c0c10]/80 p-5 sm:p-6",
         className,
       )}
     >
       <div className="mb-5 flex items-start justify-between gap-4">
         <div>
           {eyebrow ? (
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-zinc-500">
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-zinc-500 dark:text-zinc-500">
               {eyebrow}
             </p>
           ) : null}
-          <h2 className="mt-1 text-lg font-semibold text-white">
+          <h2 className="mt-1 text-lg font-semibold text-slate-950 dark:text-white">
             {title}
           </h2>
         </div>

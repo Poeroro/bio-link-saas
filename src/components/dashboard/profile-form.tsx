@@ -61,7 +61,7 @@ export function ProfileForm({
         {/* Avatar upload */}
         <div className="sm:col-span-2 flex items-center gap-4">
           <div
-            className="relative w-20 h-20 rounded-full overflow-hidden bg-white/[0.06] border border-white/10 shrink-0 cursor-pointer group"
+            className="relative w-20 h-20 rounded-full overflow-hidden bg-slate-200 dark:bg-white/[0.06] border border-slate-200 dark:border-white/10 shrink-0 cursor-pointer group"
             onClick={() => fileRef.current?.click()}
           >
             {draft.avatarUrl ? (
@@ -72,7 +72,7 @@ export function ProfileForm({
               </div>
             )}
             <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-              <Upload className="w-5 h-5 text-white" />
+              <Upload className="w-5 h-5 text-slate-950 dark:text-white" />
             </div>
           </div>
           <div>
@@ -156,7 +156,7 @@ export function PasswordForm() {
               className="min-w-0 flex-1 bg-transparent px-4 py-3 outline-none"
               placeholder="Masukkan password saat ini"
             />
-            <button type="button" onClick={() => setShowCurrent(!showCurrent)} className="px-3 text-zinc-400 hover:text-white">
+            <button type="button" onClick={() => setShowCurrent(!showCurrent)} className="px-3 text-zinc-400 hover:text-slate-950 dark:text-white">
               {showCurrent ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
           </div>
@@ -171,7 +171,7 @@ export function PasswordForm() {
               className="min-w-0 flex-1 bg-transparent px-4 py-3 outline-none"
               placeholder="Minimal 6 karakter"
             />
-            <button type="button" onClick={() => setShowNew(!showNew)} className="px-3 text-zinc-400 hover:text-white">
+            <button type="button" onClick={() => setShowNew(!showNew)} className="px-3 text-zinc-400 hover:text-slate-950 dark:text-white">
               {showNew ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
           </div>

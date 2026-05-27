@@ -56,7 +56,7 @@ export function CustomCssPanel() {
           type="button"
           onClick={handleSave}
           disabled={!hasChanges}
-          className="inline-flex w-fit items-center gap-2 rounded-2xl bg-gradient-to-r from-violet-600 to-fuchsia-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 transition hover:shadow-xl hover:shadow-violet-500/30 disabled:cursor-not-allowed disabled:opacity-50"
+          className="inline-flex w-fit items-center gap-2 rounded-2xl bg-gradient-to-r from-violet-600 to-fuchsia-600 px-5 py-2.5 text-sm font-semibold text-slate-950 dark:text-white shadow-lg shadow-violet-500/25 transition hover:shadow-xl hover:shadow-violet-500/30 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <Save className="size-4" />
           Save CSS

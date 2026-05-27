@@ -4,6 +4,21 @@
 
 /* ── Design Tokens ── */
 :root {
+  --surface-0: #ffffff;
+  --surface-1: #f8f9fa;
+  --surface-2: #f0f1f3;
+  --surface-3: #e4e5e9;
+  --surface-4: #d8d9de;
+  --primary: #0891b2;
+  --success: #059669;
+  --border-glass: rgba(0, 0, 0, 0.08);
+  --glass-bg: rgba(0, 0, 0, 0.04);
+  --glass-blur: 20px;
+  --background: #ffffff;
+  --foreground: #1a1a2e;
+}
+
+.dark {
   --surface-0: #06060a;
   --surface-1: #0c0c10;
   --surface-2: #141418;
@@ -16,8 +31,6 @@
   --glass-blur: 20px;
   --background: #06060a;
   --foreground: #f0f0f5;
-  --font-sans: var(--font-manrope);
-  --font-serif: var(--font-fraunces);
 }
 
 @theme inline {
@@ -45,6 +58,7 @@ body {
   font-family: var(--font-manrope), "Inter", "Aptos", "Segoe UI", sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 /* ── Noise Texture Overlay ── */
@@ -71,8 +85,12 @@ body::before {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #475569;
+  background: #94a3b8;
   border-radius: 9999px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #475569;
 }
 
 ::-webkit-scrollbar-thumb:hover {

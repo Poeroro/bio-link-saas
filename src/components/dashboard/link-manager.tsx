@@ -270,7 +270,7 @@ export function LinkManager({
                       >
                         <GripVertical className="size-5" />
                       </button>
-                      <div className="grid size-11 shrink-0 place-items-center rounded-2xl bg-slate-950 text-white dark:bg-white dark:text-slate-950">
+                      <div className="grid size-11 shrink-0 place-items-center rounded-2xl bg-slate-950 text-slate-950 dark:text-white dark:bg-white dark:text-slate-950">
                         <Icon className="size-5" />
                       </div>
                       <div className="min-w-0">

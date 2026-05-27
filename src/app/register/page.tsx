@@ -99,7 +99,7 @@ export default function RegisterPage() {
               <h2 className="text-2xl font-bold text-slate-950 dark:text-white">
                 Register
               </h2>
-              <p className="mt-2 text-sm text-slate-500 dark:text-zinc-400">
+              <p className="mt-2 text-sm text-slate-500 dark:text-zinc-500 dark:text-zinc-400">
                 Isi data di bawah untuk membuat akun baru.
               </p>
             </div>
@@ -115,7 +115,7 @@ export default function RegisterPage() {
                 <span className="text-sm font-semibold text-slate-700 dark:text-zinc-200">
                   Nama
                 </span>
-                <div className="mt-2 flex rounded-2xl border border-slate-200 bg-white text-slate-950 transition focus-within:border-slate-950 dark:border-white/10 dark:bg-zinc-950/60 dark:text-white dark:focus-within:border-white">
+                <div className="mt-2 flex rounded-2xl border border-slate-200 bg-white text-slate-950 transition focus-within:border-slate-950 dark:border-white/10 dark:bg-zinc-950/60 dark:text-slate-950 dark:text-white dark:focus-within:border-white">
                   <input
                     type="text"
                     required
@@ -133,7 +133,7 @@ export default function RegisterPage() {
                 <span className="text-sm font-semibold text-slate-700 dark:text-zinc-200">
                   Username
                 </span>
-                <div className="mt-2 flex rounded-2xl border border-slate-200 bg-white text-slate-950 transition focus-within:border-slate-950 dark:border-white/10 dark:bg-zinc-950/60 dark:text-white dark:focus-within:border-white">
+                <div className="mt-2 flex rounded-2xl border border-slate-200 bg-white text-slate-950 transition focus-within:border-slate-950 dark:border-white/10 dark:bg-zinc-950/60 dark:text-slate-950 dark:text-white dark:focus-within:border-white">
                   <span className="grid place-items-center pl-4 text-sm font-bold text-slate-400">
                     @
                   </span>
@@ -154,7 +154,7 @@ export default function RegisterPage() {
                 <span className="text-sm font-semibold text-slate-700 dark:text-zinc-200">
                   Email
                 </span>
-                <div className="mt-2 flex rounded-2xl border border-slate-200 bg-white text-slate-950 transition focus-within:border-slate-950 dark:border-white/10 dark:bg-zinc-950/60 dark:text-white dark:focus-within:border-white">
+                <div className="mt-2 flex rounded-2xl border border-slate-200 bg-white text-slate-950 transition focus-within:border-slate-950 dark:border-white/10 dark:bg-zinc-950/60 dark:text-slate-950 dark:text-white dark:focus-within:border-white">
                   <input
                     type="email"
                     required
@@ -172,7 +172,7 @@ export default function RegisterPage() {
                 <span className="text-sm font-semibold text-slate-700 dark:text-zinc-200">
                   Password
                 </span>
-                <div className="mt-2 flex rounded-2xl border border-slate-200 bg-white text-slate-950 transition focus-within:border-slate-950 dark:border-white/10 dark:bg-zinc-950/60 dark:text-white dark:focus-within:border-white">
+                <div className="mt-2 flex rounded-2xl border border-slate-200 bg-white text-slate-950 transition focus-within:border-slate-950 dark:border-white/10 dark:bg-zinc-950/60 dark:text-slate-950 dark:text-white dark:focus-within:border-white">
                   <input
                     type="password"
                     required
@@ -190,7 +190,7 @@ export default function RegisterPage() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="mt-2 inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-slate-950 px-4 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-50 dark:bg-white dark:text-slate-950"
+                className="mt-2 inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-slate-950 px-4 text-sm font-semibold text-slate-950 dark:text-white transition hover:opacity-90 disabled:opacity-50 dark:bg-white dark:text-slate-950"
               >
                 {isLoading ? (
                   <Loader2 className="size-5 animate-spin" />
@@ -205,7 +205,7 @@ export default function RegisterPage() {
               Sudah punya akun?{" "}
               <Link
                 href="/login"
-                className="font-bold text-slate-950 underline underline-offset-4 dark:text-white"
+                className="font-bold text-slate-950 underline underline-offset-4 dark:text-slate-950 dark:text-white"
               >
                 Login
               </Link>

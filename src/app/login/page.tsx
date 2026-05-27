@@ -68,7 +68,7 @@ export default function LoginPage() {
               <h2 className="text-2xl font-bold text-slate-950 dark:text-white">
                 Login
               </h2>
-              <p className="mt-2 text-sm text-slate-500 dark:text-zinc-400">
+              <p className="mt-2 text-sm text-slate-500 dark:text-zinc-500 dark:text-zinc-400">
                 Masukkan email dan password akun kamu.
               </p>
             </div>
@@ -84,7 +84,7 @@ export default function LoginPage() {
                 <span className="text-sm font-semibold text-slate-700 dark:text-zinc-200">
                   Email atau Username
                 </span>
-                <div className="mt-2 flex rounded-2xl border border-slate-200 bg-white text-slate-950 transition focus-within:border-slate-950 dark:border-white/10 dark:bg-zinc-950/60 dark:text-white dark:focus-within:border-white">
+                <div className="mt-2 flex rounded-2xl border border-slate-200 bg-white text-slate-950 transition focus-within:border-slate-950 dark:border-white/10 dark:bg-zinc-950/60 dark:text-slate-950 dark:text-white dark:focus-within:border-white">
                   <input
                     type="text"
                     required
@@ -102,7 +102,7 @@ export default function LoginPage() {
                 <span className="text-sm font-semibold text-slate-700 dark:text-zinc-200">
                   Password
                 </span>
-                <div className="mt-2 flex rounded-2xl border border-slate-200 bg-white text-slate-950 transition focus-within:border-slate-950 dark:border-white/10 dark:bg-zinc-950/60 dark:text-white dark:focus-within:border-white">
+                <div className="mt-2 flex rounded-2xl border border-slate-200 bg-white text-slate-950 transition focus-within:border-slate-950 dark:border-white/10 dark:bg-zinc-950/60 dark:text-slate-950 dark:text-white dark:focus-within:border-white">
                   <input
                     type="password"
                     required
@@ -128,7 +128,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="mt-2 inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-slate-950 px-4 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-50 dark:bg-white dark:text-slate-950"
+                className="mt-2 inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-slate-950 px-4 text-sm font-semibold text-slate-950 dark:text-white transition hover:opacity-90 disabled:opacity-50 dark:bg-white dark:text-slate-950"
               >
                 {isLoading ? (
                   <Loader2 className="size-5 animate-spin" />
@@ -143,7 +143,7 @@ export default function LoginPage() {
               Belum punya akun?{" "}
               <Link
                 href="/register"
-                className="font-bold text-slate-950 underline underline-offset-4 dark:text-white"
+                className="font-bold text-slate-950 underline underline-offset-4 dark:text-slate-950 dark:text-white"
               >
                 Register
               </Link>

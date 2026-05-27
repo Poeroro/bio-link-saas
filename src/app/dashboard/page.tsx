@@ -102,7 +102,7 @@ export default function DashboardPage() {
 
   if (!isReady || checking) {
     return (
-      <main className="grid min-h-screen place-items-center bg-[#06060a] p-4">
+      <main className="grid min-h-screen place-items-center bg-white dark:bg-[#06060a] p-4">
         <div className="w-full max-w-md">
           <DashboardSkeleton />
         </div>
@@ -112,8 +112,8 @@ export default function DashboardPage() {
 
   if (verifyRequired) {
     return (
-      <main className="grid min-h-screen place-items-center bg-[#06060a] p-4">
-        <div className="w-full max-w-md rounded-2xl border border-white/[0.06] bg-[#0c0c10]/80 backdrop-blur-xl p-6 text-center">
+      <main className="grid min-h-screen place-items-center bg-white dark:bg-[#06060a] p-4">
+        <div className="w-full max-w-md rounded-2xl border border-slate-200 dark:border-white/[0.06] bg-slate-50/80 backdrop-blur-xl dark:bg-[#0c0c10]/80 p-6 text-center">
           <Loader2 className="size-8 animate-spin text-cyan-400 mx-auto mb-3" />
           <p className="text-sm text-zinc-400">Mengarahkan ke halaman verifikasi...</p>
         </div>
@@ -123,9 +123,9 @@ export default function DashboardPage() {
 
   if (!currentUser) {
     return (
-      <main className="grid min-h-screen place-items-center bg-[#06060a] p-4">
-        <section className="max-w-md rounded-2xl border border-white/[0.06] bg-[#0c0c10]/80 backdrop-blur-xl p-6 text-center">
-          <h1 className="mt-5 text-2xl font-bold text-white">
+      <main className="grid min-h-screen place-items-center bg-white dark:bg-[#06060a] p-4">
+        <section className="max-w-md rounded-2xl border border-slate-200 dark:border-white/[0.06] bg-slate-50/80 backdrop-blur-xl dark:bg-[#0c0c10]/80 p-6 text-center">
+          <h1 className="mt-5 text-2xl font-bold text-slate-950 dark:text-white">
             Sesi dashboard belum aktif
           </h1>
           <p className="mt-3 text-sm leading-6 text-zinc-400">
@@ -140,7 +140,7 @@ export default function DashboardPage() {
             </Link>
             <Link
               href="/register"
-              className="inline-flex h-11 items-center justify-center rounded-2xl border border-white/[0.06] px-4 text-sm font-semibold text-white transition hover:bg-white/[0.04]"
+              className="inline-flex h-11 items-center justify-center rounded-2xl border border-slate-200 dark:border-white/[0.06] px-4 text-sm font-semibold text-slate-950 dark:text-white transition hover:bg-slate-100 dark:hover:bg-white/[0.04]"
             >
               Register
             </Link>
@@ -155,7 +155,7 @@ export default function DashboardPage() {
     : `bio-link-saas.vercel.app/u/${currentUser.username}`;
 
   return (
-    <main className="min-h-screen w-full max-w-full bg-[#06060a] text-white">
+    <main className="min-h-screen w-full max-w-full bg-white text-slate-950 dark:bg-[#06060a] dark:text-white">
       {/* Floating mesh orbs */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-cyan-500/[0.07] blur-[80px] animate-[floatOrb_20s_ease-in-out_infinite]" />
@@ -165,12 +165,12 @@ export default function DashboardPage() {
 
       <div className="relative z-10">
         {/* Header */}
-        <header className="sticky top-0 z-30 border-b border-white/[0.06] bg-[#06060a]/90 backdrop-blur-xl">
+        <header className="sticky top-0 z-30 border-b border-slate-200 dark:border-white/[0.06] bg-white/90 dark:bg-[#06060a]/90 backdrop-blur-xl">
           <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-4 px-4 py-3 sm:px-6">
             {/* Hamburger button - mobile only */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="relative z-50 flex size-9 items-center justify-center rounded-lg bg-white/10 text-white transition lg:hidden"
+              className="relative z-50 flex size-9 items-center justify-center rounded-lg bg-slate-200 dark:bg-white/10 text-slate-950 dark:text-white transition lg:hidden"
               aria-label={mobileMenuOpen ? "Tutup menu" : "Buka menu"}
             >
               <Menu
@@ -192,7 +192,7 @@ export default function DashboardPage() {
             </Link>
 
             {/* Tab navigation - desktop only */}
-            <nav className="hidden items-center gap-1 rounded-2xl bg-[#0c0c10]/80 backdrop-blur-xl border border-white/[0.06] p-1 lg:flex">
+            <nav className="hidden items-center gap-1 rounded-2xl bg-slate-50/80 backdrop-blur-xl dark:bg-[#0c0c10]/80 border border-slate-200 dark:border-white/[0.06] p-1 lg:flex">
               {TABS.map((tab) => (
                 <button
                   key={tab.id}
@@ -202,7 +202,7 @@ export default function DashboardPage() {
                     'inline-flex h-9 items-center gap-2 rounded-xl px-3 text-sm font-semibold transition',
                     activeTab === tab.id
                       ? 'bg-cyan-400/10 text-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.12)]'
-                      : 'text-zinc-400 hover:text-white hover:bg-white/[0.04]',
+                      : 'text-zinc-400 hover:text-slate-950 dark:text-white hover:bg-slate-100 dark:hover:bg-white/[0.04]',
                   )}
                 >
                   <tab.icon className="size-4" />
@@ -253,7 +253,7 @@ export default function DashboardPage() {
 
         {/* Mobile menu overlay — outside header to cover full screen */}
         <div
-          className={`fixed inset-0 z-50 bg-[#06060a] backdrop-blur-xl transition-all duration-300 lg:hidden ${
+          className={`fixed inset-0 z-50 bg-white dark:bg-[#06060a] backdrop-blur-xl transition-all duration-300 lg:hidden ${
             mobileMenuOpen
               ? "pointer-events-auto opacity-100"
               : "pointer-events-none opacity-0"
@@ -268,7 +268,7 @@ export default function DashboardPage() {
             <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)}>
               <SiteName />
             </Link>
-            <div className="h-px w-16 bg-white/10" />
+            <div className="h-px w-16 bg-slate-200 dark:bg-white/10" />
 
             {/* Tab links */}
             {TABS.map((tab) => (
@@ -280,7 +280,7 @@ export default function DashboardPage() {
                   'inline-flex items-center gap-3 text-lg font-semibold transition',
                   activeTab === tab.id
                     ? 'text-cyan-400'
-                    : 'text-zinc-400 hover:text-white',
+                    : 'text-zinc-400 hover:text-slate-950 dark:text-white',
                 )}
               >
                 <tab.icon className="size-5" />
@@ -288,7 +288,7 @@ export default function DashboardPage() {
               </button>
             ))}
 
-            <div className="h-px w-16 bg-white/10" />
+            <div className="h-px w-16 bg-slate-200 dark:bg-white/10" />
 
             <Link
               href={`/u/${currentUser.username}`}
@@ -306,7 +306,7 @@ export default function DashboardPage() {
           <section className="grid gap-5">
             {/* User info card */}
             <div
-              className="rounded-2xl border border-white/[0.06] bg-[#0c0c10]/80 backdrop-blur-xl p-5 sm:p-6"
+              className="rounded-2xl border border-slate-200 dark:border-white/[0.06] bg-slate-50/80 backdrop-blur-xl dark:bg-[#0c0c10]/80 p-5 sm:p-6"
               style={{ animation: 'fadeSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both' }}
             >
               {verifyRequired && (
@@ -338,14 +338,14 @@ export default function DashboardPage() {
                   <p className="text-sm font-bold uppercase tracking-[0.22em] text-cyan-400">
                     Dashboard
                   </p>
-                  <h1 className="mt-3 text-2xl font-bold leading-tight text-white sm:text-3xl lg:text-4xl">
+                  <h1 className="mt-3 text-2xl font-bold leading-tight text-slate-950 dark:text-white sm:text-3xl lg:text-4xl">
                     {currentUser.headline}
                   </h1>
                   <p className="mt-2 text-sm text-zinc-400">
                     {currentUser.bio}
                   </p>
                   <div className="mt-3 flex items-center gap-2 overflow-hidden">
-                    <span className="inline-flex min-w-0 max-w-full items-center gap-1.5 rounded-full bg-white/[0.04] px-3 py-1 text-xs font-medium text-zinc-300">
+                    <span className="inline-flex min-w-0 max-w-full items-center gap-1.5 rounded-full bg-slate-100 dark:bg-white/[0.04] px-3 py-1 text-xs font-medium text-zinc-300">
                       <LinkIcon className="size-3 shrink-0" />
                       <span className="truncate">{profileUrl}</span>
                     </span>
@@ -367,14 +367,14 @@ export default function DashboardPage() {
                     </button>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.03] p-3">
+                <div className="flex items-center gap-3 rounded-xl border border-slate-200 dark:border-white/[0.06] bg-slate-100 dark:bg-white/[0.03] p-3">
                   <img
                     src={currentUser.avatarUrl}
                     alt={currentUser.name}
                     className="size-10 rounded-xl object-cover sm:size-12 sm:rounded-2xl"
                   />
                   <div>
-                    <p className="text-sm font-bold text-white">
+                    <p className="text-sm font-bold text-slate-950 dark:text-white">
                       {currentUser.name}
                     </p>
                     <p className="text-xs text-zinc-400">
@@ -401,7 +401,7 @@ export default function DashboardPage() {
                     'inline-flex shrink-0 items-center gap-2 rounded-2xl border px-4 py-2 text-sm font-semibold transition',
                     activeTab === tab.id
                       ? 'border-cyan-400/30 bg-cyan-400/10 text-cyan-400'
-                      : 'border-white/[0.06] bg-white/[0.04] text-zinc-400 hover:text-white',
+                      : 'border-slate-200 dark:border-white/[0.06] bg-slate-100 dark:bg-white/[0.04] text-zinc-400 hover:text-slate-950 dark:text-white',
                   )}
                 >
                   <tab.icon className="size-4" />
@@ -430,13 +430,13 @@ export default function DashboardPage() {
 
                 {/* Preview Bio Page — mobile/tablet: inline, above theme picker */}
                 <div className="xl:hidden">
-                  <div className="rounded-2xl border border-white/[0.06] bg-[#0c0c10]/80 backdrop-blur-xl p-4">
+                  <div className="rounded-2xl border border-slate-200 dark:border-white/[0.06] bg-slate-50/80 backdrop-blur-xl dark:bg-[#0c0c10]/80 p-4">
                     <div className="mb-3 flex items-center justify-between">
-                      <h2 className="text-lg font-semibold text-white">Preview</h2>
+                      <h2 className="text-lg font-semibold text-slate-950 dark:text-white">Preview</h2>
                       <Link
                         href={`/u/${currentUser.username}`}
                         target="_blank"
-                        className="inline-flex items-center gap-1.5 rounded-lg bg-white/[0.06] px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-white/[0.10]"
+                        className="inline-flex items-center gap-1.5 rounded-lg bg-slate-200 dark:bg-white/[0.06] px-3 py-1.5 text-xs font-semibold text-slate-950 dark:text-white transition hover:bg-white/[0.10]"
                       >
                         View
                         <ArrowUpRight className="size-3" />
@@ -490,23 +490,23 @@ export default function DashboardPage() {
                 <PasswordForm />
 
                 {/* Theme selector */}
-                <div className="rounded-2xl border border-white/[0.06] bg-[#0c0c10]/80 backdrop-blur-xl p-5">
+                <div className="rounded-2xl border border-slate-200 dark:border-white/[0.06] bg-slate-50/80 backdrop-blur-xl dark:bg-[#0c0c10]/80 p-5">
                   <p className="text-xs font-bold uppercase tracking-[0.22em] text-cyan-400">
                     Appearance
                   </p>
-                  <h2 className="mt-1 text-lg font-semibold text-white">
+                  <h2 className="mt-1 text-lg font-semibold text-slate-950 dark:text-white">
                     Theme
                   </h2>
                   <select
                     value={currentUser.themeId}
                     onChange={(e) => setTheme(e.target.value)}
-                    className="mt-3 w-full rounded-xl border border-white/[0.06] bg-[#0c0c10]/80 px-4 py-2.5 text-sm text-white focus:border-cyan-400 focus:outline-none focus:ring-1 focus:ring-cyan-400/30"
+                    className="mt-3 w-full rounded-xl border border-slate-200 dark:border-white/[0.06] bg-slate-50 dark:bg-[#0c0c10]/80 px-4 py-2.5 text-sm text-slate-950 dark:text-white focus:border-cyan-400 focus:outline-none focus:ring-1 focus:ring-cyan-400/30"
                   >
                     {BIO_THEMES.map((theme) => (
                       <option
                         key={theme.id}
                         value={theme.id}
-                        className="bg-[#0c0c10] text-white"
+                        className="bg-slate-50 dark:bg-[#0c0c10] text-slate-950 dark:text-white"
                       >
                         {theme.name} — {theme.description}
                       </option>
@@ -529,14 +529,14 @@ export default function DashboardPage() {
                 <p className="text-xs font-bold uppercase tracking-[0.18em] text-zinc-500">
                   Realtime
                 </p>
-                <h2 className="text-lg font-semibold text-white">
+                <h2 className="text-lg font-semibold text-slate-950 dark:text-white">
                   Preview Bio Page
                 </h2>
               </div>
               <Link
                 href={`/u/${currentUser.username}`}
                 target="_blank"
-                className="inline-flex items-center gap-1.5 rounded-lg bg-white/[0.06] px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-white/[0.10]"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-slate-200 dark:bg-white/[0.06] px-3 py-1.5 text-xs font-semibold text-slate-950 dark:text-white transition hover:bg-white/[0.10]"
               >
                 View
                 <ArrowUpRight className="size-3" />

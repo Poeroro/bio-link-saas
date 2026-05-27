@@ -44,7 +44,7 @@ export function AuthCard({ mode }: { mode: "login" | "register" }) {
       <div className="mx-auto flex min-h-[calc(100vh-3rem)] max-w-6xl flex-col">
         <nav className="flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <span className="grid size-10 place-items-center rounded-2xl bg-slate-950 text-white dark:bg-white dark:text-slate-950">
+            <span className="grid size-10 place-items-center rounded-2xl bg-slate-950 text-slate-950 dark:text-white dark:bg-white dark:text-slate-950">
               <Sparkles className="size-5" />
             </span>
             <span className="text-base font-black tracking-tight text-slate-950 dark:text-white">
@@ -52,7 +52,7 @@ export function AuthCard({ mode }: { mode: "login" | "register" }) {
             </span>
           </Link>
           <div className="flex items-center gap-3">
-            {state.darkMode ? <Moon className="size-4 text-white" /> : <Sun className="size-4 text-slate-700" />}
+            {state.darkMode ? <Moon className="size-4 text-slate-950 dark:text-white" /> : <Sun className="size-4 text-slate-700" />}
             <ToggleSwitch checked={state.darkMode} onChange={toggleDarkMode} label="Dark mode" />
           </div>
         </nav>
@@ -76,7 +76,7 @@ export function AuthCard({ mode }: { mode: "login" | "register" }) {
               <h2 className="text-2xl font-bold text-slate-950 dark:text-white">
                 {isRegister ? "Register" : "Login"}
               </h2>
-              <p className="mt-2 text-sm text-slate-500 dark:text-zinc-400">
+              <p className="mt-2 text-sm text-slate-500 dark:text-zinc-500 dark:text-zinc-400">
                 {isRegister
                   ? "Form sudah terisi data awal agar flow bisa langsung dicoba."
                   : "Gunakan akun demo atau akun hasil register."}
@@ -121,7 +121,7 @@ export function AuthCard({ mode }: { mode: "login" | "register" }) {
               {isRegister ? "Sudah punya akun?" : "Belum punya akun?"}{" "}
               <Link
                 href={isRegister ? "/login" : "/register"}
-                className="font-bold text-slate-950 underline underline-offset-4 dark:text-white"
+                className="font-bold text-slate-950 underline underline-offset-4 dark:text-slate-950 dark:text-white"
               >
                 {isRegister ? "Login" : "Register dummy"}
               </Link>
@@ -149,7 +149,7 @@ function Field({
   return (
     <label>
       <span className="text-sm font-semibold text-slate-700 dark:text-zinc-200">{label}</span>
-      <div className="mt-2 flex rounded-2xl border border-slate-200 bg-white text-slate-950 transition focus-within:border-slate-950 dark:border-white/10 dark:bg-zinc-950/60 dark:text-white dark:focus-within:border-white">
+      <div className="mt-2 flex rounded-2xl border border-slate-200 bg-white text-slate-950 transition focus-within:border-slate-950 dark:border-white/10 dark:bg-zinc-950/60 dark:text-slate-950 dark:text-white dark:focus-within:border-white">
         {prefix ? (
           <span className="grid place-items-center pl-4 text-sm font-bold text-slate-400">
             {prefix}

@@ -26,7 +26,7 @@ export function ThemePicker({
               className={cn(
                 "group rounded-3xl border p-3 text-left transition hover:-translate-y-0.5 hover:shadow-lg",
                 isActive
-                  ? "border-slate-950 bg-slate-950 text-white dark:border-white dark:bg-white dark:text-slate-950"
+                  ? "border-slate-950 bg-slate-950 text-slate-950 dark:text-white dark:border-white dark:bg-white dark:text-slate-950"
                   : "border-slate-200 bg-white text-slate-950 dark:border-white/10 dark:bg-white/7 dark:text-white",
               )}
             >
@@ -37,7 +37,7 @@ export function ThemePicker({
                   <p
                     className={cn(
                       "mt-1 text-xs leading-5",
-                      isActive ? "text-white/70 dark:text-slate-600" : "text-slate-500 dark:text-zinc-400",
+                      isActive ? "text-slate-950 dark:text-white/70 dark:text-slate-600" : "text-slate-500 dark:text-zinc-400",
                     )}
                   >
                     {theme.description}
