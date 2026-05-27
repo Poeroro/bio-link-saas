@@ -7,13 +7,14 @@ import {
   BarChart3,
   Link as LinkIcon,
   LogOut,
+  Menu,
   Moon,
   Palette,
   Save,
   Settings,
-  
   Sun,
   UserRound,
+  X,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -61,6 +62,7 @@ export default function DashboardPage() {
   const router = useRouter();
   const { data: session } = useSession();
   const [activeTab, setActiveTab] = useState<Tab>('links');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const {
     currentUser,
     isReady,
@@ -165,13 +167,31 @@ export default function DashboardPage() {
         {/* Header */}
         <header className="sticky top-0 z-30 border-b border-white/[0.06] bg-[#06060a]/90 backdrop-blur-xl">
           <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-4 px-4 py-3 sm:px-6">
+            {/* Hamburger button - mobile only */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="relative z-50 flex size-9 items-center justify-center rounded-lg bg-white/10 text-white transition lg:hidden"
+              aria-label={mobileMenuOpen ? "Tutup menu" : "Buka menu"}
+            >
+              <Menu
+                className={`size-5 transition-all duration-300 ${
+                  mobileMenuOpen ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100"
+                }`}
+              />
+              <X
+                className={`absolute size-5 transition-all duration-300 ${
+                  mobileMenuOpen ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-0 opacity-0"
+                }`}
+              />
+            </button>
+
             <Link href="/" className="flex items-center gap-3">
               <span className="hidden text-base font-black tracking-tight sm:block">
                 <SiteName />
               </span>
             </Link>
 
-            {/* Tab navigation */}
+            {/* Tab navigation - desktop only */}
             <nav className="hidden items-center gap-1 rounded-2xl bg-[#0c0c10]/80 backdrop-blur-xl border border-white/[0.06] p-1 lg:flex">
               {TABS.map((tab) => (
                 <button
@@ -223,31 +243,81 @@ export default function DashboardPage() {
                   logout();
                   signOut({ redirect: false });
                   router.push('/login');
- }}
+                }}
               >
                 <LogOut className="size-4" />
               </Button>
             </div>
           </div>
 
-          {/* Mobile tab bar */}
-          <div className="flex gap-1 overflow-x-auto px-4 pb-3 lg:hidden">
-            {TABS.map((tab) => (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => setActiveTab(tab.id)}
-                className={cn(
-                  'inline-flex shrink-0 h-9 items-center gap-2 rounded-xl px-3 text-sm font-semibold transition',
-                  activeTab === tab.id
-                    ? 'bg-cyan-400 text-slate-950'
-                    : 'text-zinc-400 hover:bg-white/[0.04] hover:text-white',
-                )}
+          {/* Mobile menu overlay */}
+          <div
+            className={`fixed inset-0 z-40 bg-[#06060a]/95 backdrop-blur-xl transition-all duration-300 lg:hidden ${
+              mobileMenuOpen
+                ? "pointer-events-auto opacity-100"
+                : "pointer-events-none opacity-0"
+            }`}
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <div
+              className={`flex flex-col items-center justify-start gap-6 min-h-screen pt-24 px-6 transition-all duration-300 ${
+                mobileMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-8 opacity-0"
+              }`}
+            >
+              <Link href="/" onClick={() => setMobileMenuOpen(false)}>
+                <SiteName />
+              </Link>
+              <div className="h-px w-16 bg-white/10" />
+
+              {/* Tab links */}
+              {TABS.map((tab) => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => { setActiveTab(tab.id); setMobileMenuOpen(false); }}
+                  className={cn(
+                    'inline-flex items-center gap-3 text-lg font-semibold transition',
+                    activeTab === tab.id
+                      ? 'text-cyan-400'
+                      : 'text-zinc-400 hover:text-white',
+                  )}
+                >
+                  <tab.icon className="size-5" />
+                  {tab.label}
+                </button>
+              ))}
+
+              <div className="h-px w-16 bg-white/10" />
+
+              {/* User info */}
+              {session?.user?.email && (
+                <p className="text-sm text-zinc-500">{session.user.email}</p>
+              )}
+
+              <div className="flex items-center gap-3">
+                {state.darkMode ? <Moon className="size-4 text-zinc-400" /> : <Sun className="size-4 text-zinc-400" />}
+                <ToggleSwitch checked={state.darkMode} onChange={toggleDarkMode} label="Dark mode" />
+              </div>
+
+              <Link
+                href={`/u/${currentUser.username}`}
+                target="_blank"
+                onClick={() => setMobileMenuOpen(false)}
+                className="inline-flex h-12 items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-400 to-emerald-400 px-8 text-base font-bold text-slate-950 transition hover:opacity-90"
               >
-                <tab.icon className="size-4" />
-                {tab.label}
+                View Profile
+                <ArrowUpRight className="size-5" />
+              </Link>
+
+              <button
+                type="button"
+                onClick={() => { logout(); signOut({ redirect: false }); router.push('/login'); }}
+                className="inline-flex items-center gap-2 text-base font-semibold text-red-400 transition hover:text-red-300"
+              >
+                <LogOut className="size-5" />
+                Logout
               </button>
-            ))}
+            </div>
           </div>
         </header>
 
