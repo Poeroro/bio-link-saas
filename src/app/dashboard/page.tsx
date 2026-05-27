@@ -249,77 +249,77 @@ export default function DashboardPage() {
               </Button>
             </div>
           </div>
-
-          {/* Mobile menu overlay */}
-          <div
-            className={`fixed inset-0 z-40 bg-[#06060a]/95 backdrop-blur-xl transition-all duration-300 lg:hidden ${
-              mobileMenuOpen
-                ? "pointer-events-auto opacity-100"
-                : "pointer-events-none opacity-0"
-            }`}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <div
-              className={`flex flex-col items-center justify-start gap-6 min-h-screen pt-24 px-6 transition-all duration-300 ${
-                mobileMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-8 opacity-0"
-              }`}
-            >
-              <Link href="/" onClick={() => setMobileMenuOpen(false)}>
-                <SiteName />
-              </Link>
-              <div className="h-px w-16 bg-white/10" />
-
-              {/* Tab links */}
-              {TABS.map((tab) => (
-                <button
-                  key={tab.id}
-                  type="button"
-                  onClick={() => { setActiveTab(tab.id); setMobileMenuOpen(false); }}
-                  className={cn(
-                    'inline-flex items-center gap-3 text-lg font-semibold transition',
-                    activeTab === tab.id
-                      ? 'text-cyan-400'
-                      : 'text-zinc-400 hover:text-white',
-                  )}
-                >
-                  <tab.icon className="size-5" />
-                  {tab.label}
-                </button>
-              ))}
-
-              <div className="h-px w-16 bg-white/10" />
-
-              {/* User info */}
-              {session?.user?.email && (
-                <p className="text-sm text-zinc-500">{session.user.email}</p>
-              )}
-
-              <div className="flex items-center gap-3">
-                {state.darkMode ? <Moon className="size-4 text-zinc-400" /> : <Sun className="size-4 text-zinc-400" />}
-                <ToggleSwitch checked={state.darkMode} onChange={toggleDarkMode} label="Dark mode" />
-              </div>
-
-              <Link
-                href={`/u/${currentUser.username}`}
-                target="_blank"
-                onClick={() => setMobileMenuOpen(false)}
-                className="inline-flex h-12 items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-400 to-emerald-400 px-8 text-base font-bold text-slate-950 transition hover:opacity-90"
-              >
-                View Profile
-                <ArrowUpRight className="size-5" />
-              </Link>
-
-              <button
-                type="button"
-                onClick={() => { logout(); signOut({ redirect: false }); router.push('/login'); }}
-                className="inline-flex items-center gap-2 text-base font-semibold text-red-400 transition hover:text-red-300"
-              >
-                <LogOut className="size-5" />
-                Logout
-              </button>
-            </div>
-          </div>
         </header>
+
+        {/* Mobile menu overlay — outside header to cover full screen */}
+        <div
+          className={`fixed inset-0 z-50 bg-[#06060a] backdrop-blur-xl transition-all duration-300 lg:hidden ${
+            mobileMenuOpen
+              ? "pointer-events-auto opacity-100"
+              : "pointer-events-none opacity-0"
+          }`}
+          onClick={() => setMobileMenuOpen(false)}
+        >
+          <div
+            className={`flex flex-col items-center justify-start gap-6 min-h-screen pt-24 px-6 transition-all duration-300 ${
+              mobileMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-8 opacity-0"
+            }`}
+          >
+            <Link href="/" onClick={() => setMobileMenuOpen(false)}>
+              <SiteName />
+            </Link>
+            <div className="h-px w-16 bg-white/10" />
+
+            {/* Tab links */}
+            {TABS.map((tab) => (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => { setActiveTab(tab.id); setMobileMenuOpen(false); }}
+                className={cn(
+                  'inline-flex items-center gap-3 text-lg font-semibold transition',
+                  activeTab === tab.id
+                    ? 'text-cyan-400'
+                    : 'text-zinc-400 hover:text-white',
+                )}
+              >
+                <tab.icon className="size-5" />
+                {tab.label}
+              </button>
+            ))}
+
+            <div className="h-px w-16 bg-white/10" />
+
+            {/* User info */}
+            {session?.user?.email && (
+              <p className="text-sm text-zinc-500">{session.user.email}</p>
+            )}
+
+            <div className="flex items-center gap-3">
+              {state.darkMode ? <Moon className="size-4 text-zinc-400" /> : <Sun className="size-4 text-zinc-400" />}
+              <ToggleSwitch checked={state.darkMode} onChange={toggleDarkMode} label="Dark mode" />
+            </div>
+
+            <Link
+              href={`/u/${currentUser.username}`}
+              target="_blank"
+              onClick={() => setMobileMenuOpen(false)}
+              className="inline-flex h-12 items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-400 to-emerald-400 px-8 text-base font-bold text-slate-950 transition hover:opacity-90"
+            >
+              View Profile
+              <ArrowUpRight className="size-5" />
+            </Link>
+
+            <button
+              type="button"
+              onClick={() => { logout(); signOut({ redirect: false }); router.push('/login'); }}
+              className="inline-flex items-center gap-2 text-base font-semibold text-red-400 transition hover:text-red-300"
+            >
+              <LogOut className="size-5" />
+              Logout
+            </button>
+          </div>
+        </div>
 
         <div className="mx-auto grid max-w-[1500px] gap-6 px-4 py-6 sm:px-6 xl:grid-cols-[minmax(0,1fr)_430px]">
           <section className="grid gap-5">
