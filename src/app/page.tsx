@@ -9,15 +9,17 @@ import {
   HelpCircle,
   LayoutDashboard,
   Link as LinkIcon,
+  Menu,
   Palette,
   QrCode,
   Shield,
   Smartphone,
-  
   Star,
+  X,
   Zap,
 } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 import { SiteName } from "@/components/site-logo";
 import { BioPreview } from "@/components/bio/bio-preview";
 import { useBioApp } from "@/components/providers/app-provider";
@@ -79,6 +81,7 @@ const faqs = [
 export default function Home() {
   const { state, currentUser } = useBioApp();
   const demoUser = currentUser ?? state.users[0];
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#06060a] text-white">
@@ -99,11 +102,31 @@ export default function Home() {
       </div>
 
       {/* ── Nav ── */}
-      <nav className="relative z-10 mx-auto flex max-w-7xl items-center justify-between px-4 py-5 sm:px-6">
+      <nav className="relative z-50 mx-auto flex max-w-7xl items-center justify-between px-4 py-5 sm:px-6">
+        {/* Hamburger button - mobile only */}
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="relative z-50 flex size-9 items-center justify-center rounded-lg bg-white/10 text-white transition lg:hidden"
+          aria-label={mobileMenuOpen ? "Tutup menu" : "Buka menu"}
+        >
+          <Menu
+            className={`size-5 transition-all duration-300 ${
+              mobileMenuOpen ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100"
+            }`}
+          />
+          <X
+            className={`absolute size-5 transition-all duration-300 ${
+              mobileMenuOpen ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-0 opacity-0"
+            }`}
+          />
+        </button>
+
         <Link href="/" className="flex items-center gap-3">
           <SiteName />
         </Link>
-        <div className="flex items-center gap-4">
+
+        {/* Desktop nav */}
+        <div className="hidden items-center gap-4 lg:flex">
           {currentUser ? (
             <Link
               href="/dashboard"
@@ -115,7 +138,7 @@ export default function Home() {
             <>
               <Link
                 href="/login"
-                className="hidden text-sm font-semibold text-zinc-400 transition hover:text-white sm:block"
+                className="text-sm font-semibold text-zinc-400 transition hover:text-white"
               >
                 Login
               </Link>
@@ -128,7 +151,61 @@ export default function Home() {
             </>
           )}
         </div>
+
+        {/* Spacer for desktop balance (hamburger hidden on lg) */}
+        <div className="hidden lg:block" />
       </nav>
+
+      {/* Mobile menu overlay */}
+      <div
+        className={`fixed inset-0 z-40 bg-[#06060a]/95 backdrop-blur-xl transition-all duration-300 lg:hidden ${
+          mobileMenuOpen
+            ? "pointer-events-auto opacity-100"
+            : "pointer-events-none opacity-0"
+        }`}
+        onClick={() => setMobileMenuOpen(false)}
+      >
+        <div
+          className={`flex flex-col items-center justify-center gap-6 min-h-screen transition-all duration-300 ${
+            mobileMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-8 opacity-0"
+          }`}
+        >
+          <Link
+            href="/"
+            onClick={() => setMobileMenuOpen(false)}
+            className="text-2xl font-bold text-white"
+          >
+            <SiteName />
+          </Link>
+          <div className="h-px w-16 bg-white/10" />
+          {currentUser ? (
+            <Link
+              href="/dashboard"
+              onClick={() => setMobileMenuOpen(false)}
+              className="inline-flex h-12 items-center justify-center rounded-xl bg-gradient-to-r from-cyan-400 to-emerald-400 px-8 text-base font-bold text-slate-950 transition hover:opacity-90"
+            >
+              Dashboard
+            </Link>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-lg font-semibold text-zinc-300 transition hover:text-white"
+              >
+                Login
+              </Link>
+              <Link
+                href="/register"
+                onClick={() => setMobileMenuOpen(false)}
+                className="inline-flex h-12 items-center justify-center rounded-xl bg-gradient-to-r from-cyan-400 to-emerald-400 px-8 text-base font-bold text-slate-950 transition hover:opacity-90"
+              >
+                Register
+              </Link>
+            </>
+          )}
+        </div>
+      </div>
 
       {/* ── Hero ── */}
       <section className="relative z-10 mx-auto grid max-w-7xl gap-8 px-4 pb-10 pt-4 sm:px-6 lg:grid-cols-[minmax(0,1fr)_430px] lg:items-center">

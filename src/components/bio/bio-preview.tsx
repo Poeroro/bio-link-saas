@@ -75,7 +75,7 @@ export function BioPreview({
               {user.name}
             </h1>
             <p className={cn("mt-2 text-sm font-semibold", theme.mutedClass)}>
-              @{user.username} · {user.location}
+              {user.location}
             </p>
             <p className={cn("mt-4 max-w-md text-sm leading-6", theme.mutedClass)}>
               {user.bio}
