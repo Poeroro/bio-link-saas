@@ -1,22 +1,28 @@
-import { NextRequest } from "next/server";
-import { handlers } from "@/lib/auth";
+import NextAuth from "next-auth";
+import { authOptions } from "@/lib/auth";
 
-const { GET: _GET, POST: _POST } = handlers;
+const nextAuth = NextAuth(authOptions);
 
-export async function GET(req: NextRequest) {
-  try {
-    return await _GET(req);
-  } catch (e) {
-    console.error("[AUTH GET]", e);
-    return Response.json({ error: String(e) }, { status: 500 });
-  }
+export async function GET(
+  req: Request,
+  ctx: { params: Promise<{ nextauth: string[] }> }
+) {
+  const resolvedParams = await ctx.params;
+  return nextAuth(req, { params: resolvedParams });
 }
 
-export async function POST(req: NextRequest) {
+export async function POST(
+  req: Request,
+  ctx: { params: Promise<{ nextauth: string[] }> }
+) {
   try {
-    return await _POST(req);
+    const resolvedParams = await ctx.params;
+    return await nextAuth(req, { params: resolvedParams });
   } catch (e) {
-    console.error("[AUTH POST]", e);
-    return Response.json({ error: String(e) }, { status: 500 });
+    console.error("[NextAuth POST] error:", e);
+    return Response.json(
+      { error: String(e), stack: e instanceof Error ? e.stack : "" },
+      { status: 500 }
+    );
   }
 }
