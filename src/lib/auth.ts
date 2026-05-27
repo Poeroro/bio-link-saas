@@ -1,15 +1,14 @@
-import { type AuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+import NextAuth from "next-auth";
+import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 
-export const authOptions: AuthOptions = {
-  // No PrismaAdapter — credentials-only with JWT doesn't need DB sessions
+export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
-    CredentialsProvider({
+    Credentials({
       name: "credentials",
       credentials: {
-        email: { label: "Email atau Username", type: "text" },
+        email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
@@ -18,23 +17,20 @@ export const authOptions: AuthOptions = {
             return null;
           }
 
-          // Find by email or username
-          const identifier = credentials.email.trim().toLowerCase();
+          const email = credentials.email as string;
+          const password = credentials.password as string;
+
           const user = await prisma.user.findFirst({
-            where: identifier.includes("@")
-              ? { email: identifier }
-              : { username: identifier },
+            where: {
+              OR: [{ email }, { username: email }],
+            },
           });
 
           if (!user || !user.password) {
             return null;
           }
 
-          const isValid = await bcrypt.compare(
-            credentials.password,
-            user.password
-          );
-
+          const isValid = await bcrypt.compare(password, user.password);
           if (!isValid) {
             return null;
           }
@@ -42,34 +38,24 @@ export const authOptions: AuthOptions = {
           return {
             id: user.id,
             email: user.email,
-            name: user.name,
-            image: user.image,
+            name: user.username,
             username: user.username,
             isAdmin: user.isAdmin,
-            emailVerified: user.emailVerified ? true : false,
+            emailVerified: user.emailVerified,
           };
         } catch (e) {
-          console.error("[AUTH] authorize error:", e);
+          console.error("[AUTH_AUTHORIZE_ERROR]", e);
           return null;
         }
       },
     }),
   ],
-  session: {
-    strategy: "jwt",
-  },
-  pages: {
-    signIn: "/login",
-    newUser: "/dashboard",
-  },
-  secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
         token.username = (user as { username?: string }).username;
-        token.isAdmin = (user as { isAdmin?: boolean }).isAdmin ?? false;
-        token.emailVerified = (user as { emailVerified?: boolean }).emailVerified ?? false;
+        token.isAdmin = (user as { isAdmin?: boolean }).isAdmin;
       }
       return token;
     },
@@ -78,9 +64,15 @@ export const authOptions: AuthOptions = {
         (session.user as { id?: string }).id = token.id as string;
         (session.user as { username?: string }).username = token.username as string;
         (session.user as { isAdmin?: boolean }).isAdmin = token.isAdmin as boolean;
-        (session.user as { emailVerified?: boolean }).emailVerified = token.emailVerified as boolean;
       }
       return session;
     },
   },
-};
+  pages: {
+    signIn: "/login",
+  },
+  session: {
+    strategy: "jwt",
+  },
+  secret: process.env.NEXTAUTH_SECRET || process.env.AUTH_SECRET,
+});
