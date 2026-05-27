@@ -155,7 +155,7 @@ export default function DashboardPage() {
     : `bio-link-saas.vercel.app/u/${currentUser.username}`;
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[#06060a] text-white">
+    <main className="min-h-screen w-full max-w-full bg-[#06060a] text-white">
       {/* Floating mesh orbs */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-cyan-500/[0.07] blur-[80px] animate-[floatOrb_20s_ease-in-out_infinite]" />
@@ -363,10 +363,10 @@ export default function DashboardPage() {
                   <p className="mt-2 text-sm text-zinc-400">
                     {currentUser.bio}
                   </p>
-                  <div className="mt-3 flex items-center gap-2">
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-white/[0.04] px-3 py-1 text-xs font-medium text-zinc-300">
-                      <LinkIcon className="size-3" />
-                      {profileUrl}
+                  <div className="mt-3 flex items-center gap-2 overflow-hidden">
+                    <span className="inline-flex min-w-0 max-w-full items-center gap-1.5 rounded-full bg-white/[0.04] px-3 py-1 text-xs font-medium text-zinc-300">
+                      <LinkIcon className="size-3 shrink-0" />
+                      <span className="truncate">{profileUrl}</span>
                     </span>
                     <button
                       type="button"

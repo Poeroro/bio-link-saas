@@ -660,7 +660,7 @@ function ToastViewport({
   };
 
   return (
-    <div className="fixed right-4 top-4 z-50 flex w-[calc(100vw-2rem)] max-w-sm flex-col gap-3">
+    <div className="fixed right-4 top-4 z-50 flex w-auto max-w-sm flex-col gap-3">
       {toasts.map((toast) => {
         const Icon = icons[toast.tone];
 

@@ -285,7 +285,7 @@ export function LinkManager({
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-center justify-between gap-3 sm:justify-end">
+                    <div className="flex flex-wrap items-center justify-between gap-2 sm:justify-end sm:gap-3">
                       <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600 dark:bg-white/10 dark:text-zinc-300">
                         {formatNumber(link.clicks)}
                       </span>
