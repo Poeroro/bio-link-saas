@@ -117,25 +117,25 @@ export function LinkManager({
 
   return (
     <SectionCard title="Tambah & Kelola Link" eyebrow="Link stack">
-      <div className="grid gap-3 rounded-2xl bg-slate-50 p-4 dark:bg-white/5 sm:grid-cols-[1fr_1fr_auto] sm:p-5">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_auto]">
         <input
           value={draft.title}
           onChange={(event) => setDraft((current) => ({ ...current, title: event.target.value }))}
           placeholder="Judul link"
-          className="h-12 rounded-2xl border border-slate-200 bg-white px-4 text-sm text-slate-950 outline-none focus:border-slate-950 dark:border-white/10 dark:bg-zinc-950 dark:text-white dark:focus:border-white"
+          className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-950 outline-none focus:border-slate-950 dark:border-white/10 dark:bg-zinc-950 dark:text-white dark:focus:border-white"
         />
         <input
           value={draft.url}
           onChange={(event) => setDraft((current) => ({ ...current, url: event.target.value }))}
           placeholder="https://..."
-          className="h-12 rounded-2xl border border-slate-200 bg-white px-4 text-sm text-slate-950 outline-none focus:border-slate-950 dark:border-white/10 dark:bg-zinc-950 dark:text-white dark:focus:border-white"
+          className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-950 outline-none focus:border-slate-950 dark:border-white/10 dark:bg-zinc-950 dark:text-white dark:focus:border-white"
         />
         <select
           value={draft.kind}
           onChange={(event) =>
             setDraft((current) => ({ ...current, kind: event.target.value as LinkKind }))
           }
-          className="h-12 rounded-2xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-950 outline-none focus:border-slate-950 dark:border-white/10 dark:bg-zinc-950 dark:text-white dark:focus:border-white"
+          className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-950 outline-none focus:border-slate-950 dark:border-white/10 dark:bg-zinc-950 dark:text-white dark:focus:border-white"
         >
           {LINK_KIND_OPTIONS.map((option) => (
             <option key={option.value} value={option.value}>
@@ -149,9 +149,9 @@ export function LinkManager({
             setDraft((current) => ({ ...current, description: event.target.value }))
           }
           placeholder="Deskripsi singkat"
-          className="h-12 rounded-2xl border border-slate-200 bg-white px-4 text-sm text-slate-950 outline-none focus:border-slate-950 dark:border-white/10 dark:bg-zinc-950 dark:text-white dark:focus:border-white sm:col-span-2"
+          className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-950 outline-none focus:border-slate-950 dark:border-white/10 dark:bg-zinc-950 dark:text-white dark:focus:border-white sm:col-span-2 lg:col-span-1"
         />
-        <Button onClick={submitNew} disabled={!draft.title.trim() || !draft.url.trim()}>
+        <Button onClick={submitNew} disabled={!draft.title.trim() || !draft.url.trim()} className="sm:col-span-2 lg:col-span-1">
           <Plus className="size-4" />
           Tambah
         </Button>
@@ -183,27 +183,27 @@ export function LinkManager({
                   setDraggingId(null);
                 }}
                 className={cn(
-                  "rounded-3xl border bg-white p-4 transition dark:bg-white/7",
+                  "rounded-2xl border bg-white p-4 transition dark:bg-white/7",
                   draggingId === link.id
                     ? "border-cyan-400 opacity-70"
                     : "border-slate-200 dark:border-white/10",
                 )}
               >
                 {isEditing ? (
-                  <div className="grid gap-3 md:grid-cols-[1fr_1fr_auto]">
+                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_auto]">
                     <input
                       value={editDraft.title}
                       onChange={(event) =>
                         setEditDraft((current) => ({ ...current, title: event.target.value }))
                       }
-                      className="h-11 rounded-2xl border border-slate-200 bg-white px-4 text-sm text-slate-950 outline-none focus:border-slate-950 dark:border-white/10 dark:bg-zinc-950 dark:text-white dark:focus:border-white"
+                      className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-950 outline-none focus:border-slate-950 dark:border-white/10 dark:bg-zinc-950 dark:text-white dark:focus:border-white"
                     />
                     <input
                       value={editDraft.url}
                       onChange={(event) =>
                         setEditDraft((current) => ({ ...current, url: event.target.value }))
                       }
-                      className="h-11 rounded-2xl border border-slate-200 bg-white px-4 text-sm text-slate-950 outline-none focus:border-slate-950 dark:border-white/10 dark:bg-zinc-950 dark:text-white dark:focus:border-white"
+                      className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-950 outline-none focus:border-slate-950 dark:border-white/10 dark:bg-zinc-950 dark:text-white dark:focus:border-white"
                     />
                     <select
                       value={editDraft.kind}
@@ -213,7 +213,7 @@ export function LinkManager({
                           kind: event.target.value as LinkKind,
                         }))
                       }
-                      className="h-11 rounded-2xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-950 outline-none focus:border-slate-950 dark:border-white/10 dark:bg-zinc-950 dark:text-white dark:focus:border-white"
+                      className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-950 outline-none focus:border-slate-950 dark:border-white/10 dark:bg-zinc-950 dark:text-white dark:focus:border-white"
                     >
                       {LINK_KIND_OPTIONS.map((item) => (
                         <option key={item.value} value={item.value}>
@@ -229,7 +229,7 @@ export function LinkManager({
                           description: event.target.value,
                         }))
                       }
-                      className="h-11 rounded-2xl border border-slate-200 bg-white px-4 text-sm text-slate-950 outline-none focus:border-slate-950 dark:border-white/10 dark:bg-zinc-950 dark:text-white dark:focus:border-white md:col-span-2"
+                      className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-950 outline-none focus:border-slate-950 dark:border-white/10 dark:bg-zinc-950 dark:text-white dark:focus:border-white sm:col-span-2 lg:col-span-1"
                     />
                     <input
                       type="date"
@@ -241,7 +241,7 @@ export function LinkManager({
                         }))
                       }
                       placeholder="Schedule start"
-                      className="h-11 rounded-2xl border border-slate-200 bg-white px-4 text-sm text-slate-950 outline-none focus:border-slate-950 dark:border-white/10 dark:bg-zinc-950 dark:text-white dark:focus:border-white"
+                      className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-950 outline-none focus:border-slate-950 dark:border-white/10 dark:bg-zinc-950 dark:text-white dark:focus:border-white"
                     />
                     <input
                       type="date"
@@ -253,7 +253,7 @@ export function LinkManager({
                         }))
                       }
                       placeholder="Schedule end"
-                      className="h-11 rounded-2xl border border-slate-200 bg-white px-4 text-sm text-slate-950 outline-none focus:border-slate-950 dark:border-white/10 dark:bg-zinc-950 dark:text-white dark:focus:border-white"
+                      className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-950 outline-none focus:border-slate-950 dark:border-white/10 dark:bg-zinc-950 dark:text-white dark:focus:border-white"
                     />
                     <Button onClick={() => saveEditing(link.id)}>
                       <Save className="size-4" />
