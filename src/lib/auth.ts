@@ -76,7 +76,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         (session.user as { id?: string }).id = token.id as string;
         (session.user as { username?: string }).username = token.username as string;
         (session.user as { isAdmin?: boolean }).isAdmin = token.isAdmin as boolean;
-        (session.user as { emailVerified?: boolean }).emailVerified = !!token.emailVerified;
+        (session as unknown as { user: { emailVerified?: boolean } }).user.emailVerified = !!token.emailVerified;
       }
       return session;
     },
